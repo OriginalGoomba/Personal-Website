@@ -71,7 +71,7 @@
 									with louvers wrapping all around. I also took note that they were all white as to not absorb excess solar radiation that could throw off measurements. 
 									<span class="image left"><img src="\images\Weather_Station_2021\squareIMG_6881.jpg" alt="" /></span>I tried 
 									to find a 3D printable design online, but every design posted had its own set of problems that seemed to make them unattractive to print. Most of these preexisting models 
-									used large metal shafts or intricate post print assembly. So, I just made my own fully 3D printable radiation shield, except for a few M3 and M4 nuts and bolts. 
+									used large metal shafts or required intricate post print assembly. So, I just made my own fully 3D printable radiation shield, except for a few M3 and M4 nuts and bolts. 
 									It is designed to accomodate a 25 millimeter wide circuit board, with integrated cable passthrough inside the support shaft.
 								<ul class="actions special">
 									<li><a href="#" class="button disabled">Check it out on thingiverse</a></li>
@@ -80,10 +80,15 @@
 								<header class="major">
 									<h2 style="text-align: right;" >Tipping Rain Guage</h2>
 								</header>
-								<p><span class="image left"><img src="\images\Weather_Station_2021\squareIMG_6881.jpg" alt="" /></span>
-									This 
-									
-									This is the shaft part I designed in Fusion360. Much like the trigger part above, the precise measurements were adhered to strictly, while once again liberties were taken to aid in rigidity and ease of 3D printing. The location for the original reed switch magnet has been projected perfectly with respect to the shaft so that there is no misalignment through the full range of motion. The angle of the keyway that couples with the trigger part is also modeled perfectly for a snug fit. The bottom has been reinforced for 3D printing ease. Extra strength in this area can help provide a solid wide base to 3d print a vertical shaft on.</p>
+								<p><span class="image left"><img src="\images\Weather_Station_2021\IMG_7027.jpg" alt="" /></span>
+									This is an off the shelf tipping bucket rain gauge that is about 20 years old. For this project, I have modified it for ease of 
+									data collection using an ESP-32 microcontroller. The original reed switch on the bottom right of the image has been replaced with a linear 
+									hall effect sensor in order to reducing electronic noise when capturing the physical tipping of the rain gauge bucket. The main issue regarding the original 
+									reed switch centered around the tiny moving contacts that would touch, completing the circuit, when a close enough magnetic field interacted with it. 
+									Since the microcontroller can process data extremely fast, whenever the magnet passed by the switch would bounce on and off in fractions of a second, 
+									causing each tip of the rain gauge bucket to correspond to tens of tips read by the microcontroller. After various attempts at debouncing the system, 
+									I decided to replace the reed switch entirely with a solid-state linear hall effect sensor. This creates a concise and accurate reading each time the bucket tips, 
+									allowing for easy parsing of rainfall data. After many months of testing in the rain, the gauge is a little dirty but has continued to work flawlessly.
 								<ul class="actions special">
 									<li><a href="#" class="button disabled">Check it out on thingiverse</a></li>
 								</ul>
