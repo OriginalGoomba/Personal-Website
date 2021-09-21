@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Weather Station</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="projects.html" class="logo">Projects</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li class="active"><a href="projects.html">Projects</a></li>
+							<li><a href="gallery.html">Gallery</a></li>
+							<li><a href="contactme.html">Contact Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://github.com/OriginalGoomba" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<li><a href="https://www.linkedin.com/in/dillon-kelley/"  target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Weather Station</h1>
+									<p>Personal weather station featuring 3d modeled components, wireless data transmission, and rechargable battery operation.</p>
+								</header>
+								<div class="box alt">
+									<div class="row gtr-50 gtr-uniform">
+										<div class="col-6"><span class="image fit"><img src="\images\Weather_Station_2021\65309883880__305B9177-13EE-4771-8403-37240E65850E.jpg" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="\images\Weather_Station_2021\IMG_6876.jpg" alt="" /></span></div>
+									</div>
+								</div>
+								<!-- <div class="image main"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></div> -->
+								<p>	This weather station uses two ESP-32 microcontrollers to wirelessly communicte using the ESP-NOW communication protocol. 
+									Weather data from a DHT-11 humidity sensor and BMP180 temperature and pressure sensor collect data inside a radiation shield that I 3D
+									modeled. This data is taken at a preprogrammed intervals from these sensors to the ESP-32 to be sent to the reciever inside for display on a small 
+									screen meant for a desk. The design also implements a rain sensor and tipping bucket rain gauge as a seperate module that I had lying around as spare 
+									parts from an old weather station. In the future, it would be nice to add more functionality with an anemometer to collect windspeed data. Another idea I would 
+									like to implement in the future is data logging on an MQTT server using a raspberry pi server that talks to all my electronics projects. This would be 
+									useful to track the climate over time at the residence, while comparing it to measurements from the local municipality. All the materials are purchased, 
+									but since the semester has started, finding free time to work on hobbies will be hard to come by.
+								<header class="major">
+									<h2 style="text-align: left;" >Radiation Shield Assembly</h2>
+								</header>
+								<p><span class="image right"><img src="\images\Weather_Station_2021\IMG_6610.HEIC.jpg" alt="" /></span>
+									Both iterations of the radiation shield were modeled using Creo Parametric 6.0. I originally designed a square box with louvers surrounding each side and a basic slanted roof. 
+									Although this design was simple to design and featured integrated circuit board mounting and an inlay for a solar panel, the design was not very element proof. After two days of weather testing, 
+									it was clear the design let too much rain inside the housing which could damage the more sensitive components of the weather station. After the failure 
+									of this design, I researched commercial weather station radiation shields and came across the "stevenson" radiation shield, which is a round cylindical structure 
+									with louvers wrapping all around. I also took note that they were all white as to not absorb excess solar radiation that could throw off measurements. 
+									<span class="image left"><img src="\images\Weather_Station_2021\squareIMG_6881.jpg" alt="" /></span>I tried 
+									to find a 3D printable design online, but every design posted had its own set of problems that seemed to make them unattractive to print. Most of these preexisting models 
+									used large metal shafts or intricate post print assembly. So, I just made my own fully 3D printable radiation shield, except for a few M3 and M4 nuts and bolts. 
+									It is designed to accomodate a 25 millimeter wide circuit board, with integrated cable passthrough inside the support shaft.
+								<ul class="actions special">
+									<li><a href="#" class="button disabled">Check it out on thingiverse</a></li>
+								</ul>
+
+								<header class="major">
+									<h2 style="text-align: right;" >Tipping Rain Guage</h2>
+								</header>
+								<p><span class="image left"><img src="\images\Weather_Station_2021\squareIMG_6881.jpg" alt="" /></span>
+									This 
+									
+									This is the shaft part I designed in Fusion360. Much like the trigger part above, the precise measurements were adhered to strictly, while once again liberties were taken to aid in rigidity and ease of 3D printing. The location for the original reed switch magnet has been projected perfectly with respect to the shaft so that there is no misalignment through the full range of motion. The angle of the keyway that couples with the trigger part is also modeled perfectly for a snug fit. The bottom has been reinforced for 3D printing ease. Extra strength in this area can help provide a solid wide base to 3d print a vertical shaft on.</p>
+								<ul class="actions special">
+									<li><a href="#" class="button disabled">Check it out on thingiverse</a></li>
+								</ul>
+							</section>
+					</div>
+					
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Dillon Kelley 2020</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
