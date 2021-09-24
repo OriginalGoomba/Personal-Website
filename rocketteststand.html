@@ -53,41 +53,41 @@
 								</header>
 								<div class="box alt">
 									<div class="row gtr-50 gtr-uniform">
-										<div class="col-6"><span class="image fit"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></span></div>
-										<div class="col-6"><span class="image fit"><img src="images/Apollo AV-1 Parts/Shaft v2_2.stl.png" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/arduinoprojectpictures/IMG_4463.jpg" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/arduinoprojectpictures/Rocket Stand V1 in action.png" alt="" /></span></div>
 									</div>
 								</div>
 								<!-- <div class="image main"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></div> -->
 								<p>This rocket test stand is built for conducting thrust tests on homemade rocket motors. This design is currently still a work in progress 
 									due to the fact that the picture in the project showcase was the last one taken before the stand was destroyed, along with the data. While 
-									the test stand worked perfectly, albeit lacking asthetics, all of the data from the half dozen motors tests was lost after the SD card logging the 
+									the test stand worked perfectly, albeit lacking aesthetics, all of the data from the half dozen motors tests was lost after the SD card logging the 
 									data turned into fragments strewn across the lawn. After lessons learned from the first motor test stand, I have purchased all the required parts 
-									for a version two design. The latest design features logging thrust data from a 20 kilogram strain gauge, where the data is read by a microcontroller. 
+									for a version two design. The latest design features logging thrust data from a 10-kilogram strain gauge, where the data is read by a microcontroller. 
 									Most of the changes between the original design pictured and the new design centeres around a bigger load cell to capture higher peak thrusts in rocket motors 
-									as well as a redundant realtime telemetry system streaming straight to a computer so that even if the motor catastrophically fails, all data collected up until 
+									as well as a redundant real time telemetry system streaming straight to a computer so that even if the motor catastrophically fails, all data collected up until 
 									failure is still logged. Other changes include adding a key for a more secure launch circuit as well as a much longer cable. I also will move all the electronics 
 									below the test stand with a blast shield over it so that no electronics will hopefully be harmed this time around. 									
 								<header class="major">
 									<h2 style="text-align: left;" >Load Cell & Amplifier</h2>
 								</header>
-								<p><span class="image right"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></span>
-									This is the load cell in a wheatstone bridge configuration is used to measure force applied whatever it is attached to. Load cells come in all shapes and sizes, with different accuracies and weight ratings. For most hobby purposes, the higher the weight rating, the less accurate it will be, especially when trying to measure small forces. So, it is important to purchase the right load cell for the project. In my case, a 10 kilogram load cell was used, as most commercial rocket engines dont exceed 20 newtons, or 2 kilograms of thrust.  
-									The leads of the load cell are connected to an HX711 load cell amplifier in order to actually get measurable data from the load cell, which would otherwise just be small voltages due to changes in resistances. Most purchasable load cells come with the HX711 amplifier 
-									as it is a perfect pairing for hobby microcontrollers and actually reading data. Before I started the project, I was able to research how others had utilized this load cell amplifier configuration. 
+								<p><span class="image right"><img src="images/arduinoprojectpictures/loadcellhx711.jpg" alt="" /></span>
+									This is the load cell in a Wheatstone bridge configuration is used to measure force applied whatever it is attached to. Load cells come in all shapes and sizes, with different accuracies and weight ratings. For most hobby purposes, the higher the weight rating, the less accurate it will be, especially when trying to measure small forces. So, it is important to purchase the right load cell for the project. In my case, a 10-kilogram load cell was used, as most commercial rocket engines don't exceed 20 newtons, or 2 kilograms of thrust.  
+									The leads of the load cell are connected to an HX711 load cell amplifier to actually get measurable data from the load cell, which would otherwise just be small voltages due to changes in resistances. Most purchasable load cells come with the HX711 amplifier 
+									as it is a perfect pairing for hobby microcontrollers and reading data. Before I started the project, I was able to research how others had utilized this load cell amplifier configuration. 
 									I found that while in its stock configuration it was slow, it could be modified to increase the data throughput of the load cell. 
 									Most HX711 amplifiers ship with a stock refresh rate of 10Hz, or 10 times a second. This is a problem when trying to gather meaningful data out of a rocket motor as burn times can happen in as little as 1 second. 
-									In order to see the thrust curve, and to calculate other metrics such as specifc impulse, the board was modified by resoldering a new jumper on the HX711 in order to allow 
+									In an effort to get meaningful data such as the thrust curve, and to calculate other metrics such as specifc impulse, the board was modified by resoldering a new jumper on the HX711 in order to allow 
 									operation at 80Hz.
 								<ul class="actions special">
 									<li><a href="https://www.sparkfun.com/products/13879" target="_blank" class="button">Check it out on adafruit</a></li>
 								</ul>
 
 								<header class="major">
-									<h2 style="text-align: right;" >Shaft</h2>
+									<h2 style="text-align: right;" >Stand</h2>
 								</header>
-								<p><span class="image left"><img src="images/Apollo AV-1 Parts/Shaft v2_2.stl.png" alt="" /></span>This is the shaft part I designed in Fusion360. Much like the trigger part above, the precise measurements were adhered to strictly, while once again liberties were taken to aid in rigidity and ease of 3D printing. The location for the original reed switch magnet has been projected perfectly with respect to the shaft so that there is no misalignment through the full range of motion. The angle of the keyway that couples with the trigger part is also modeled perfectly for a snug fit. The bottom has been reinforced for 3D printing ease. Extra strength in this area can help provide a solid wide base to 3d print a vertical shaft on.</p>
-								<ul class="actions special">
-									<li><a href="https://www.thingiverse.com/thing:4720822" target="_blank" class="button">Check it out on thingiverse</a></li>
+								<p><span class="image left"><img src="images/arduinoprojectpictures/IMG_4463.jpg" alt="" /></span>
+									The first iteration of the stand was constructed out of a scrap piece of plywood and some machined aluminum bushings to for load cell mounting. The bushings were turned from aluminum bar stock to 5 millimeters in length. The actual top of the load cell plate was made from a flat piece of PVC sheet stock with holes drilled to accommodate the motor mounting bracket. This bracket consists of two machined ends that fit over the rocket casing. The whole assembly is sandwiched together using four sets of threaded rod and nuts to securely fasten the rocket motor in the vertical axis for accurate and repeatable thrust measurements. In the version two design parts from this version will be salvaged and reused as this part of the test stand was robust enough for any potential failure of the test platform. As stated previously however, the base plate that hold the load cell and motor fixture will be raised up to accommodate the electronics housing so that they remain safer in any sort of mishap from the test stand.								<ul class="actions special">
+									<!--<li><a href="https://www.thingiverse.com/thing:4720822" target="_blank" class="button">Check it out on thingiverse</a></li>-->
 								</ul>
 							</section>
 					</div>
@@ -95,7 +95,7 @@
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Dillon Kelley 2020</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; Dillon Kelley 2021</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>
