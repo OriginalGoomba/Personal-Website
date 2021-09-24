@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+
+		<title>Rocket Test Stand</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="projects.html" class="logo">Projects</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li class="active"><a href="projects.html">Projects</a></li>
+							<li><a href="gallery.html">Gallery</a></li>
+							<li><a href="contactme.html">Contact Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://github.com/OriginalGoomba" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<li><a href="https://www.linkedin.com/in/dillon-kelley/"  target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Rocket Test Stand</h1>
+									<p>Custom built rocket thrust test stand for homemade rocket motor testing.</p>
+								</header>
+								<div class="box alt">
+									<div class="row gtr-50 gtr-uniform">
+										<div class="col-6"><span class="image fit"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/Apollo AV-1 Parts/Shaft v2_2.stl.png" alt="" /></span></div>
+									</div>
+								</div>
+								<!-- <div class="image main"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></div> -->
+								<p>This rocket test stand is built for conducting thrust tests on homemade rocket motors. This design is currently still a work in progress 
+									due to the fact that the picture in the project showcase was the last one taken before the stand was destroyed, along with the data. While 
+									the test stand worked perfectly, albeit lacking asthetics, all of the data from the half dozen motors tests was lost after the SD card logging the 
+									data turned into fragments strewn across the lawn. After lessons learned from the first motor test stand, I have purchased all the required parts 
+									for a version two design. The latest design features logging thrust data from a 20 kilogram strain gauge, where the data is read by a microcontroller. 
+									Most of the changes between the original design pictured and the new design centeres around a bigger load cell to capture higher peak thrusts in rocket motors 
+									as well as a redundant realtime telemetry system streaming straight to a computer so that even if the motor catastrophically fails, all data collected up until 
+									failure is still logged. Other changes include adding a key for a more secure launch circuit as well as a much longer cable. I also will move all the electronics 
+									below the test stand with a blast shield over it so that no electronics will hopefully be harmed this time around. 									
+								<header class="major">
+									<h2 style="text-align: left;" >Load Cell & Amplifier</h2>
+								</header>
+								<p><span class="image right"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></span>
+									This is the load cell in a wheatstone bridge configuration is used to measure force applied whatever it is attached to. Load cells come in all shapes and sizes, with different accuracies and weight ratings. For most hobby purposes, the higher the weight rating, the less accurate it will be, especially when trying to measure small forces. So, it is important to purchase the right load cell for the project. In my case, a 10 kilogram load cell was used, as most commercial rocket engines dont exceed 20 newtons, or 2 kilograms of thrust.  
+									The leads of the load cell are connected to an HX711 load cell amplifier in order to actually get measurable data from the load cell, which would otherwise just be small voltages due to changes in resistances. Most purchasable load cells come with the HX711 amplifier 
+									as it is a perfect pairing for hobby microcontrollers and actually reading data. Before I started the project, I was able to research how others had utilized this load cell amplifier configuration. 
+									I found that while in its stock configuration it was slow, it could be modified to increase the data throughput of the load cell. 
+									Most HX711 amplifiers ship with a stock refresh rate of 10Hz, or 10 times a second. This is a problem when trying to gather meaningful data out of a rocket motor as burn times can happen in as little as 1 second. 
+									In order to see the thrust curve, and to calculate other metrics such as specifc impulse, the board was modified by resoldering a new jumper on the HX711 in order to allow 
+									operation at 80Hz.
+								<ul class="actions special">
+									<li><a href="https://www.sparkfun.com/products/13879" target="_blank" class="button">Check it out on adafruit</a></li>
+								</ul>
+
+								<header class="major">
+									<h2 style="text-align: right;" >Shaft</h2>
+								</header>
+								<p><span class="image left"><img src="images/Apollo AV-1 Parts/Shaft v2_2.stl.png" alt="" /></span>This is the shaft part I designed in Fusion360. Much like the trigger part above, the precise measurements were adhered to strictly, while once again liberties were taken to aid in rigidity and ease of 3D printing. The location for the original reed switch magnet has been projected perfectly with respect to the shaft so that there is no misalignment through the full range of motion. The angle of the keyway that couples with the trigger part is also modeled perfectly for a snug fit. The bottom has been reinforced for 3D printing ease. Extra strength in this area can help provide a solid wide base to 3d print a vertical shaft on.</p>
+								<ul class="actions special">
+									<li><a href="https://www.thingiverse.com/thing:4720822" target="_blank" class="button">Check it out on thingiverse</a></li>
+								</ul>
+							</section>
+					</div>
+					
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Dillon Kelley 2020</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
