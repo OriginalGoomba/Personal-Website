@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+
+		<title>Air Quality Monitor</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="projects.html" class="logo">Projects</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li class="active"><a href="projects.html">Projects</a></li>
+							<li><a href="gallery.html">Gallery</a></li>
+							<li><a href="contactme.html">Contact Me</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://github.com/OriginalGoomba" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<li><a href="https://www.linkedin.com/in/dillon-kelley/"  target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>Air Quality Monitor</h1>
+									<p>A custom designed and built indoor air quality monitoring system using CircuitPython, MQTT, and Grafana.</p>
+								</header>
+								<div class="image main">
+										<div class="col-6"><span class="image fit"><img src="images/AQM/aqmexplode1920x1080.gif" alt=""/></span></div>									
+								</div>
+								<!-- <div class="image main"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></div> -->
+								<header class="major">
+									<h2 style="text-align: center;" >Overview</h2>
+								</header>
+								<p><!-- <span class="image right"><img src="images/arduinoprojectpictures/loadcellhx711.jpg" alt="" /></span> -->
+
+									<p>Having an indoor air quality sensor that measures particulate matter counts, concentrations, temperature, humidity, equivalent CO2, and total volatile organic compounds (VOCs) is vital for your health. These sensors provide valuable insights into the quality of the air you breathe and help you take proactive steps to improve your indoor environment.</p>
+
+									<p>Particulate matter counts and concentrations indicate the presence of tiny airborne particles like dust, pollen, and pet dander. Monitoring these levels helps you identify potential triggers for respiratory issues, allergies, and asthma, allowing you to implement measures to minimize exposure and protect your respiratory health.</p>
+
+									<p>Temperature and humidity measurements are crucial for maintaining a comfortable and healthy indoor environment. Extreme temperatures and excessive humidity can lead to discomfort, fatigue, and mold growth. By monitoring these conditions, you can adjust heating, cooling, or humidity control systems to promote better sleep, concentration, and overall well-being.</p>
+
+									<p>Equivalent CO2 (carbon dioxide) measurements indicate the level of indoor air circulation and the potential buildup of pollutants. High CO2 levels can cause headaches, dizziness, and decreased cognitive function. Monitoring CO2 levels helps you identify areas with inadequate ventilation and take measures to introduce fresh outdoor air, ensuring a healthier breathing environment.</p>
+
+									<p>The ability to measure total volatile organic compounds (VOCs) is crucial for your health. VOCs are emitted from cleaning products, furniture, paints, and building materials, and prolonged exposure can lead to respiratory irritation and allergic reactions. By tracking VOC concentrations, you can identify potential sources and make informed choices about the products you use, ensuring a safer and healthier indoor environment.</p>
+
+									<p>In summary, an indoor air quality sensor that measures particulate matter, temperature, humidity, equivalent CO2, and total VOCs is essential for your health. It helps you identify potential risks, take necessary actions to improve indoor air quality, and create a healthier and more comfortable living space. By actively monitoring and managing these parameters, you can support your overall well-being and respiratory health.</p>
+
+								<ul class="actions special">
+									<li><a href="https://www.sparkfun.com/products/13879" target="_blank" class="button">Check it out on adafruit</a></li>
+								</ul>							
+								<header class="major">
+									<h2 style="text-align: center;" >Components</h2>
+								</header>
+								<header class="minor">
+									<h3 style="text-align: left;" >PMSA003I</h3>
+								</header>
+								<p><a href="https://www.adafruit.com/product/4632" class="image right" target="_blank"><img src="images/AQM/PMSA003I.png" alt="" /></a></span>
+									
+									<p>The PMSA003I particulate matter sensor, manufactured by Plantower, plays a crucial role in measuring air quality by detecting and quantifying the concentration of fine particles in the atmosphere. This sensor employs a laser-based scattering technique to measure particle size and provide real-time data on particulate matter levels, particularly focusing on PM1.0, PM2.5, and PM10.</p>
+
+  									<p>By accurately measuring particle size, the PMSA003I enables the assessment of potential health risks associated with airborne particles - perfect for this project. Fine particles, such as PM2.5, can pose significant health hazards as they can penetrate deep into the respiratory system. Therefore, the sensor's ability to monitor these smaller particles helps in understanding the potential impact on human health in indoor environments.</p>
+
+ 									<p>Additionally, the particulate matter concentration data provided by the PMSA003I is invaluable for evaluating overall air quality. High concentrations of particulate matter can indicate the presence of indoor pollution sources, inadequate ventilation, or the infiltration of outdoor pollutants. By continuously monitoring particulate matter levels, the sensor enables timely detection of air quality issues, facilitating appropriate mitigation measures and interventions to improve indoor environments.</p>
+
+  									<p>The PMSA003I particulate matter sensor is designed for integration into air quality monitoring systems, enabling easy data acquisition and analysis. This model by Adafruit features I2C via STEMMA QT, allowing seamless connectivity with microcontrollers or other devices. We will be using this connector to integrate all of the sensors in this build</p>
+
+								<ul class="actions special">
+									<li><a href="https://www.adafruit.com/product/4632" target="_blank" class="button">Check it out on adafruit</a></li>
+								</ul>
+
+								<header class="minor">
+									<h3 style="text-align: left;" >SGP30/40</h3>
+								</header>
+								<p><a href="https://www.adafruit.com/product/3709" class="image right" target="_blank"><img src="images/AQM/SGP40.png" alt="" /></a></span>
+									
+									<p>The Adafruit SGP30 is an air quality sensor that plays a crucial role in measuring and assessing indoor air quality. While it does not directly measure CO2 levels, it provides an estimation of equivalent carbon dioxide (eCO2) based on VOC (volatile organic compound) levels.</p>
+
+									<p>The eCO2 data collected by the Adafruit SGP30 provides an indicator of the air quality in terms of the presence of VOCs. VOCs are emitted by various sources such as cleaning products, paints, adhesives, and human activities. High levels of VOCs can contribute to poor indoor air quality and potentially impact human health. By monitoring eCO2 levels, the sensor helps identify situations where VOC concentrations are elevated, allowing users to take appropriate actions to improve air quality and reduce potential health risks.</p>
+								  
+									<p>It is important to note that the Adafruit SGP30 does not directly measure carbon dioxide (CO2) levels. If accurate CO2 measurements are required, specialized sensors designed specifically for CO2 detection could replace this one, but those senors are quite expensive. However, for this application, the estimation of eCO2 provided by the SGP30 is sufficient for assessing general air quality and detecting changes in VOC levels.</p>
+								  
+									<p>In addition to eCO2, the Adafruit SGP30 also measures Total Volatile Organic Compounds (TVOCs). TVOCs encompass a wide range of organic compounds present in the air, including pollutants and odorous substances.</p>
+								  								  
+								<ul class="actions special">
+									<li><a href="https://www.adafruit.com/product/3709" target="_blank" class="button">Check it out on adafruit</a></li>
+								</ul>
+
+								<header class="minor">
+									<h3 style="text-align: left;" >BME680</h3>
+								</header>
+								<p><a href="https://www.adafruit.com/product/3660" class="image right" target="_blank"><img src="images/AQM/BME680.png" alt="" /></a></span>
+
+									<p>The Adafruit BME680 is a highly valuable sensor for measuring air quality (IAQ) as it provides comprehensive data on multiple environmental parameters, including temperature, humidity, pressure, and volatile organic compounds (VOCs).</p>
+
+									<p>One of the key benefits of the BME680 is its ability to measure temperature and humidity accurately. These readings are crucial for understanding the impact of environmental conditions on air quality. Temperature and humidity can affect the behavior of pollutants, chemical reactions, and the overall comfort of indoor spaces. By monitoring these parameters, the BME680 helps identify potential issues such as high humidity levels that may promote mold growth or temperature fluctuations that affect occupant comfort.</p>
+								  
+									<p>In addition to temperature and humidity, the BME680 measures VOCs, which are emitted by various sources and can impact air quality. However, it's important to note that the BME680's VOC readings may not be as precise as those from specialized VOC sensors like the SGP30. Currently the Bosch BSEC2 library is not available in CircuitPython, which is required to calculate IAQ, so the VOC function is not very useful.</p>
+								  
+									<p>To obtain more accurate VOC measurements, the BME680's temperature and humidity readings can be used in combination with the Adafruit SGP30 air quality sensor. By feeding the temperature and humidity data from the BME680 into the SGP30, the VOC readings can be compensated and calibrated for improved accuracy. This allows for a more reliable assessment of air quality, taking into account the influence of environmental conditions.</p>
+								  
+									<p>The combination of the BME680 and SGP30 sensors provides a more comprehensive picture of indoor air quality, incorporating temperature, humidity, and VOC measurements. This allows users to monitor and analyze IAQ parameters collectively, making informed decisions to improve the overall air quality and create healthier living or working environments.</p>
+																
+								<ul class="actions special">
+									<li><a href="https://www.adafruit.com/product/3660" target="_blank" class="button">Check it out on adafruit</a></li>
+								</ul>
+
+								<header class="minor">
+									<h3 style="text-align: left;" >ESP32-S2</h3>
+								</header>
+								<p><a href="https://www.adafruit.com/product/5000" class="image right" target="_blank"><img src="images/AQM/ESP32-S2.png" alt="" /></a></span>
+
+									<p>The Adafruit ESP32-S2 Feather is a versatile microcontroller designed for IoT projects. It features a STEMMA QT connector for I2C devices, WiFi capabilities, and flexible battery options.
+
+									The STEMMA QT connector allows for easy integration of I2C sensors and devices, expanding the microcontroller's capabilities, perfect for connecting the sensors above.
+								  
+									The ESP32-S2 Feather supports 2.4 GHz Wi-Fi connectivity, enabling seamless integration with networks and internet services, including MQTT.
+								  
+									The microcontroller offers USB Type-C and Lipoly battery support, with built-in charging circuitry and active battery monitoring.</p>								  
+								  								  
+								<ul class="actions special">
+									<li><a href="https://www.adafruit.com/product/5000" target="_blank" class="button">Check it out on adafruit</a></li>
+								</ul>
+
+							</section>
+					</div>
+					
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; Dillon Kelley 2023</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
