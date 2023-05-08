@@ -60,7 +60,7 @@
 								</header>
 								<p><!-- <span class="image right"><img src="images/arduinoprojectpictures/loadcellhx711.jpg" alt="" /></span> -->
 
-									<p>Having an indoor air quality sensor that measures particulate matter counts, concentrations, temperature, humidity, equivalent CO2, and total volatile organic compounds (VOCs) is vital for your health. These sensors provide valuable insights into the quality of the air you breathe and help you take proactive steps to improve your indoor environment.</p>
+									<!-- <p>Having an indoor air quality sensor that measures particulate matter counts, concentrations, temperature, humidity, equivalent CO2, and total volatile organic compounds (VOCs) is vital for your health. These sensors provide valuable insights into the quality of the air you breathe and help you take proactive steps to improve your indoor environment.</p>
 
 									<p>Particulate matter counts and concentrations indicate the presence of tiny airborne particles like dust, pollen, and pet dander. Monitoring these levels helps you identify potential triggers for respiratory issues, allergies, and asthma, allowing you to implement measures to minimize exposure and protect your respiratory health.</p>
 
@@ -71,9 +71,20 @@
 									<p>The ability to measure total volatile organic compounds (VOCs) is crucial for your health. VOCs are emitted from cleaning products, furniture, paints, and building materials, and prolonged exposure can lead to respiratory irritation and allergic reactions. By tracking VOC concentrations, you can identify potential sources and make informed choices about the products you use, ensuring a safer and healthier indoor environment.</p>
 
 									<p>In summary, an indoor air quality sensor that measures particulate matter, temperature, humidity, equivalent CO2, and total VOCs is essential for your health. It helps you identify potential risks, take necessary actions to improve indoor air quality, and create a healthier and more comfortable living space. By actively monitoring and managing these parameters, you can support your overall well-being and respiratory health.</p>
+									-->
+
+									<p>In this project, I designed, coded, and 3D printed an air quality monitor using an ESP32 microcontroller, along with the BME680, SGP30, and PMSA003I sensors. The goal of this project was to study the indoor air quality of my home and track how it changes during various activities.</p>
+
+									<p>Understanding the air quality in our living spaces is crucial for our health and well-being. By monitoring air quality, we can gain valuable insights into the effects of everyday activities, such as cooking or cleaning, on the air we breathe. This project allowed me to track trends and identify factors that impact indoor air quality, such as weather conditions and occupancy levels.</p>
+
+									<p>The BME680 sensor played a central role in this project, as it measures temperature, pressure, humidity, and volatile organic compounds (VOCs). Additionally, the SGP30 sensor provided data on total volatile organic compounds (TVOC) and equivalent CO2 (eCO2) levels. The PMSA003I sensor focused on particulate matter, providing counts and concentrations for PM1.0, PM2.5, and PM10.0 particles.</p>
+
+									<p>To collect data from each sensor, I developed CircuitPython code to interface with the ESP32 microcontroller. The code facilitated communication with an MQTT broker over WiFi and stored the collected data in a database. To visualize and analyze the data, I used Grafana, a powerful data visualization tool. To house all the components, I designed a custom 3D-printed case using CAD software.</p>
+
+									<p>By designing, coding, and 3D printing my own air quality monitor, I was able to gain valuable insights into the indoor air quality of my home. This project allowed me to track trends, identify potential air quality issues, and make informed decisions to create a healthier living environment. </p>
 
 								<ul class="actions special">
-									<li><a href="https://www.sparkfun.com/products/13879" target="_blank" class="button">Check it out on adafruit</a></li>
+									<li><a href="https://github.com/OriginalGoomba/Air-Quality-Sensor" target="_blank" class="button">Check out the code</a></li>
 								</ul>							
 								<header class="major">
 									<h2 style="text-align: center;" >Components</h2>
@@ -101,12 +112,12 @@
 								<p><a href="https://www.adafruit.com/product/3709" class="image right" target="_blank"><img src="images/AQM/SGP40.png" alt="" /></a></span>
 									
 									<p>The Adafruit SGP30 is an air quality sensor that plays a crucial role in measuring and assessing indoor air quality. While it does not directly measure CO2 levels, it provides an estimation of equivalent carbon dioxide (eCO2) based on VOC (volatile organic compound) levels.</p>
-
-									<p>The eCO2 data collected by the Adafruit SGP30 provides an indicator of the air quality in terms of the presence of VOCs. VOCs are emitted by various sources such as cleaning products, paints, adhesives, and human activities. High levels of VOCs can contribute to poor indoor air quality and potentially impact human health. By monitoring eCO2 levels, the sensor helps identify situations where VOC concentrations are elevated, allowing users to take appropriate actions to improve air quality and reduce potential health risks.</p>
 								  
 									<p>It is important to note that the Adafruit SGP30 does not directly measure carbon dioxide (CO2) levels. If accurate CO2 measurements are required, specialized sensors designed specifically for CO2 detection could replace this one, but those senors are quite expensive. However, for this application, the estimation of eCO2 provided by the SGP30 is sufficient for assessing general air quality and detecting changes in VOC levels.</p>
 								  
-									<p>In addition to eCO2, the Adafruit SGP30 also measures Total Volatile Organic Compounds (TVOCs). TVOCs encompass a wide range of organic compounds present in the air, including pollutants and odorous substances.</p>
+									<p>In addition to eCO2, the Adafruit SGP30 also measures Total Volatile Organic Compounds (TVOCs). TVOCs encompass a wide range of organic compounds present in the air, including pollutants and odorous substances, which is vital information to determine the quality of the air.</p>
+
+									<p>The calibration for this sensor is crucial, as it needs at least 12 hours to acquire baseline measurements of eCO2 and TVOC before it can accurately read data from the environment. In the GitHub repository, I have attached the calibration code I used to obtain the baseline measurements.</p>
 								  								  
 								<ul class="actions special">
 									<li><a href="https://www.adafruit.com/product/3709" target="_blank" class="button">Check it out on adafruit</a></li>
@@ -125,8 +136,8 @@
 								  
 									<p>To obtain more accurate VOC measurements, the BME680's temperature and humidity readings can be used in combination with the Adafruit SGP30 air quality sensor. By feeding the temperature and humidity data from the BME680 into the SGP30, the VOC readings can be compensated and calibrated for improved accuracy. This allows for a more reliable assessment of air quality, taking into account the influence of environmental conditions.</p>
 								  
-									<p>The combination of the BME680 and SGP30 sensors provides a more comprehensive picture of indoor air quality, incorporating temperature, humidity, and VOC measurements. This allows users to monitor and analyze IAQ parameters collectively, making informed decisions to improve the overall air quality and create healthier living or working environments.</p>
-																
+									<!-- <p>The combination of the BME680 and SGP30 sensors provides a more comprehensive picture of indoor air quality, incorporating temperature, humidity, and VOC measurements. This allows users to monitor and analyze IAQ parameters collectively, making informed decisions to improve the overall air quality and create healthier living or working environments.</p> -->
+
 								<ul class="actions special">
 									<li><a href="https://www.adafruit.com/product/3660" target="_blank" class="button">Check it out on adafruit</a></li>
 								</ul>
