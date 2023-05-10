@@ -54,9 +54,26 @@
 								<div class="image main">
 										<div class="col-6"><span class="image fit"><img src="images/AQM/aqmexplode1920x1080.gif" alt=""/></span></div>									
 								</div>
-								<!-- <div class="image main"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></div> -->
+
 								<header class="major">
-									<h2 style="text-align: center;" >Overview</h2>
+									<h2 style="text-align: center;" >Table of Contents</h2>
+									<a href="#overview"><h3 style="text-align: center;"><u>1. Overview</u></h3></a>								
+									<a href="#components"><h3 style="text-align: center;"><u>2. Components</u></h3></a>
+									<a href="#pmsa003i"><h4 style="text-align: center;">PMSA003I</h4></a>
+									<a href="#sgp30"><h4 style="text-align: center;">SGP30</h4></a>
+									<a href="#bme680"><h4 style="text-align: center;">BME680</h4></a>
+									<a href="#esp32-s2"><h4 style="text-align: center;">ESP32-S2</h4></a>
+									<a href="#miscellaneous"><h4 style="text-align: center;">Miscellaneous</h4></a>
+									<a href="#bom"><h4 style="text-align: center;">Bill of Materials</h4></a>
+									<a href="#programming"><h3 style="text-align: center;"><u>2. Programming</u></h3></a>
+									<a href="#initialtesting"><h4 style="text-align: center;">Initial Testing</h4></a>
+									<a href="#additionalprogramminginformation"><h4 style="text-align: center;">Additional Programming Information</h4></a>
+									<a href="#casedesign"><h3 style="text-align: center;"><u>3. Case Design</u></h3></a>
+									<a href="#grafana"><h3 style="text-align: center;"><u>4. Grafana</u></h3></a>									
+								</header>
+
+								<header class="major">
+									<h2 style="text-align: center;" id="overview">Overview</h2>
 								</header>
 								<p><!-- <span class="image right"><img src="images/arduinoprojectpictures/loadcellhx711.jpg" alt="" /></span> -->
 
@@ -87,10 +104,10 @@
 									<li><a href="https://github.com/OriginalGoomba/Air-Quality-Sensor" target="_blank" class="button">Check out the code</a></li>
 								</ul>							
 								<header class="major">
-									<h2 style="text-align: center;" >Components</h2>
+									<h2 style="text-align: center;" id="components">Components</h2>
 								</header>
 								<header class="minor">
-									<h3 style="text-align: left;" >PMSA003I</h3>
+									<h3 style="text-align: left;" id="pmsa003i">PMSA003I</h3>
 								</header>
 								<p><a href="https://www.adafruit.com/product/4632" class="image right" target="_blank"><img src="images/AQM/PMSA003I.png" alt="" /></a></span>
 									
@@ -107,7 +124,7 @@
 								</ul>
 
 								<header class="minor">
-									<h3 style="text-align: left;" >SGP30/40</h3>
+									<h3 style="text-align: left;" id="sgp30">SGP30/40</h3>
 								</header>
 								<p><a href="https://www.adafruit.com/product/3709" class="image right" target="_blank"><img src="images/AQM/SGP40.png" alt="" /></a></span>
 									
@@ -124,7 +141,7 @@
 								</ul>
 
 								<header class="minor">
-									<h3 style="text-align: left;" >BME680</h3>
+									<h3 style="text-align: left;" id="bme680">BME680</h3>
 								</header>
 								<p><a href="https://www.adafruit.com/product/3660" class="image right" target="_blank"><img src="images/AQM/BME680.png" alt="" /></a></span>
 
@@ -143,7 +160,7 @@
 								</ul>
 
 								<header class="minor">
-									<h3 style="text-align: left;" >ESP32-S2</h3>
+									<h3 style="text-align: left;" id="esp32-s2">ESP32-S2</h3>
 								</header>
 								<p><a href="https://www.adafruit.com/product/5000" class="image right" target="_blank"><img src="images/AQM/ESP32-S2.png" alt="" /></a></span>
 
@@ -159,7 +176,122 @@
 									<li><a href="https://www.adafruit.com/product/5000" target="_blank" class="button">Check it out on adafruit</a></li>
 								</ul>
 
-							</section>
+								<header class="minor">
+									<h2 style="text-align: left;" id="miscellaneous">Miscellaneous</h2>
+								</header>
+									
+									<p>I have compiled a list below with other required hardware to create this build. I purchased some of the STEMMA QT connectors from adafruit, some PC-PETG filament from overture, and M2 hardware to assemble the rest of the case and overall build.</p>
+								
+									<p>If I were to start this project over, and perhaps for the next iteration, I would have used an <a href="https://sensirion.com/products/catalog/SCD40/" target="_blank">SCD40</a> true CO2 sensor as well as a <a href="https://sensirion.com/products/catalog/SEN55/" target="_blank">SEN55</a> to encompass the entire project written in C++. This setup simplifies the amount of sensors dramatically, as well as the cost. Due to stock availability at the time of producing this project as well as not having acces to a soldering iron, I was unable to persue this avenue. I might create an addendum in the future with this hardware arrangement, however.</p>
+									<header class="minor">
+									<h3 style="text-align: left;" id="bom">Bill of Materials (BOM)</h3>
+								</header>
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>Name</th>
+													<th>Description</th>
+													<th>Quantity</th>
+													<th>Price</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td><a href="https://www.adafruit.com/product/5000" target="_blank">ESP32-S2 Feather</a></td>
+													<td>ESP32-S2 Feather with STEMMA QT / Qwiic - 8MB Flash No PSRAM</td>
+													<td>1</td>
+													<td>$18.00</td>
+												</tr>
+												<tr>
+													<td><a href="https://www.adafruit.com/product/4632" target="_blank">PMSA003I</a></td>
+													<td>PM1.0, PM2.5 and PM10.0 concentration in both standard & environmental units</td>
+													<td>1</td>
+													<td>$45.00</td>												</tr>
+												<tr>
+													<td><a href="https://www.adafruit.com/product/3709" target="_blank">SGP30</a></td>
+													<td>SGP30 Multi-Pixel Gas Sensor, a fully integrated MOX gas sensor</td>
+													<td>1</td>
+													<td>$18.00</td>												</tr>
+												<tr>
+													<td><a href="https://www.adafruit.com/product/3660" target="_blank">BME680</a></td>
+													<td>temperature, humidity, barometric pressure, and VOC gas sensor</td>
+													<td>1</td>
+													<td>$19.00</td>												</tr>
+												<tr>
+													<td><a href="https://www.adafruit.com/product/4399" target="_blank">50mm Long STEMMA Cable</a></td>
+													<td>4-wire cable 50mm long and fitted with JST SH female 4-pin connectors on both ends</td>
+													<td>3</td>
+													<td>$1.00</td>												</tr>
+													<tr>
+														<td><a href="https://www.amazon.com/gp/product/B075SY4YRD/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1" target="_blank">PC-PETG Filament</a></td>
+														<td>PETG and Polycarbonate mix of 1.75mm 3D Printing filament</td>
+														<td>1</td>
+														<td>$24.00</td>												</tr>
+													<tr>
+														<td><a href="https://www.amazon.com/dp/B082XR52P1?psc=1&ref=ppx_yo2ov_dt_b_product_details" target="_blank">Metric M2 Hardware Set</a></td>
+														<td>High Quality Stainless Steel 304 Phillips Pan Head Bolts Screws Nuts Flat Washers Kit</td>
+														<td>1</td>
+														<td>$10.00</td>												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="3"></td>
+													<td>$137.00</td>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
+								<header class="major">
+									<h2 style="text-align: center;" id="programming">Programming</h2>
+								</header>
+								<header class="minor">
+									<h3 style="text-align: left;" id="initialtesting">Initial Testing</h3>
+								</header>
+								<p><a class="image right"><img src="images/AQM/aqmnocase.jpg" alt="" /></a></span>
+									
+									<p>After obtaining all of the necessary parts, I was able to test the functionality of all the components. I originally wanted to use the Arduino IDE to program in C++ as it was what I was familiar with from my other projects. However, my testing with all of the microcontrollers I had purchased from Adafruit would not upload arduino sketches reliably for testing. I narrowed it down to the serial commands in the setup part of the sketch causing the microcontroller to hang, but after many hours of tinkering I decided to use CircuitPython. While I had worked with traditional Python, CircuitPython was familiar in some aspects, and I was able to get started relatively easily after some research. The only functionality I sacrificed using CircuitPython was the Bosch BSEC2 library for calculating the Indoor Air Quality (IAQ) Index. The source code is not open source, so I was unable to compile a version for CircuitPython, although I tried.</p>
+
+									<p>Regardless, I imported all of the necessary libraries and hooked up all of the sensors to the ESP32-S2 via the STEMMA ports. Perhaps in a future project I will attempt creating my own circuit board, but the STEMMA ports provided an easy route for quickly prototyping sensors over I2C. A simple Python script verified all of the sensors were working and I was getting logical readouts on the serial connection. I used the Mu editor to program the controller and debug through the serial port.</p>
+
+									<p>From there, I attempted to connect the microcontroller to the internet and connect to an MQTT broker on my home server. I used Mosquitto MQTT via Node-RED to send a JSON file with the sensor data, battery voltage, and other metrics for debugging. I had some initial trouble getting Node-RED to parse the data coming in as a JSON. My biggest hurdle to overcome regarding this was to ensure the variable names in the JSON aligned with the message payload for the Node-RED parser. After that, Node-RED sends the message payload to an influxDB database I set up on the same Raspberry Pi for safe-keeping.</p>
+								
+									<p>For the final piece of the puzzle, I used grafana installed on a docker container to query the data from the InfluxDB database. I made a dashboard with multiple graphs to track each sensors data with relevant data grouped together for more convenient analysis.</p>
+								<header class="minor">
+									<h3 style="text-align: left;" id="additionalprogramminginformation">Additional Programming Information</h3>
+								</header>
+								<p><a class="image fit"><img src="images/AQM/serialdebug.png" alt="" /></a></span>
+									
+									<p>As stated above, I wanted to utilize the Bosh BSEC2 library. I found some information about compiling the BSEC library for CircuitPython, but I was unable to get it working. The versions I could compile no longer existed. As for right now the MOX sensor on the BME680 reads the raw resistance of the sensor. It is still useful for showing the trends as a lower resistance infers more VOCs present and vice versa.</p>
+
+									<p>I also tried to lengthen the life of this project and keeping it powered using only a battery with intermittent charging. The PMSA003I only has an 8000 hour duty cycle, or about a year's worth of 24/7 operation. With the amount of time it takes to warm up the sensors for accurate readings (approximately 30-60 seconds) It became really difficult to balance power draw with data collection. Instead of trying to make this project run for as long as possible off of a single 500 mah battery, I decided to run the sensor continuously in order to assess the stability of the system (microcontroller, code, MQTT broker, and InfluxDB database) instead of trying to optimize the sensor's life.</p>
+							
+									<p>Also, by putting the microcontroller to sleep, the data displayed on Grafana was patchy and inconsistent due to needing to throw away minutes of data on each startup due to the sensors needing ample time to reach steady-state. I wanted clean graphs for my analysis, so I decided for the first iteration of this project to see how far this setup wpuld take me. The next iteration will use the two sensors i mentioned previously for a more optimized long term solution.</p>
+								
+									<header class="major">
+										<h2 style="text-align: center;" id="casedesign">Case Design</h2>
+									</header>
+								<p><a class="image fit"><img src="images/AQM/finishedcaseinside.png" alt="" /></a></span>
+									
+									<p>I wanted to keep the case design as minimal as possible. For me, the most practical solution to a problem is through simplicity. I wanted to keep the case as small as possible because it sits on my desk in my workspace. I initially found it a little tricky to lay out all of the parts in CAD with only reference dimensions to go off of. Luckily, Adafruit has STEP files of all of their products, so I was able to manipulate the sesnors in CAD fairly easily. I also took into consideration that all of the sensors need adequate access to the envirnment. I made slots in the side of the case to allow the PMSA003I to draw air in and exhaust it. I also created vent holes through the bottom of the case and lid to allow for passive airflow with the sensors mounted vertically.</p>
+
+									<p>Mounting both the BME680 and SGP30 vertically seemed like the most optimal configuration as the product data sheet warmed that dust and particles landing on these sensors could interfere with accurate sensor measurements. I installed a removable slotted wall in the middle of the case bisecting the PMSA003I and ESP32-S2 from the BME680 and SGP30. I wanted to isolate these two components as heat from the ESP32 could result in higher read temperatures from the BME680, and the SGP30 eCO2 and TVOC calculations are base doff the real-time temperature and humidity readings in the code. My forethought payed off, and the readings seem consistent outside of the case and inside.</p>
+								
+									<header class="major">
+										<h2 style="text-align: center;" id="grafana">Grafana</h2>
+									</header>
+									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=20" height="100%" width="100%" frameborder="0"></iframe></a></span>
+									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=6" height="100%" width="100%" frameborder="0"></iframe></a></span>
+									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=4" height="100%" width="100%" frameborder="0"></iframe></a></span>
+									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=14" height="100%" width="100%" frameborder="0"></iframe></a></span>
+									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=8" height="100%" width="100%" frameborder="0"></iframe></a></span>
+
+									<p>I wanted to keep the case design as minimal as possible. For me, the most practical solution to a problem is through simplicity. I wanted to keep the case as small as possible because it sits on my desk in my workspace. I initially found it a little tricky to lay out all of the parts in CAD with only reference dimensions to go off of. Luckily, Adafruit has STEP files of all of their products, so I was able to manipulate the sesnors in CAD fairly easily. I also took into consideration that all of the sensors need adequate access to the envirnment. I made slots in the side of the case to allow the PMSA003I to draw air in and exhaust it. I also created vent holes through the bottom of the case and lid to allow for passive airflow with the sensors mounted vertically.</p>
+
+									<p>Mounting both the BME680 and SGP30 vertically seemed like the most optimal configuration as the product data sheet warmed that dust and particles landing on these sensors could interfere with accurate sensor measurements. I installed a removable slotted wall in the middle of the case bisecting the PMSA003I and ESP32-S2 from the BME680 and SGP30. I wanted to isolate these two components as heat from the ESP32 could result in higher read temperatures from the BME680, and the SGP30 eCO2 and TVOC calculations are base doff the real-time temperature and humidity readings in the code. My forethought payed off, and the readings seem consistent outside of the case and inside.</p>
+								
+
+								</section>
 					</div>
 					
 
