@@ -1,0 +1,86 @@
+# AQM Generation 3 - ESPHome configuration (redacted)
+# Device: Seeed Studio XIAO ESP32-C6 with Sensirion SEN66
+# NOTE: api/OTA/fallback-hotspot credentials are redacted. Generate your own.
+
+esphome:
+  name: aq--sen66
+  friendly_name: AQ - SEN66
+
+esp32:
+  board: seeed_xiao_esp32c6
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "<REDACTED>"
+
+ota:
+  - platform: esphome
+    password: "<REDACTED>"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Aq--Sen66 Fallback Hotspot"
+    password: "<REDACTED>"
+
+i2c:
+  sda: GPIO22
+  scl: GPIO23
+  scan: true
+  id: bus_a
+
+captive_portal:
+
+binary_sensor:
+
+sensor:
+  - platform: sen6x
+    type: SEN66
+    pm_1_0:
+      name: "PM <1µm Weight concentration"
+      id: pm10
+      accuracy_decimals: 1
+
+    pm_2_5:
+      name: "PM <2.5µm Weight concentration"
+      id: pm25
+      accuracy_decimals: 1
+
+    pm_4_0:
+      name: "PM <4µm Weight concentration"
+      id: pm40
+      accuracy_decimals: 1
+    pm_10_0:
+      name: "PM <10µm Weight concentration"
+      id: pm100
+      accuracy_decimals: 1
+    nox_index:
+      name: "NOX"
+      id: nox
+      accuracy_decimals: 1
+    co2:
+      name: "CO2"
+      id: co2
+      accuracy_decimals: 1
+    temperature:
+      name: "Temperature"
+      accuracy_decimals: 1
+      id: temperature_top
+    humidity:
+      name: "Humidity"
+      accuracy_decimals: 0
+      id: humidity
+    voc_index:
+      name: "VOC"
+      id: voc
+
+    update_interval: 15s
