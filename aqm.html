@@ -284,7 +284,7 @@
 									
 									<p>As stated above, I wanted to utilize the Bosh BSEC2 library. I found some information about compiling the BSEC library for CircuitPython, but I was unable to get it working. The versions I could compile no longer existed. As for right now the MOX sensor on the BME680 reads the raw resistance of the sensor. It is still useful for showing the trends as a lower resistance infers more VOCs present and vice versa.</p>
 
-									<p>I also tried to lengthen the life of this project and keeping it powered using only a battery with intermittent charging. The PMSA003I only has an 8000 hour duty cycle, or about a year's worth of 24/7 operation. With the amount of time it takes to warm up the sensors for accurate readings (approximately 30-60 seconds) It became really difficult to balance power draw with data collection. Instead of trying to make this project run for as long as possible off of a single 500 mah battery, I decided to run the sensor continuously in order to assess the stability of the system (microcontroller, code, MQTT broker, and InfluxDB database) instead of trying to optimize the sensor's life.</p>
+									<p>I also tried to lengthen the life of this project and keep it powered off of a battery with intermittent charging. In retrospect, that was never going to work. The PMSA003I pulls up to 100 mA while it is measuring (per its datasheet), on top of the rest of the system, and the SGP30 needs over a minute awake to warm up before it will give a reliable reading. Deep sleep simply was not worth it: every wakeup meant burning more than a minute of battery just to throw the first readings away. The PMSA003I also only has an 8000 hour duty cycle, or about a year's worth of 24/7 operation. Since the monitor sits in one place and never needed to be battery powered anyway, I gave up on the battery and ran the sensor continuously off of the USB connection to assess the stability of the system (microcontroller, code, MQTT broker, and InfluxDB database) instead of trying to optimize the sensor's life. Every sensor I have built since is wired straight to the USB-C port for power.</p>
 							
 									<p>Also, by putting the microcontroller to sleep, the data displayed on Grafana was patchy and inconsistent due to needing to throw away minutes of data on each startup due to the sensors needing ample time to reach steady-state. I wanted clean graphs for my analysis, so I decided for the first iteration of this project to see how far this setup wpuld take me. The next iteration will use the two sensors i mentioned previously for a more optimized long term solution.</p>
 								
@@ -343,7 +343,7 @@
 								</header>
 								<p><span class="image right"><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank"><img src="images/AQM/xiao-esp32-c6.jpg" alt="" /></a></span>For the brain of the operation, I went with the Seeed Studio XIAO ESP32-C6. For five dollars you get an ESP32-C6 with 2.4 GHz WiFi and a USB-C port &mdash; compare that to the eighteen dollar Feather in Generation 1 and the microcontroller became one of the cheapest parts of the whole build. There is plenty of headroom on it for a sensor loop, and it sips power compared to the old board.</p>
 
-								<p>Connecting everything required no soldering at all. A small <a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank">SEN55 adapter breakout</a> converts the sensor's tiny 1.0 mm JST connector to the STEMMA QT standard, and a couple of short STEMMA QT cables chain the SEN55, the SCD41, and the XIAO together on the same I2C bus.</p>
+								<p>Assembly took very limited soldering. A small <a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank">SEN55 adapter breakout</a> converts the sensor's tiny 1.0 mm JST connector to the STEMMA QT standard, and on the other end I soldered the small JST STEMMA connector to the XIAO to adapt it to the I2C bus. A couple of short STEMMA QT cables chain the SEN55, the SCD41, and the XIAO together. The whole monitor is powered from the XIAO's USB-C port.</p>
 
 								<ul class="actions special">
 									<li><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank" class="button">Check it out on seeed studio</a></li>
@@ -690,9 +690,15 @@
 										<tbody>
 											<tr>
 												<td>Soldering</td>
-												<td>None (STEMMA QT)</td>
-												<td>None (adapter breakout + cables)</td>
+												<td>None (all STEMMA QT)</td>
+												<td>Limited &mdash; soldered the JST STEMMA connector to the XIAO to adapt to I2C</td>
 												<td>Yes &mdash; SEN66 wired straight to the XIAO (drops the adapter board from the BOM)</td>
+											</tr>
+											<tr>
+												<td>Power</td>
+												<td>Battery experiments abandoned &mdash; the PM sensor draw made deep sleep impractical, so it ran from USB</td>
+												<td>USB-C port on the XIAO</td>
+												<td>USB-C port on the XIAO</td>
 											</tr>
 											<tr>
 												<td>Firmware</td>
