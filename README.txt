@@ -1,5 +1,9 @@
 A personal website created using HTML5 UP as the boilerplate, formspree for the forms, and my personal contributions of text and pictures to showcase my personal work.
 
+Branches:
+- main: the original site, kept as-is.
+- v2-redesign: the active redesign (projects as the landing page, AQM generations page, PII removed).
+
 
 
 Massively by HTML5 UP
