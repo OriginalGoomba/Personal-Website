@@ -20,5 +20,5 @@ node_modules/
 .serve/
 
 # Asset drop-zones (staged here by the site owner, then curated into the site)
-AQM2/
-AQM3/
+/AQM2/
+/AQM3/
