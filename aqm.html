@@ -15,6 +15,7 @@
 		<title>Air Quality Monitor</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="Three generations of a custom indoor air quality monitor: from a CircuitPython, MQTT, and Grafana stack to Home Assistant integration." />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
@@ -25,20 +26,15 @@
 
 				<!-- Header -->
 					<header id="header">
-						<a href="projects.html" class="logo">Projects</a>
+						<a href="index.html" class="logo">Projects</a>
 					</header>
 
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li><a href="index.html">Home</a></li>
-							<li class="active"><a href="projects.html">Projects</a></li>
+							<li class="active"><a href="index.html">Projects</a></li>
 							<li><a href="gallery.html">Gallery</a></li>
 							<li><a href="contactme.html">Contact Me</a></li>
-						</ul>
-						<ul class="icons">
-							<li><a href="https://github.com/OriginalGoomba" target="_blank" class="icon brands fa-github"><span class="label">Github</span></a></li>
-							<li><a href="https://www.linkedin.com/in/dillon-kelley/"  target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 						</ul>
 					</nav>
 
@@ -49,60 +45,74 @@
 							<section class="post">
 								<header class="major">
 									<h1>Air Quality Monitor</h1>
-									<p>A custom designed and built indoor air quality monitoring system using CircuitPython, MQTT, and Grafana.</p>
+									<p>A custom designed and built indoor air quality monitoring system, now in its third generation. From a CircuitPython, MQTT, and Grafana stack to a fully integrated Home Assistant setup.</p>
 								</header>
 								<div class="image main">
-										<div class="col-6"><span class="image fit"><img src="images/AQM/aqmexplode1920x1080.gif" alt=""/></span></div>									
+										<div class="col-6"><span class="image fit"><img src="images/AQM/aqmexplode1920x1080.gif" alt="Exploded view of the first generation air quality monitor"/></span></div>									
 								</div>
 
+								<!-- Generations overview -->
+								<header class="major">
+									<h2 style="text-align: center;" >The Generations</h2>
+								</header>
+								<div class="box alt">
+									<div class="row gtr-50 gtr-uniform">
+										<div class="col-4">
+											<a href="#gen1" class="image fit"><img src="images/AQM/finishedcaseinside.png" alt="Generation 1 internals" /></a>
+											<h3 style="text-align: center;"><a href="#gen1">Generation 1</a></h3>
+											<p style="text-align: center;">ESP32-S2, PMSA003I, SGP30, and BME680<br />CircuitPython &rarr; MQTT &rarr; InfluxDB &rarr; Grafana</p>
+										</div>
+										<div class="col-4">
+											<h3 style="text-align: center;"><a href="#gen2">Generation 2</a></h3>
+											<p style="text-align: center;">Integrated with Home Assistant.<br /><em>Photos and details coming soon.</em></p>
+										</div>
+										<div class="col-4">
+											<h3 style="text-align: center;"><a href="#gen3">Generation 3</a></h3>
+											<p style="text-align: center;">The latest build, integrated with Home Assistant.<br /><em>Photos and details coming soon.</em></p>
+										</div>
+									</div>
+								</div>
+								<p>Every generation shares the same goal: understand the air in the home and track how it changes throughout the day. The write-ups below cover each build, and a full comparison of components, cost, capability, and build complexity across all three generations is in the works.</p>
+
+								<!-- Table of contents -->
 								<header class="major">
 									<h2 style="text-align: center;" >Table of Contents</h2>
-									<a href="#overview"><h3 style="text-align: center;"><u>1. Overview</u></h3></a>								
-									<a href="#components"><h3 style="text-align: center;"><u>2. Components</u></h3></a>
+									<a href="#gen1"><h3 style="text-align: center;"><u>1. Generation 1 (Original)</u></h3></a>
+									<a href="#overview"><h4 style="text-align: center;">Overview</h4></a>
+									<a href="#components"><h4 style="text-align: center;">Components</h4></a>
 									<a href="#pmsa003i"><h4 style="text-align: center;">PMSA003I</h4></a>
 									<a href="#sgp30"><h4 style="text-align: center;">SGP30</h4></a>
 									<a href="#bme680"><h4 style="text-align: center;">BME680</h4></a>
 									<a href="#esp32-s2"><h4 style="text-align: center;">ESP32-S2</h4></a>
 									<a href="#miscellaneous"><h4 style="text-align: center;">Miscellaneous</h4></a>
 									<a href="#bom"><h4 style="text-align: center;">Bill of Materials</h4></a>
-									<a href="#programming"><h3 style="text-align: center;"><u>2. Programming</u></h3></a>
-									<a href="#initialtesting"><h4 style="text-align: center;">Initial Testing</h4></a>
-									<a href="#additionalprogramminginformation"><h4 style="text-align: center;">Additional Programming Information</h4></a>
-									<a href="#casedesign"><h3 style="text-align: center;"><u>3. Case Design</u></h3></a>
-									<a href="#grafana"><h3 style="text-align: center;"><u>4. Grafana</u></h3></a>									
+									<a href="#programming"><h4 style="text-align: center;">Programming</h4></a>
+									<a href="#casedesign"><h4 style="text-align: center;">Case Design</h4></a>
+									<a href="#grafana"><h4 style="text-align: center;">Grafana</h4></a>
+									<a href="#gen2"><h3 style="text-align: center;"><u>2. Generation 2</u></h3></a>
+									<a href="#gen3"><h3 style="text-align: center;"><u>3. Generation 3</u></h3></a>
+									<a href="#comparison"><h3 style="text-align: center;"><u>4. Generation Comparison</u></h3></a>
+								</header>
+
+								<!-- Generation 1 -->
+								<header class="major">
+									<h2 style="text-align: center;" id="gen1">Generation 1 (Original)</h2>
 								</header>
 
 								<header class="major">
 									<h2 style="text-align: center;" id="overview">Overview</h2>
 								</header>
-								<p><!-- <span class="image right"><img src="images/arduinoprojectpictures/loadcellhx711.jpg" alt="" /></span> -->
 
-									<!-- <p>Having an indoor air quality sensor that measures particulate matter counts, concentrations, temperature, humidity, equivalent CO2, and total volatile organic compounds (VOCs) is vital for your health. These sensors provide valuable insights into the quality of the air you breathe and help you take proactive steps to improve your indoor environment.</p>
+								<p>In this project, I designed, coded, and 3D printed an air quality monitor using an ESP32 microcontroller, along with the BME680, SGP30, and PMSA003I sensors. The goal of this project was to study the indoor air quality of my home and track how it changes during various activities.</p>
 
-									<p>Particulate matter counts and concentrations indicate the presence of tiny airborne particles like dust, pollen, and pet dander. Monitoring these levels helps you identify potential triggers for respiratory issues, allergies, and asthma, allowing you to implement measures to minimize exposure and protect your respiratory health.</p>
+								<p>Understanding the air quality in our living spaces is crucial for our health and well-being. By monitoring air quality, we can gain valuable insights into the effects of everyday activities, such as cooking or cleaning, on the air we breathe. This project allowed me to track trends and identify factors that impact indoor air quality, such as weather conditions and occupancy levels.</p>
 
-									<p>Temperature and humidity measurements are crucial for maintaining a comfortable and healthy indoor environment. Extreme temperatures and excessive humidity can lead to discomfort, fatigue, and mold growth. By monitoring these conditions, you can adjust heating, cooling, or humidity control systems to promote better sleep, concentration, and overall well-being.</p>
+								<p>The BME680 sensor played a central role in this project, as it measures temperature, pressure, humidity, and volatile organic compounds (VOCs). Additionally, the SGP30 sensor provided data on total volatile organic compounds (TVOC) and equivalent CO2 (eCO2) levels. The PMSA003I sensor focused on particulate matter, providing counts and concentrations for PM1.0, PM2.5, and PM10.0 particles.</p>
 
-									<p>Equivalent CO2 (carbon dioxide) measurements indicate the level of indoor air circulation and the potential buildup of pollutants. High CO2 levels can cause headaches, dizziness, and decreased cognitive function. Monitoring CO2 levels helps you identify areas with inadequate ventilation and take measures to introduce fresh outdoor air, ensuring a healthier breathing environment.</p>
+								<p>To collect data from each sensor, I developed CircuitPython code to interface with the ESP32 microcontroller. The code facilitated communication with an MQTT broker over WiFi and stored the collected data in a database. To visualize and analyze the data, I used Grafana, a powerful data visualization tool. To house all the components, I designed a custom 3D-printed case using CAD software.</p>
 
-									<p>The ability to measure total volatile organic compounds (VOCs) is crucial for your health. VOCs are emitted from cleaning products, furniture, paints, and building materials, and prolonged exposure can lead to respiratory irritation and allergic reactions. By tracking VOC concentrations, you can identify potential sources and make informed choices about the products you use, ensuring a safer and healthier indoor environment.</p>
+								<p>By designing, coding, and 3D printing my own air quality monitor, I was able to gain valuable insights into the indoor air quality of my home. This project allowed me to track trends, identify potential air quality issues, and make informed decisions to create a healthier living environment. </p>
 
-									<p>In summary, an indoor air quality sensor that measures particulate matter, temperature, humidity, equivalent CO2, and total VOCs is essential for your health. It helps you identify potential risks, take necessary actions to improve indoor air quality, and create a healthier and more comfortable living space. By actively monitoring and managing these parameters, you can support your overall well-being and respiratory health.</p>
-									-->
-
-									<p>In this project, I designed, coded, and 3D printed an air quality monitor using an ESP32 microcontroller, along with the BME680, SGP30, and PMSA003I sensors. The goal of this project was to study the indoor air quality of my home and track how it changes during various activities.</p>
-
-									<p>Understanding the air quality in our living spaces is crucial for our health and well-being. By monitoring air quality, we can gain valuable insights into the effects of everyday activities, such as cooking or cleaning, on the air we breathe. This project allowed me to track trends and identify factors that impact indoor air quality, such as weather conditions and occupancy levels.</p>
-
-									<p>The BME680 sensor played a central role in this project, as it measures temperature, pressure, humidity, and volatile organic compounds (VOCs). Additionally, the SGP30 sensor provided data on total volatile organic compounds (TVOC) and equivalent CO2 (eCO2) levels. The PMSA003I sensor focused on particulate matter, providing counts and concentrations for PM1.0, PM2.5, and PM10.0 particles.</p>
-
-									<p>To collect data from each sensor, I developed CircuitPython code to interface with the ESP32 microcontroller. The code facilitated communication with an MQTT broker over WiFi and stored the collected data in a database. To visualize and analyze the data, I used Grafana, a powerful data visualization tool. To house all the components, I designed a custom 3D-printed case using CAD software.</p>
-
-									<p>By designing, coding, and 3D printing my own air quality monitor, I was able to gain valuable insights into the indoor air quality of my home. This project allowed me to track trends, identify potential air quality issues, and make informed decisions to create a healthier living environment. </p>
-
-								<ul class="actions special">
-									<li><a href="https://github.com/OriginalGoomba/Air-Quality-Sensor" target="_blank" class="button">Check out the code</a></li>
-								</ul>							
 								<header class="major">
 									<h2 style="text-align: center;" id="components">Components</h2>
 								</header>
@@ -152,8 +162,6 @@
 									<p>In addition to temperature and humidity, the BME680 measures VOCs, which are emitted by various sources and can impact air quality. However, it's important to note that the BME680's VOC readings may not be as precise as those from specialized VOC sensors like the SGP30. Currently the Bosch BSEC2 library is not available in CircuitPython, which is required to calculate IAQ, so the VOC function is not very useful.</p>
 								  
 									<p>To obtain more accurate VOC measurements, the BME680's temperature and humidity readings can be used in combination with the Adafruit SGP30 air quality sensor. By feeding the temperature and humidity data from the BME680 into the SGP30, the VOC readings can be compensated and calibrated for improved accuracy. This allows for a more reliable assessment of air quality, taking into account the influence of environmental conditions.</p>
-								  
-									<!-- <p>The combination of the BME680 and SGP30 sensors provides a more comprehensive picture of indoor air quality, incorporating temperature, humidity, and VOC measurements. This allows users to monitor and analyze IAQ parameters collectively, making informed decisions to improve the overall air quality and create healthier living or working environments.</p> -->
 
 								<ul class="actions special">
 									<li><a href="https://www.adafruit.com/product/3660" target="_blank" class="button">Check it out on adafruit</a></li>
@@ -224,12 +232,12 @@
 													<td>3</td>
 													<td>$1.00</td>												</tr>
 													<tr>
-														<td><a href="https://www.amazon.com/gp/product/B075SY4YRD/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1" target="_blank">PC-PETG Filament</a></td>
+														<td><a href="https://www.amazon.com/dp/B075SY4YRD" target="_blank">PC-PETG Filament</a></td>
 														<td>PETG and Polycarbonate mix of 1.75mm 3D Printing filament</td>
 														<td>1</td>
 														<td>$24.00</td>												</tr>
 													<tr>
-														<td><a href="https://www.amazon.com/dp/B082XR52P1?psc=1&ref=ppx_yo2ov_dt_b_product_details" target="_blank">Metric M2 Hardware Set</a></td>
+														<td><a href="https://www.amazon.com/dp/B082XR52P1" target="_blank">Metric M2 Hardware Set</a></td>
 														<td>High Quality Stainless Steel 304 Phillips Pan Head Bolts Screws Nuts Flat Washers Kit</td>
 														<td>1</td>
 														<td>$10.00</td>												</tr>
@@ -286,18 +294,41 @@
 									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=14" height="100%" width="100%" frameborder="0"></iframe></a></span>
 									<p><a class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=8" height="100%" width="100%" frameborder="0"></iframe></a></span>
 
-									<p>I wanted to keep the case design as minimal as possible. For me, the most practical solution to a problem is through simplicity. I wanted to keep the case as small as possible because it sits on my desk in my workspace. I initially found it a little tricky to lay out all of the parts in CAD with only reference dimensions to go off of. Luckily, Adafruit has STEP files of all of their products, so I was able to manipulate the sesnors in CAD fairly easily. I also took into consideration that all of the sensors need adequate access to the envirnment. I made slots in the side of the case to allow the PMSA003I to draw air in and exhaust it. I also created vent holes through the bottom of the case and lid to allow for passive airflow with the sensors mounted vertically.</p>
+									<p>The dashboards above are live snapshots of Generation 1 in operation, showing the sensor trends over time as captured in Grafana.</p>
 
-									<p>Mounting both the BME680 and SGP30 vertically seemed like the most optimal configuration as the product data sheet warmed that dust and particles landing on these sensors could interfere with accurate sensor measurements. I installed a removable slotted wall in the middle of the case bisecting the PMSA003I and ESP32-S2 from the BME680 and SGP30. I wanted to isolate these two components as heat from the ESP32 could result in higher read temperatures from the BME680, and the SGP30 eCO2 and TVOC calculations are base doff the real-time temperature and humidity readings in the code. My forethought payed off, and the readings seem consistent outside of the case and inside.</p>
-								
+								<!-- Generation 2 -->
+								<header class="major">
+									<h2 style="text-align: center;" id="gen2">Generation 2</h2>
+								</header>
+								<div class="box">
+									<p>Generation 2 keeps the lessons learned from the original build and moves the whole stack into Home Assistant. This section will cover the updated hardware, what changed from Generation 1 and why, and how the monitor reports into Home Assistant for automations and dashboards.</p>
+									<p><em>Photos, the bill of materials, and the full write-up for this generation are being prepared and will be added here soon.</em></p>
+								</div>
 
-								</section>
+								<!-- Generation 3 -->
+								<header class="major">
+									<h2 style="text-align: center;" id="gen3">Generation 3</h2>
+								</header>
+								<div class="box">
+									<p>Generation 3 is the latest build of the air quality monitor, integrated with Home Assistant. This section will cover the current hardware, what changed from Generation 2, and how it performs in daily use.</p>
+									<p><em>Photos, the bill of materials, and the full write-up for this generation are being prepared and will be added here soon.</em></p>
+								</div>
+
+								<!-- Generation comparison -->
+								<header class="major">
+									<h2 style="text-align: center;" id="comparison">Generation Comparison</h2>
+								</header>
+								<div class="box">
+									<p>A side-by-side comparison of all three generations &mdash; components, pricing, capability, and ease of build &mdash; is being compiled and will be published here alongside the Generation 2 and 3 write-ups.</p>
+								</div>
+
+							</section>
 					</div>
 					
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Dillon Kelley 2023</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+						<ul><li>&copy; 2025</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
 					</div>
 
 			</div>
