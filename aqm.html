@@ -904,14 +904,14 @@
 						fetch('assets/data/aqm-charts.json')
 							.then(function (r) { return r.json(); })
 							.then(function (d) {
-								mk('chart-temp', d.temp_sen55, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'deg F');
+								mk('chart-temp', d.temp_sen55, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b0F');
 								mk('chart-co2', d.co2, [{ key: 'aqm2', label: 'AQM2 - SCD41' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'CO2 (ppm)');
 								mk('chart-voc', d.voc, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'VOC index');
 								mk('chart-humidity', d.humidity, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '%RH');
-								mk('chart-pm1', d.pm1, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3', true);
-								mk('chart-pm25', d.pm25, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3', true);
-								mk('chart-pm4', d.pm4, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3');
-								mk('chart-pm10', d.pm10, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3', true);
+								mk('chart-pm1', d.pm1, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
+								mk('chart-pm25', d.pm25, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
+								mk('chart-pm4', d.pm4, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3');
+								mk('chart-pm10', d.pm10, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
 							})
 							.catch(function (err) {
 								var el = document.getElementById('chart-temp');
