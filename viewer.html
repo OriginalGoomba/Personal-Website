@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="en">
+	<head>
+		
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+
+		<title>3D Model Viewer</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+					"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+					"fflate": "https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js"
+				}
+			}
+		</script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Projects</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Projects</a></li>
+							<li><a href="gallery.html">Gallery</a></li>
+							<li><a href="contactme.html">Contact Me</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>3D Model Viewer</h1>
+									<p>Interactive view of the Air Quality Monitor Generation 2 case. Drag to rotate, scroll to zoom.</p>
+								</header>
+
+								<ul class="actions">
+									<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Body.3mf" class="button">Body</a></li>
+									<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Bottom-Body.3mf" class="button">Bottom</a></li>
+									<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Top-Body.3mf" class="button">Top</a></li>
+									<li><a href="aqm.html" class="button primary">Back to the AQM project</a></li>
+								</ul>
+
+								<div id="viewer" style="position: relative; width: 100%; height: 70vh; min-height: 420px; background: #1e252d; border-radius: 4px; cursor: grab;"></div>
+								<p id="viewer-status" style="text-align: center; margin-top: 0.5em;">Loading&hellip;</p>
+								<noscript><p style="text-align: center;">JavaScript is required for the interactive viewer.</p></noscript>
+							</section>
+					</div>
+
+				<!-- Copyright -->
+					<div id="copyright">
+						<ul><li>&copy; 2025</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script type="module" src="assets/js/modelviewer.js"></script>
+
+	</body>
+</html>

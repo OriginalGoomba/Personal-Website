@@ -18,3 +18,7 @@ node_modules/
 
 # Local preview artifacts
 .serve/
+
+# Asset drop-zones (staged here by the site owner, then curated into the site)
+AQM2/
+AQM3/
