@@ -300,13 +300,7 @@
 									<header class="major">
 										<h2 style="text-align: center;" id="grafana">Grafana</h2>
 									</header>
-									<span class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=20" style="width: 100%; height: 400px; border: 0;" title="Grafana dashboard snapshot panel 20"></iframe></span>
-									<span class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=6" style="width: 100%; height: 400px; border: 0;" title="Grafana dashboard snapshot panel 6"></iframe></span>
-									<span class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=4" style="width: 100%; height: 400px; border: 0;" title="Grafana dashboard snapshot panel 4"></iframe></span>
-									<span class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=14" style="width: 100%; height: 400px; border: 0;" title="Grafana dashboard snapshot panel 14"></iframe></span>
-									<span class="image fit"><iframe src="https://snapshots.raintank.io/dashboard-solo/snapshot/GEAICSRJqB91weeUnk9UhOwEsun1ZRBs?orgId=2&from=1683690082796&to=1683690982797&panelId=8" style="width: 100%; height: 400px; border: 0;" title="Grafana dashboard snapshot panel 8"></iframe></span>
-
-									<p>The dashboards above are live snapshots of Generation 1 in operation, showing the sensor trends over time as captured in Grafana. Note that these snapshots predate the failure of the PMSA003I, so the particulate panels show healthy readings.</p>
+									<p>Back when Generation 1 was the only monitor in the house, its dashboards lived in Grafana on the home server. I used to keep some public snapshots embedded here, but those are stale now, and the current analysis of the data lives in the <a href="#fielddata">field data section</a> below, where all three generations get compared head to head. I can also dig up data from when the original PMSA003I was still fully functioning and add it there as well.</p>
 
 								<!-- Generation 2 -->
 								<header class="major">
@@ -317,7 +311,7 @@
 									<h2 style="text-align: center;" id="gen2-overview">Overview</h2>
 								</header>
 
-								<p>Generation 1 taught me exactly what I wanted to fix in the next build. The SGP30 gave me an <em>estimate</em> of CO2, not a measurement. The PMSA003I had a finite duty cycle. And the whole MQTT to Node-RED to InfluxDB to Grafana pipeline was a lot of moving parts to keep alive on a Raspberry Pi. When I sat down to design the second generation, the wishlist from the first write-up was right there waiting for me: a true CO2 sensor, a Sensirion SEN environmental node, and C++ instead of CircuitPython. Generation 2 checks every box, and then some.</p>
+								<p>Generation 1 taught me a lot about what actually matters in an indoor air monitor. The SGP30's eCO2 estimate was neat, but at the end of the day it was still a guess. The PMSA003I had an 8000 hour duty cycle hanging over its head. And the whole Mosquitto, Node-RED, InfluxDB, Grafana pipeline on the Raspberry Pi was a lot of babysitting for one little sensor. So when I sat down to design the second generation, I went right back to the wishlist I had written at the end of the first write-up: a true CO2 sensor, a Sensirion SEN environmental node, and real C++ instead of CircuitPython. Generation 2 checks every box.</p>
 
 								<p>At the center of this build is the <a href="https://sensirion.com/products/catalog/SEN55" target="_blank">SEN55</a>, which handles particulate matter along with VOC and NOx indices, temperature, and humidity. Next to it sits an <a href="https://sensirion.com/products/catalog/SCD41" target="_blank">SCD41</a> for a genuine CO2 measurement. Both hang off of a Seeed Studio XIAO ESP32-C6 &mdash; a five dollar microcontroller &mdash; programmed with ESPHome and reporting straight into Home Assistant. No broker, no database server, no separate dashboard container. Just the sensor, the board, and Home Assistant.</p>
 
@@ -327,9 +321,9 @@
 								<header class="minor">
 									<h3 style="text-align: left;" id="sen55">SEN55</h3>
 								</header>
-								<p><span class="image right"><a href="https://sensirion.com/products/catalog/SEN55" target="_blank"><img src="images/AQM2/AQM2inside.jpg" alt="" /></a></span>The SEN55 from Sensirion is an environmental node that packs an entire air quality lab into one module. It measures particulate matter in four bins (PM1.0, PM2.5, PM4, and PM10), a VOC index, a NOx index, temperature, and humidity, all over I2C. The integrated fan keeps a steady flow of room air moving across the laser optics, which is exactly what a particulate sensor needs to stay honest over the long haul &mdash; something the first generation's sensor could not do forever.</p>
+								<p><span class="image right"><a href="https://sensirion.com/products/catalog/SEN55" target="_blank"><img src="images/AQM2/AQM2inside.jpg" alt="" /></a></span>I picked the SEN55 from Sensirion to be the heart of this build. In one package it measures particulate matter in four size bins (PM1.0, PM2.5, PM4, and PM10), a VOC index, a NOx index, temperature, and humidity, all over I2C. Per the datasheet it holds a &plusmn;10% accuracy on the particulate mass concentrations, &plusmn;0.45 &deg;C on temperature, &plusmn;4.5 %RH on humidity, and a rated lifetime of more than ten years &mdash; which is a whole lot more reassuring than the first generation's 8000 hour sensor. The integrated fan keeps room air moving across the laser optics, and the sensor runs automatic cleaning routines so the readings stay honest over the long haul.</p>
 
-									<p>Mounting matters for this sensor. I spent time with the <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank">SEN5x datasheet</a> and Sensirion's <a href="https://sensirion.com/resource/user_guide/sen5x/engineering_guidelines" target="_blank">engineering guidelines</a> to determine the optimal orientation and position so that the fan inlet and outlet both have an unobstructed path to room air. The <a href="https://sensirion.com/resource/cad/sen5x" target="_blank">official STEP file</a> made it easy to build the case around the exact envelope of the module.</p>
+									<p>Mounting matters with this sensor. I spent time with the <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank">SEN5x datasheet</a> and Sensirion's <a href="https://sensirion.com/resource/user_guide/sen5x/engineering_guidelines" target="_blank">engineering guidelines</a> to work out the optimal orientation and position so that the fan inlet and outlet both have an unobstructed path to room air, and the <a href="https://sensirion.com/resource/cad/sen5x" target="_blank">official STEP file</a> made it easy to build the case around the exact envelope of the module.</p>
 
 								<ul class="actions special">
 									<li><a href="https://sensirion.com/products/catalog/SEN55" target="_blank" class="button">Check it out on sensirion</a></li>
@@ -338,9 +332,7 @@
 								<header class="minor">
 									<h3 style="text-align: left;" id="scd41">SCD41</h3>
 								</header>
-								<p>The SCD41 is the true CO2 sensor I wished for in the first generation's write-up. It uses a photoacoustic NDIR principle to measure carbon dioxide directly, which is a completely different league from estimating it off of VOC readings. It also pulls double duty by measuring temperature and humidity itself, giving me a second reference for those channels.</p>
-
-								<p>Calibration is handled automatically. With automatic self-calibration enabled, the sensor assumes the lowest CO2 reading it sees over the course of a week is fresh outdoor air and gently re-zeroes itself to it. The low power periodic measurement mode takes a reading every 30 seconds, which pairs nicely with the 5 minute reporting interval of the whole device.</p>
+								<p>The SCD41 is the true CO2 sensor I wished for in the first generation's write-up. It uses a photoacoustic NDIR principle to actually measure carbon dioxide instead of estimating it off of VOC readings, with an accuracy of &plusmn;(40 ppm + 5% of the reading) over a 400 to 5000 ppm range per the datasheet. It also has its own temperature and humidity sensors built right in, so I ended up with a second reference for those channels basically for free. I left automatic self-calibration enabled: the sensor assumes the lowest CO2 reading it sees over the course of about a week is fresh outdoor air and quietly re-zeroes itself to it, which keeps the whole thing honest without me ever touching it.</p>
 
 								<ul class="actions special">
 									<li><a href="https://sensirion.com/products/catalog/SCD41" target="_blank" class="button">Check it out on sensirion</a></li>
@@ -349,7 +341,7 @@
 								<header class="minor">
 									<h3 style="text-align: left;" id="xiao-c6">Seeed Studio XIAO ESP32-C6</h3>
 								</header>
-								<p><span class="image right"><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank"><img src="images/AQM2/AQM2back45.jpg" alt="" /></a></span>The microcontroller for this generation is the Seeed Studio XIAO ESP32-C6, and it is a little marvel for the price. For five dollars you get an ESP32-C6 with 2.4 GHz WiFi, a USB-C port, and plenty of pins for the I2C bus. Compared to the eighteen dollar Feather from the first generation, it makes the brain of the monitor one of the cheapest parts in the build.</p>
+								<p><span class="image right"><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank"><img src="images/AQM/xiao-esp32-c6.jpg" alt="" /></a></span>For the brain of the operation, I went with the Seeed Studio XIAO ESP32-C6. For five dollars you get an ESP32-C6 with 2.4 GHz WiFi and a USB-C port &mdash; compare that to the eighteen dollar Feather in Generation 1 and the microcontroller became one of the cheapest parts of the whole build. There is plenty of headroom on it for a sensor loop, and it sips power compared to the old board.</p>
 
 								<p>Connecting everything required no soldering at all. A small <a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank">SEN55 adapter breakout</a> converts the sensor's tiny 1.0 mm JST connector to the STEMMA QT standard, and a couple of short STEMMA QT cables chain the SEN55, the SCD41, and the XIAO together on the same I2C bus.</p>
 
@@ -363,7 +355,9 @@
 
 								<p>After the CircuitPython detour of the first generation, I wanted the firmware for this build to be boring. ESPHome delivers exactly that. The entire configuration lives in a single YAML file: the SEN5x and SCD4x sensor platforms are built into ESPHome, so I never wrote a line of sensor driver code. I simply declared the sensors, gave them names, and set the update interval to 300 seconds.</p>
 
-								<p>The VOC and NOx indices needed a little tuning to behave. The VOC algorithm has learning windows, a gating duration, and a gain factor that control how fast the index adapts to the environment, and I settled on values that keep the index stable in a quiet house while still responding to actual events like cooking or cleaning. Over-the-air updates, a fallback captive portal, and the encrypted Home Assistant API all came for free with the framework.</p>
+								<p>Moving to Home Assistant was about more than just this one sensor, though. I was adding a whole suite of sensors around the house, and I wanted everything reporting to one place. ESPHome lets me build my own sensors and have them show up in Home Assistant without having to manage an entire stack of brokers, databases, and dashboard containers the way Generation 1 did. It is just Home Assistant now, and every device I add after this one gets the same treatment for free. Over-the-air updates, a fallback captive portal, and the encrypted Home Assistant API all come with the framework too.</p>
+
+								<p>The VOC and NOx indices needed a little tuning to behave. The VOC algorithm has learning windows, a gating duration, and a gain factor that control how fast the index adapts to the environment, and I settled on values that keep the index stable in a quiet house while still responding to actual events like cooking or cleaning.</p>
 
 								<ul class="actions special">
 									<li><a href="code/AQM2/HAQ-SEN55-ESPHome.yaml.txt" target="_blank" class="button">Check out the code</a></li>
@@ -379,7 +373,7 @@
 									</div>
 								</div>
 
-								<p>The Generation 2 case was designed in CAD around the STEP models of both sensors. The whole package measures 150 x 60 x 30 mm &mdash; a slim little box that keeps the fan inlet and exhaust of the SEN55 open to room air while the electronics stay tucked away inside. The case is printed in three pieces: a body, a top, and a bottom, which press together around the stack without any special hardware.</p>
+								<p>The Generation 2 case was designed in CAD around the STEP models of both sensors. The whole package measures 150 x 60 x 30 mm &mdash; a slim little box that keeps the fan inlet and exhaust of the SEN55 open to room air while the electronics stay tucked away inside. The case is printed in three pieces: a body, a top, and a bottom, held together with heat-set inserts and M3 hardware. The vents in the case give the temperature, humidity, and CO2 sensors plenty of passive airflow so they track the room instead of the inside of a box.</p>
 
 								<p>The full model is available to view interactively right in the browser, along with the files used to print it:</p>
 
@@ -454,7 +448,7 @@
 
 								<p>Generation 3 is what happens when a year of data tells you exactly which measurements you actually use. The <a href="https://sensirion.com/products/catalog/SEN66" target="_blank">SEN66</a> folds everything I needed two separate sensors for in Generation 2 into a single module: particulate matter, VOC and NOx indices, temperature, humidity, and now a true CO2 measurement built right in. The entire bill of materials collapsed down to two line items &mdash; one sensor and one microcontroller.</p>
 
-								<p>It did not just get simpler, it got faster. The SEN66 reports every 15 seconds, twenty times more often than the 5 minute interval of Generation 2. That kind of resolution turns the monitor into something you can watch in real time &mdash; open a window, cook dinner, or run the vacuum, and the effect shows up in Home Assistant within seconds. This is the build that has been running day in and day out for well over a year now.</p>
+								<p>It did not just get simpler, it got faster. The update interval on this one is set to 15 seconds, so the readings come in quick enough to watch things happen in real time &mdash; open a window, cook dinner, or run the vacuum and the effect shows up in Home Assistant within seconds. I also skipped the adapter breakout this time around and soldered the SEN66's wires straight to the XIAO, which knocked another line item off the BOM and made the whole package that much smaller. This is the build that has been running day in and day out for well over a year now.</p>
 
 								<header class="major">
 									<h2 style="text-align: center;" id="gen3-components">Components</h2>
@@ -462,7 +456,7 @@
 								<header class="minor">
 									<h3 style="text-align: left;" id="sen66">SEN66</h3>
 								</header>
-								<p><span class="image right"><a href="https://sensirion.com/products/catalog/SEN66" target="_blank"><img src="images/AQM3/AQM3inside.jpg" alt="" /></a></span>The SEN66 is the all-in-one evolution of the SEN5x line. Everything the SEN55 does &mdash; PM1.0, PM2.5, PM4, PM10, VOC, NOx, temperature, and humidity &mdash; plus an integrated CO2 sensor in the same package. No breakout boards, no sensor daisy chaining, no second I2C address to keep track of. One sensor, four wires, done.</p>
+								<p><span class="image right"><a href="https://sensirion.com/products/catalog/SEN66" target="_blank"><img src="images/AQM3/AQM3inside.jpg" alt="" /></a></span>The SEN66 is the all-in-one evolution of the SEN5x line. Everything the SEN55 does &mdash; PM1.0, PM2.5, PM4, PM10, VOC, NOx, temperature, and humidity &mdash; plus an integrated CO2 sensor in the same package. The <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank">SEN6x datasheet</a> carries over the same claims as the SEN5x family: &plusmn;10% on the particulate mass concentrations, &plusmn;0.45 &deg;C on temperature, &plusmn;4.5 %RH on humidity, a ten year plus lifetime, and the added CO2 measurement is rated at &plusmn;(30 ppm + 3% of the reading). No breakout boards, no sensor daisy chaining, no second I2C address to keep track of. One sensor, four wires, done.</p>
 
 								<p>Just like with the SEN55, I leaned on the <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank">SEN6x datasheet</a> and the <a href="https://sensirion.com/media/documents/0005B7E5/68C12844/PS_CD_SEN6x_D1.STEP" target="_blank">official STEP file</a> to work out the mounting orientation and design the enclosure around the exact outline of the module.</p>
 
@@ -495,7 +489,7 @@
 									</div>
 								</div>
 
-								<p>The Generation 3 case is the simplest of the three. With only one sensor and one board inside, the enclosure reduces to a body with a small retainer that pins the XIAO in place &mdash; and at roughly 75 x 46 x 61 mm, it is considerably more compact than the Generation 2 box, since a single integrated sensor leaves far less to house. The model files are available below, viewable in 3D right in the browser:</p>
+								<p>The Generation 3 case is the simplest of the three. With only one sensor and one board inside, the enclosure reduces to a body with a small retainer that pins the XIAO in place, held together with heat-set inserts and M3 hardware &mdash; and at roughly 75 x 46 x 61 mm, it is considerably more compact than the Generation 2 box, since a single integrated sensor leaves far less to house. The case does not need the vent holes the earlier generation relied on either, because everything is housed inside the SEN66 module itself. The model files are available below, viewable in 3D right in the browser:</p>
 
 								<ul class="actions special">
 									<li><a href="viewer.html?model=models/AQM3/AQM3-Body.3mf" class="button">View the Gen 3 case in 3D</a></li>
@@ -698,7 +692,7 @@
 												<td>Soldering</td>
 												<td>None (STEMMA QT)</td>
 												<td>None (adapter breakout + cables)</td>
-												<td>None (adapter breakout + cables)</td>
+												<td>Yes &mdash; SEN66 wired straight to the XIAO (drops the adapter board from the BOM)</td>
 											</tr>
 											<tr>
 												<td>Firmware</td>
@@ -780,17 +774,65 @@
 								</div>
 								<p>Temperature agrees to within 0.002 &deg;F on average across 257 hours of data &mdash; the two sensors are effectively measuring the same house. CO2 tracks beautifully with a correlation of 0.89, with the SCD41 reading a consistent 22 ppm lower than the SEN66. The VOC indices move together with a correlation of 0.92. Humidity carries a small offset of about 3.5 %RH but tracks the same ups and downs. For two different sensor families in two different rooms, that is a very strong endorsement of both.</p>
 
+								<p>It is also worth checking these numbers against what the manufacturers actually promise. The <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank">SEN5x</a> and <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank">SEN6x</a> datasheets and the SCD4x datasheet spell out the accuracy of every channel, and the observed differences between the two builds land well inside the combined tolerances:</p>
+								<div class="table-wrapper">
+									<table>
+										<thead>
+											<tr>
+												<th>Channel</th>
+												<th>Observed difference</th>
+												<th>Claimed accuracy per sensor</th>
+												<th>Combined worst case</th>
+												<th>Within spec?</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Temperature</td>
+												<td>0.00 &deg;F mean, &plusmn;1.05 &deg;F spread</td>
+												<td>&plusmn;0.45 &deg;C (&plusmn;0.81 &deg;F)</td>
+												<td>&plusmn;1.62 &deg;F</td>
+												<td>Yes</td>
+											</tr>
+											<tr>
+												<td>CO2</td>
+												<td>&minus;22.3 ppm mean, &plusmn;26.6 ppm spread</td>
+												<td>SCD41: &plusmn;(40 ppm + 5% of reading) &asymp; 68 ppm at 560 ppm<br />SEN66: &plusmn;(30 ppm + 3% of reading) &asymp; 47 ppm at 580 ppm</td>
+												<td>&asymp; &plusmn;115 ppm</td>
+												<td>Yes</td>
+											</tr>
+											<tr>
+												<td>Humidity</td>
+												<td>+3.5 %RH mean, &plusmn;1.10 %RH spread</td>
+												<td>&plusmn;4.5 %RH each</td>
+												<td>&plusmn;9 %RH</td>
+												<td>Yes</td>
+											</tr>
+											<tr>
+												<td>VOC index</td>
+												<td>r = 0.92</td>
+												<td>Relative index (1&ndash;500), no absolute accuracy claim</td>
+												<td>&mdash;</td>
+												<td>Strong tracking</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
 								<div class="box alt">
 									<div class="row gtr-50 gtr-uniform">
 										<div class="col-12"><h4 style="text-align: center;">Temperature &mdash; hourly, Oct 1&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-temp"></canvas></div></div>
 										<div class="col-12"><h4 style="text-align: center;">CO2 &mdash; hourly, Oct 1&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-co2"></canvas></div></div>
 										<div class="col-12"><h4 style="text-align: center;">VOC index &mdash; hourly, Oct 1&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-voc"></canvas></div></div>
 										<div class="col-12"><h4 style="text-align: center;">Humidity &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-humidity"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">PM2.5 &mdash; all three generations, 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm25"></canvas></div></div>
+										<div class="col-12"><h4 style="text-align: center;">PM1.0 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm1"></canvas></div></div>
+										<div class="col-12"><h4 style="text-align: center;">PM2.5 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm25"></canvas></div></div>
+										<div class="col-12"><h4 style="text-align: center;">PM4 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm4"></canvas></div></div>
+										<div class="col-12"><h4 style="text-align: center;">PM10 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm10"></canvas></div></div>
 									</div>
 								</div>
 
-								<p>The particulate chart above is the most telling of the bunch. Generation 1's PMSA003I &mdash; dead after years of service &mdash; sits pinned at roughly 208 &micro;g/m&sup3;, high and mostly constant, exactly what a failed laser-scattering sensor looks like. Meanwhile the SEN55 and the SEN66 report clean indoor air in the same window, usually under a few &micro;g/m&sup3;. It is the perfect illustration of why the newer generations moved to the SEN family in the first place, and it is the chart that officially retires Generation 1's particulate data.</p>
+								<p>The particulate charts above are the most telling of the bunch. They show every size bin the sensors report, all three generations in the same 25 hour window. Generation 1's PMSA003I &mdash; dead after years of service &mdash; sits pinned at roughly 208 &micro;g/m&sup3; on PM2.5 and PM10, high and mostly constant, exactly what a failed laser-scattering sensor looks like. Meanwhile the SEN55 and the SEN66 report clean indoor air in the same window, usually under a few &micro;g/m&sup3;. Note that Generation 1 never had a PM4 channel (the PMSA003I only measured three bins), so that chart shows just the two newer generations. It is a perfect illustration of why the newer builds moved to the SEN family in the first place, and it is the chart that officially retires Generation 1's particulate data.</p>
 
 							</section>
 					</div>
@@ -866,7 +908,10 @@
 								mk('chart-co2', d.co2, [{ key: 'aqm2', label: 'AQM2 - SCD41' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'CO2 (ppm)');
 								mk('chart-voc', d.voc, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'VOC index');
 								mk('chart-humidity', d.humidity, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '%RH');
+								mk('chart-pm1', d.pm1, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3', true);
 								mk('chart-pm25', d.pm25, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3', true);
+								mk('chart-pm4', d.pm4, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3');
+								mk('chart-pm10', d.pm10, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'ug/m3', true);
 							})
 							.catch(function (err) {
 								var el = document.getElementById('chart-temp');
