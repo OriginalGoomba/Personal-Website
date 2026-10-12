@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="html" data-theme="auto">
+<html lang="en" class="html" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Air Quality Monitor V2</title>
   <meta name="description" content="The second generation air quality monitor: Sensirion SEN55 and SCD41 sensors on a XIAO ESP32-C6, running ESPHome in Home Assistant." />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
-  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
-  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
-  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  
+  <link rel="shortcut icon" href="favicon.ico" />
   <meta name="theme-color" content="#ffffff" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,10 +29,6 @@
         <ul class="horizontal-list">
           <li>
             <a href="index.html">home</a>
-            &nbsp;&nbsp;
-          </li>
-          <li>
-            <a href="aqm.html">comparison</a>
             &nbsp;&nbsp;
           </li>
           <li>
@@ -83,7 +79,138 @@
 
       <p>The VOC and NOx indices needed a little tuning to behave. The VOC algorithm has learning windows, a gating duration, and a gain factor that control how fast the index adapts to the environment, and I settled on values that keep the index stable in a quiet house while still responding to actual events like cooking or cleaning.</p>
 
-      <p><a class="button" href="code/AQM2/HAQ-SEN55-ESPHome.yaml.txt" target="_blank">Check out the code</a></p>
+      <details>
+      <summary>Show the ESPHome configuration</summary>
+      <pre><code># AQM Generation 2 - ESPHome configuration (redacted)
+# Device: Seeed Studio XIAO ESP32-C6 with Sensirion SEN55 + SCD41
+# NOTE: api/OTA/fallback-hotspot credentials are redacted. Generate your own.
+
+esphome:
+  name: xiao-esp32-c6
+  friendly_name: HAQ - SEN55x
+
+esp32:
+  board: seeed_xiao_esp32c6
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+# Enable Home Assistant API
+api:
+  encryption:
+    key: &quot;&lt;REDACTED&gt;&quot;
+
+# Example configuration entry for ESP32
+i2c:
+  sda: GPIO22
+  scl: GPIO23
+  scan: true
+  id: bus_a
+
+ota:
+  - platform: esphome
+    password: &quot;&lt;REDACTED&gt;&quot;
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: &quot;Xiao-Esp32-C6 Fallback Hotspot&quot;
+    password: &quot;&lt;REDACTED&gt;&quot;
+
+captive_portal:
+
+output:
+  - platform: gpio
+    pin: GPIO15
+    id: led_gpio
+    # Keep inverted: true as this is the common setup for XIAO USER LEDs
+    inverted: true
+
+# 💡 2. Define the switch component that controls the output
+switch:
+  - platform: output
+    name: &quot;Xiao C6 User Switch&quot;
+    output: led_gpio
+    icon: &quot;mdi:led-strip-variant&quot;
+
+sensor:
+  - platform: scd4x
+    co2:
+      name: &quot;CO2_scd41&quot;
+    temperature:
+      name: &quot;temperature_scd41&quot;
+    humidity:
+      name: &quot;humidty_scd41&quot;
+    temperature_offset: 4 # default
+    measurement_mode: low_power_periodic # measurement is taken every 30 seconds
+    automatic_self_calibration: true
+#    ambient_pressure_compensation_source:
+    i2c_id: bus_a
+    update_interval: 300s
+
+  - platform: sen5x
+    id: sen54
+    pm_1_0:
+      name: &quot; PM &lt;1µm Weight concentration&quot;
+      id: pm_1_0
+      accuracy_decimals: 1
+    pm_2_5:
+      name: &quot; PM &lt;2.5µm Weight concentration&quot;
+      id: pm_2_5
+      accuracy_decimals: 1
+    pm_4_0:
+      name: &quot; PM &lt;4µm Weight concentration&quot;
+      id: pm_4_0
+      accuracy_decimals: 1
+    pm_10_0:
+      name: &quot; PM &lt;10µm Weight concentration&quot;
+      id: pm_10_0
+      accuracy_decimals: 1
+    temperature:
+      name: &quot;temperature_SEN55&quot;
+      accuracy_decimals: 1
+    humidity:
+      name: &quot;humidity_SEN55&quot;
+      accuracy_decimals: 0
+    voc_index:
+      name: &quot;VOC_SEN55&quot;
+      algorithm_tuning:
+        index_offset: 100
+        learning_time_offset_hours: 12
+        learning_time_gain_hours: 12
+        gating_max_duration_minutes: 180
+        std_initial: 50
+        gain_factor: 230
+    nox_index:
+      name: &quot;NOX_SEN55&quot;
+      algorithm_tuning:
+        index_offset: 1
+        learning_time_offset_hours: 12
+        learning_time_gain_hours: 12
+        gating_max_duration_minutes: 180
+        std_initial: 50
+        gain_factor: 230
+    temperature_compensation:
+      offset: 0
+      normalized_offset_slope: 0
+      time_constant: 0
+    acceleration_mode: low
+    store_baseline: true
+    address: 0x69
+    i2c_id: bus_a
+    update_interval: 300s
+# Add this section to create the reset entity
+button:
+  - platform: restart
+    name: &quot;Xiao C6 Software Restart&quot;
+    entity_category: config # Hides the entity by default, as it&#x27;s a configuration tool
+    icon: &quot;mdi:restart&quot;
+</code></pre>
+    </details>
 
       <h2>Case Design</h2>
 
@@ -159,10 +286,6 @@
         <ul class="horizontal-list">
           <li>
             <a href="index.html">home</a>
-            &nbsp;&nbsp;
-          </li>
-          <li>
-            <a href="aqm.html">comparison</a>
             &nbsp;&nbsp;
           </li>
           <li>

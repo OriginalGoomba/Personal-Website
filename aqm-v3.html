@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="html" data-theme="auto">
+<html lang="en" class="html" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Air Quality Monitor V3</title>
   <meta name="description" content="The third generation air quality monitor: a Sensirion SEN66 all-in-one sensor on a XIAO ESP32-C6 with 15 second updates." />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
-  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
-  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
-  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  
+  <link rel="shortcut icon" href="favicon.ico" />
   <meta name="theme-color" content="#ffffff" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,10 +29,6 @@
         <ul class="horizontal-list">
           <li>
             <a href="index.html">home</a>
-            &nbsp;&nbsp;
-          </li>
-          <li>
-            <a href="aqm.html">comparison</a>
             &nbsp;&nbsp;
           </li>
           <li>
@@ -69,7 +65,96 @@
 
       <p>The firmware is ESPHome again, and it is even shorter this time. The <code>sen6x</code> platform with the <code>SEN66</code> type declares every channel the sensor offers in one block &mdash; PM, NOx, CO2, temperature, humidity, and VOC &mdash; and the update interval is set to 15 seconds. The XIAO's i2c bus, the Home Assistant API, over-the-air updates, and the captive portal fallback are all straight from the same configuration pattern as Generation 2.</p>
 
-      <p><a class="button" href="code/AQM3/AQ-SEN66-ESPHome.yaml.txt" target="_blank">Check out the code</a></p>
+      <details>
+      <summary>Show the ESPHome configuration</summary>
+      <pre><code># AQM Generation 3 - ESPHome configuration (redacted)
+# Device: Seeed Studio XIAO ESP32-C6 with Sensirion SEN66
+# NOTE: api/OTA/fallback-hotspot credentials are redacted. Generate your own.
+
+esphome:
+  name: aq--sen66
+  friendly_name: AQ - SEN66
+
+esp32:
+  board: seeed_xiao_esp32c6
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: &quot;&lt;REDACTED&gt;&quot;
+
+ota:
+  - platform: esphome
+    password: &quot;&lt;REDACTED&gt;&quot;
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: &quot;Aq--Sen66 Fallback Hotspot&quot;
+    password: &quot;&lt;REDACTED&gt;&quot;
+
+i2c:
+  sda: GPIO22
+  scl: GPIO23
+  scan: true
+  id: bus_a
+
+captive_portal:
+
+binary_sensor:
+
+sensor:
+  - platform: sen6x
+    type: SEN66
+    pm_1_0:
+      name: &quot;PM &lt;1µm Weight concentration&quot;
+      id: pm10
+      accuracy_decimals: 1
+
+    pm_2_5:
+      name: &quot;PM &lt;2.5µm Weight concentration&quot;
+      id: pm25
+      accuracy_decimals: 1
+
+    pm_4_0:
+      name: &quot;PM &lt;4µm Weight concentration&quot;
+      id: pm40
+      accuracy_decimals: 1
+    pm_10_0:
+      name: &quot;PM &lt;10µm Weight concentration&quot;
+      id: pm100
+      accuracy_decimals: 1
+    nox_index:
+      name: &quot;NOX&quot;
+      id: nox
+      accuracy_decimals: 1
+    co2:
+      name: &quot;CO2&quot;
+      id: co2
+      accuracy_decimals: 1
+    temperature:
+      name: &quot;Temperature&quot;
+      accuracy_decimals: 1
+      id: temperature_top
+    humidity:
+      name: &quot;Humidity&quot;
+      accuracy_decimals: 0
+      id: humidity
+    voc_index:
+      name: &quot;VOC&quot;
+      id: voc
+
+    update_interval: 15s
+</code></pre>
+    </details>
 
       <h2>Case Design</h2>
 
@@ -140,10 +225,6 @@
         <ul class="horizontal-list">
           <li>
             <a href="index.html">home</a>
-            &nbsp;&nbsp;
-          </li>
-          <li>
-            <a href="aqm.html">comparison</a>
             &nbsp;&nbsp;
           </li>
           <li>

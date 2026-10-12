@@ -52,6 +52,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
       camera.position.set(maxDim * scale * 0.7, maxDim * scale * 0.5, maxDim * scale * 0.9);
       camera.lookAt(0, 0, 0);
       controls.target.set(0, 0, 0);
+      // Keep zooming bounded so the model can never scroll out of view.
+      controls.minDistance = maxDim * scale * 0.2;
+      controls.maxDistance = maxDim * scale * 4;
       controls.update();
 
       statusEl.textContent = 'Drag to rotate \u00b7 scroll to zoom \u00b7 right-drag to pan';
@@ -86,7 +89,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     function resize() {
       const width = container.clientWidth || 320;
       const height = Math.max(container.clientHeight || 420, 300);
-      renderer.setSize(width, height, false);
+      renderer.setSize(width, height);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
     }
