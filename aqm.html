@@ -1,936 +1,446 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
-
-		<title>Air Quality Monitor</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<meta name="description" content="Three generations of a custom indoor air quality monitor: from a CircuitPython, MQTT, and Grafana stack to Home Assistant integration." />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Air Quality Monitor" />
-		<meta property="og:description" content="Three generations of a custom indoor air quality monitor: from a CircuitPython, MQTT, and Grafana stack to Home Assistant integration." />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
-
-		<!-- Wrapper -->
-			<div id="wrapper">
-
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Projects</a>
-					</header>
-
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li class="active"><a href="index.html">Projects</a></li>
-							<li><a href="gallery.html">Gallery</a></li>
-							<li><a href="contactme.html">Contact Me</a></li>
-						</ul>
-					</nav>
-
-				<!-- Main -->
-					<div id="main">
-
-						<!-- Post -->
-							<section class="post">
-								<header class="major">
-									<h1>Air Quality Monitor</h1>
-									<p>A custom designed and built indoor air quality monitoring system, now in its third generation. From a CircuitPython, MQTT, and Grafana stack to ESPHome and Home Assistant &mdash; with over a year of field data comparing the builds side by side.</p>
-								</header>
-								<div class="image main">
-										<div class="col-6"><span class="image fit"><img src="images/AQM/aqmexplode1280.gif" alt="Exploded view of the first generation air quality monitor"/></span></div>									
-								</div>
-
-								<!-- Generations overview -->
-								<header class="major">
-									<h2 style="text-align: center;" >The Generations</h2>
-								</header>
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-4">
-											<a href="#gen1" class="image fit"><img src="images/AQM/finishedcaseinside.png" alt="Generation 1 internals" /></a>
-											<h3 style="text-align: center;"><a href="#gen1">Generation 1</a></h3>
-											<p style="text-align: center;">ESP32-S2, PMSA003I, SGP30, and BME680<br />CircuitPython &rarr; MQTT &rarr; InfluxDB &rarr; Grafana</p>
-										</div>
-										<div class="col-4">
-											<a href="#gen2" class="image fit"><img src="images/AQM2/AQM2front.jpg" alt="Generation 2" /></a>
-											<h3 style="text-align: center;"><a href="#gen2">Generation 2</a></h3>
-											<p style="text-align: center;">SEN55 + SCD41 on a XIAO ESP32-C6<br />ESPHome &rarr; Home Assistant</p>
-										</div>
-										<div class="col-4">
-											<a href="#gen3" class="image fit"><img src="images/AQM3/AQM3front.jpg" alt="Generation 3" /></a>
-											<h3 style="text-align: center;"><a href="#gen3">Generation 3</a></h3>
-											<p style="text-align: center;">SEN66 all-in-one on a XIAO ESP32-C6<br />ESPHome &rarr; Home Assistant &middot; 15 s updates</p>
-										</div>
-									</div>
-								</div>
-								<p>Every generation shares the same goal: understand the air in the home and track how it changes throughout the day. The write-ups below cover each build, and the <a href="#comparison">Generation Comparison</a> at the bottom lines all three up side by side &mdash; component pricing, capability, ease of build, and the field data comparing the two newest generations head to head.</p>
-
-								<!-- Table of contents -->
-								<header class="major">
-									<h2 style="text-align: center;" >Table of Contents</h2>
-									<a href="#gen1"><h3 style="text-align: center;"><u>1. Generation 1 (Original)</u></h3></a>
-									<a href="#overview"><h4 style="text-align: center;">Overview</h4></a>
-									<a href="#components"><h4 style="text-align: center;">Components</h4></a>
-									<a href="#pmsa003i"><h4 style="text-align: center;">PMSA003I</h4></a>
-									<a href="#sgp30"><h4 style="text-align: center;">SGP30</h4></a>
-									<a href="#bme680"><h4 style="text-align: center;">BME680</h4></a>
-									<a href="#esp32-s2"><h4 style="text-align: center;">ESP32-S2</h4></a>
-									<a href="#miscellaneous"><h4 style="text-align: center;">Miscellaneous</h4></a>
-									<a href="#bom"><h4 style="text-align: center;">Bill of Materials</h4></a>
-									<a href="#programming"><h4 style="text-align: center;">Programming</h4></a>
-									<a href="#casedesign"><h4 style="text-align: center;">Case Design</h4></a>
-									<a href="#grafana"><h4 style="text-align: center;">Grafana</h4></a>
-									<a href="#gen2"><h3 style="text-align: center;"><u>2. Generation 2</u></h3></a>
-									<a href="#gen2-overview"><h4 style="text-align: center;">Overview</h4></a>
-									<a href="#gen2-components"><h4 style="text-align: center;">Components</h4></a>
-									<a href="#gen2-programming"><h4 style="text-align: center;">Programming</h4></a>
-									<a href="#gen2-case"><h4 style="text-align: center;">Case Design</h4></a>
-									<a href="#gen2-bom"><h4 style="text-align: center;">Bill of Materials</h4></a>
-									<a href="#gen3"><h3 style="text-align: center;"><u>3. Generation 3</u></h3></a>
-									<a href="#gen3-overview"><h4 style="text-align: center;">Overview</h4></a>
-									<a href="#gen3-components"><h4 style="text-align: center;">Components</h4></a>
-									<a href="#gen3-programming"><h4 style="text-align: center;">Programming</h4></a>
-									<a href="#gen3-case"><h4 style="text-align: center;">Case Design</h4></a>
-									<a href="#gen3-data"><h4 style="text-align: center;">Initial Data</h4></a>
-									<a href="#gen3-bom"><h4 style="text-align: center;">Bill of Materials</h4></a>
-									<a href="#comparison"><h3 style="text-align: center;"><u>4. Generation Comparison</u></h3></a>
-									<a href="#pricing"><h4 style="text-align: center;">Component Pricing</h4></a>
-									<a href="#capability"><h4 style="text-align: center;">Capability</h4></a>
-									<a href="#ease"><h4 style="text-align: center;">Ease of Build</h4></a>
-									<a href="#fielddata"><h4 style="text-align: center;">Field Data: AQM2 vs AQM3</h4></a>
-								</header>
-
-								<!-- Generation 1 -->
-								<header class="major">
-									<h2 style="text-align: center;" id="gen1">Generation 1 (Original)</h2>
-								</header>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="overview">Overview</h2>
-								</header>
-
-								<p>In this project, I designed, coded, and 3D printed an air quality monitor using an ESP32 microcontroller, along with the BME680, SGP30, and PMSA003I sensors. The goal of this project was to study the indoor air quality of my home and track how it changes during various activities.</p>
-
-								<p>Understanding the air quality in our living spaces is crucial for our health and well-being. By monitoring air quality, we can gain valuable insights into the effects of everyday activities, such as cooking or cleaning, on the air we breathe. This project allowed me to track trends and identify factors that impact indoor air quality, such as weather conditions and occupancy levels.</p>
-
-								<p>The BME680 sensor played a central role in this project, as it measures temperature, pressure, humidity, and volatile organic compounds (VOCs). Additionally, the SGP30 sensor provided data on total volatile organic compounds (TVOC) and equivalent CO2 (eCO2) levels. The PMSA003I sensor focused on particulate matter, providing counts and concentrations for PM1.0, PM2.5, and PM10.0 particles.</p>
-
-								<p>To collect data from each sensor, I developed CircuitPython code to interface with the ESP32 microcontroller. The code facilitated communication with an MQTT broker over WiFi and stored the collected data in a database. To visualize and analyze the data, I used Grafana, a powerful data visualization tool. To house all the components, I designed a custom 3D-printed case using CAD software.</p>
-
-								<p>By designing, coding, and 3D printing my own air quality monitor, I was able to gain valuable insights into the indoor air quality of my home. This project allowed me to track trends, identify potential air quality issues, and make informed decisions to create a healthier living environment. </p>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="components">Components</h2>
-								</header>
-								<header class="minor">
-									<h3 style="text-align: left;" id="pmsa003i">PMSA003I</h3>
-								</header>
-								<p><span class="image right"><a href="https://www.adafruit.com/product/4632" target="_blank"><img src="images/AQM/PMSA003I.png" alt="" /></a></span>The PMSA003I particulate matter sensor, manufactured by Plantower, plays a crucial role in measuring air quality by detecting and quantifying the concentration of fine particles in the atmosphere. This sensor employs a laser-based scattering technique to measure particle size and provide real-time data on particulate matter levels, particularly focusing on PM1.0, PM2.5, and PM10.</p>
-
-  									<p>By accurately measuring particle size, the PMSA003I enables the assessment of potential health risks associated with airborne particles - perfect for this project. Fine particles, such as PM2.5, can pose significant health hazards as they can penetrate deep into the respiratory system. Therefore, the sensor's ability to monitor these smaller particles helps in understanding the potential impact on human health in indoor environments.</p>
-
- 									<p>Additionally, the particulate matter concentration data provided by the PMSA003I is invaluable for evaluating overall air quality. High concentrations of particulate matter can indicate the presence of indoor pollution sources, inadequate ventilation, or the infiltration of outdoor pollutants. By continuously monitoring particulate matter levels, the sensor enables timely detection of air quality issues, facilitating appropriate mitigation measures and interventions to improve indoor environments.</p>
-
-  									<p>The PMSA003I particulate matter sensor is designed for integration into air quality monitoring systems, enabling easy data acquisition and analysis. This model by Adafruit features I2C via STEMMA QT, allowing seamless connectivity with microcontrollers or other devices. We will be using this connector to integrate all of the sensors in this build</p>
-
-									<p><em>Note: after years of service, the PMSA003I on this first-generation monitor has finally failed. It now reports a high and mostly constant reading of roughly 208 &micro;g/m&sup3; &mdash; the classic signature of a dead laser-scattering sensor. You can see it pinned flat next to the newer generations in the <a href="#fielddata">field data charts</a> below. Everything else on Generation 1 still works, but its particulate data should be treated as retired.</em></p>
-
-								<ul class="actions special">
-									<li><a href="https://www.adafruit.com/product/4632" target="_blank" class="button">Check it out on adafruit</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="sgp30">SGP30/40</h3>
-								</header>
-								<p><span class="image right"><a href="https://www.adafruit.com/product/3709" target="_blank"><img src="images/AQM/SGP40.png" alt="" /></a></span>The Adafruit SGP30 is an air quality sensor that plays a crucial role in measuring and assessing indoor air quality. While it does not directly measure CO2 levels, it provides an estimation of equivalent carbon dioxide (eCO2) based on VOC (volatile organic compound) levels.</p>
-								  
-									<p>It is important to note that the Adafruit SGP30 does not directly measure carbon dioxide (CO2) levels. If accurate CO2 measurements are required, specialized sensors designed specifically for CO2 detection could replace this one, but those senors are quite expensive. However, for this application, the estimation of eCO2 provided by the SGP30 is sufficient for assessing general air quality and detecting changes in VOC levels.</p>
-								  
-									<p>In addition to eCO2, the Adafruit SGP30 also measures Total Volatile Organic Compounds (TVOCs). TVOCs encompass a wide range of organic compounds present in the air, including pollutants and odorous substances, which is vital information to determine the quality of the air.</p>
-
-									<p>The calibration for this sensor is crucial, as it needs at least 12 hours to acquire baseline measurements of eCO2 and TVOC before it can accurately read data from the environment. In the GitHub repository, I have attached the calibration code I used to obtain the baseline measurements.</p>
-								  								  
-								<ul class="actions special">
-									<li><a href="https://www.adafruit.com/product/3709" target="_blank" class="button">Check it out on adafruit</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="bme680">BME680</h3>
-								</header>
-								<p><span class="image right"><a href="https://www.adafruit.com/product/3660" target="_blank"><img src="images/AQM/BME680.png" alt="" /></a></span>The Adafruit BME680 is a highly valuable sensor for measuring air quality (IAQ) as it provides comprehensive data on multiple environmental parameters, including temperature, humidity, pressure, and volatile organic compounds (VOCs).</p>
-
-									<p>One of the key benefits of the BME680 is its ability to measure temperature and humidity accurately. These readings are crucial for understanding the impact of environmental conditions on air quality. Temperature and humidity can affect the behavior of pollutants, chemical reactions, and the overall comfort of indoor spaces. By monitoring these parameters, the BME680 helps identify potential issues such as high humidity levels that may promote mold growth or temperature fluctuations that affect occupant comfort.</p>
-								  
-									<p>In addition to temperature and humidity, the BME680 measures VOCs, which are emitted by various sources and can impact air quality. However, it's important to note that the BME680's VOC readings may not be as precise as those from specialized VOC sensors like the SGP30. Currently the Bosch BSEC2 library is not available in CircuitPython, which is required to calculate IAQ, so the VOC function is not very useful.</p>
-								  
-									<p>To obtain more accurate VOC measurements, the BME680's temperature and humidity readings can be used in combination with the Adafruit SGP30 air quality sensor. By feeding the temperature and humidity data from the BME680 into the SGP30, the VOC readings can be compensated and calibrated for improved accuracy. This allows for a more reliable assessment of air quality, taking into account the influence of environmental conditions.</p>
-
-								<ul class="actions special">
-									<li><a href="https://www.adafruit.com/product/3660" target="_blank" class="button">Check it out on adafruit</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="esp32-s2">ESP32-S2</h3>
-								</header>
-								<p><span class="image right"><a href="https://www.adafruit.com/product/5000" target="_blank"><img src="images/AQM/ESP32-S2.png" alt="" /></a></span>The Adafruit ESP32-S2 Feather is a versatile microcontroller designed for IoT projects. It features a STEMMA QT connector for I2C devices, WiFi capabilities, and flexible battery options.
-
-									The STEMMA QT connector allows for easy integration of I2C sensors and devices, expanding the microcontroller's capabilities, perfect for connecting the sensors above.
-								  
-									The ESP32-S2 Feather supports 2.4 GHz Wi-Fi connectivity, enabling seamless integration with networks and internet services, including MQTT.
-								  
-									The microcontroller offers USB Type-C and Lipoly battery support, with built-in charging circuitry and active battery monitoring.</p>								  
-								  								  
-								<ul class="actions special">
-									<li><a href="https://www.adafruit.com/product/5000" target="_blank" class="button">Check it out on adafruit</a></li>
-								</ul>
-
-								<header class="minor">
-									<h2 style="text-align: left;" id="miscellaneous">Miscellaneous</h2>
-								</header>
-									
-									<p>I have compiled a list below with other required hardware to create this build. I purchased some of the STEMMA QT connectors from adafruit, some PC-PETG filament from overture, and M2 hardware to assemble the rest of the case and overall build.</p>
-								
-									<p>If I were to start this project over, and perhaps for the next iteration, I would have used an <a href="https://sensirion.com/products/catalog/SCD40/" target="_blank">SCD40</a> true CO2 sensor as well as a <a href="https://sensirion.com/products/catalog/SEN55/" target="_blank">SEN55</a> to encompass the entire project written in C++. This setup simplifies the amount of sensors dramatically, as well as the cost. Due to stock availability at the time of producing this project as well as not having acces to a soldering iron, I was unable to persue this avenue. I might create an addendum in the future with this hardware arrangement, however.</p>
-									<header class="minor">
-									<h3 style="text-align: left;" id="bom">Bill of Materials (BOM)</h3>
-								</header>
-									<div class="table-wrapper">
-										<table>
-											<thead>
-												<tr>
-													<th>Name</th>
-													<th>Description</th>
-													<th>Quantity</th>
-													<th>Price</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td><a href="https://www.adafruit.com/product/5000" target="_blank">ESP32-S2 Feather</a></td>
-													<td>ESP32-S2 Feather with STEMMA QT / Qwiic - 8MB Flash No PSRAM</td>
-													<td>1</td>
-													<td>$18.00</td>
-												</tr>
-												<tr>
-													<td><a href="https://www.adafruit.com/product/4632" target="_blank">PMSA003I</a></td>
-													<td>PM1.0, PM2.5 and PM10.0 concentration in both standard &amp; environmental units</td>
-													<td>1</td>
-													<td>$45.00</td>												</tr>
-												<tr>
-													<td><a href="https://www.adafruit.com/product/3709" target="_blank">SGP30</a></td>
-													<td>SGP30 Multi-Pixel Gas Sensor, a fully integrated MOX gas sensor</td>
-													<td>1</td>
-													<td>$18.00</td>												</tr>
-												<tr>
-													<td><a href="https://www.adafruit.com/product/3660" target="_blank">BME680</a></td>
-													<td>temperature, humidity, barometric pressure, and VOC gas sensor</td>
-													<td>1</td>
-													<td>$19.00</td>												</tr>
-												<tr>
-													<td><a href="https://www.adafruit.com/product/4399" target="_blank">50mm Long STEMMA Cable</a></td>
-													<td>4-wire cable 50mm long and fitted with JST SH female 4-pin connectors on both ends</td>
-													<td>3</td>
-													<td>$1.00</td>												</tr>
-													<tr>
-														<td><a href="https://www.amazon.com/dp/B075SY4YRD" target="_blank">PC-PETG Filament</a></td>
-														<td>PETG and Polycarbonate mix of 1.75mm 3D Printing filament</td>
-														<td>1</td>
-														<td>$24.00</td>												</tr>
-													<tr>
-														<td><a href="https://www.amazon.com/dp/B082XR52P1" target="_blank">Metric M2 Hardware Set</a></td>
-														<td>High Quality Stainless Steel 304 Phillips Pan Head Bolts Screws Nuts Flat Washers Kit</td>
-														<td>1</td>
-														<td>$10.00</td>												</tr>
-											</tbody>
-											<tfoot>
-												<tr>
-													<td colspan="3"></td>
-													<td>$137.00</td>
-												</tr>
-											</tfoot>
-										</table>
-									</div>
-								<header class="major">
-									<h2 style="text-align: center;" id="programming">Programming</h2>
-								</header>
-								<header class="minor">
-									<h3 style="text-align: left;" id="initialtesting">Initial Testing</h3>
-								</header>
-								<p><span class="image right"><img src="images/AQM/aqmnocase.jpg" alt="" /></span>After obtaining all of the necessary parts, I was able to test the functionality of all the components. I originally wanted to use the Arduino IDE to program in C++ as it was what I was familiar with from my other projects. However, my testing with all of the microcontrollers I had purchased from Adafruit would not upload arduino sketches reliably for testing. I narrowed it down to the serial commands in the setup part of the sketch causing the microcontroller to hang, but after many hours of tinkering I decided to use CircuitPython. While I had worked with traditional Python, CircuitPython was familiar in some aspects, and I was able to get started relatively easily after some research. The only functionality I sacrificed using CircuitPython was the Bosch BSEC2 library for calculating the Indoor Air Quality (IAQ) Index. The source code is not open source, so I was unable to compile a version for CircuitPython, although I tried.</p>
-
-									<p>Regardless, I imported all of the necessary libraries and hooked up all of the sensors to the ESP32-S2 via the STEMMA ports. Perhaps in a future project I will attempt creating my own circuit board, but the STEMMA ports provided an easy route for quickly prototyping sensors over I2C. A simple Python script verified all of the sensors were working and I was getting logical readouts on the serial connection. I used the Mu editor to program the controller and debug through the serial port.</p>
-
-									<p>From there, I attempted to connect the microcontroller to the internet and connect to an MQTT broker on my home server. I used Mosquitto MQTT via Node-RED to send a JSON file with the sensor data, battery voltage, and other metrics for debugging. I had some initial trouble getting Node-RED to parse the data coming in as a JSON. My biggest hurdle to overcome regarding this was to ensure the variable names in the JSON aligned with the message payload for the Node-RED parser. After that, Node-RED sends the message payload to an influxDB database I set up on the same Raspberry Pi for safe-keeping.</p>
-								
-									<p>For the final piece of the puzzle, I used grafana installed on a docker container to query the data from the InfluxDB database. I made a dashboard with multiple graphs to track each sensors data with relevant data grouped together for more convenient analysis.</p>
-								<header class="minor">
-									<h3 style="text-align: left;" id="additionalprogramminginformation">Additional Programming Information</h3>
-								</header>
-								<span class="image fit"><img src="images/AQM/serialdebug.png" alt="" /></span>
-									
-									<p>As stated above, I wanted to utilize the Bosh BSEC2 library. I found some information about compiling the BSEC library for CircuitPython, but I was unable to get it working. The versions I could compile no longer existed. As for right now the MOX sensor on the BME680 reads the raw resistance of the sensor. It is still useful for showing the trends as a lower resistance infers more VOCs present and vice versa.</p>
-
-									<p>I also tried to lengthen the life of this project and keep it powered off of a battery with intermittent charging. In retrospect, that was never going to work. The PMSA003I pulls up to 100 mA while it is measuring (per its datasheet), on top of the rest of the system, and the SGP30 needs over a minute awake to warm up before it will give a reliable reading. Deep sleep simply was not worth it: every wakeup meant burning more than a minute of battery just to throw the first readings away. The PMSA003I also only has an 8000 hour duty cycle, or about a year's worth of 24/7 operation. Since the monitor sits in one place and never needed to be battery powered anyway, I gave up on the battery and ran the sensor continuously off of the USB connection to assess the stability of the system (microcontroller, code, MQTT broker, and InfluxDB database) instead of trying to optimize the sensor's life. Every sensor I have built since is wired straight to the USB-C port for power.</p>
-							
-									<p>Also, by putting the microcontroller to sleep, the data displayed on Grafana was patchy and inconsistent due to needing to throw away minutes of data on each startup due to the sensors needing ample time to reach steady-state. I wanted clean graphs for my analysis, so I decided for the first iteration of this project to see how far this setup wpuld take me. The next iteration will use the two sensors i mentioned previously for a more optimized long term solution.</p>
-								
-									<header class="major">
-										<h2 style="text-align: center;" id="casedesign">Case Design</h2>
-									</header>
-								<span class="image fit"><img src="images/AQM/finishedcaseinside.png" alt="" /></span>
-									
-									<p>I wanted to keep the case design as minimal as possible. For me, the most practical solution to a problem is through simplicity. I wanted to keep the case as small as possible because it sits on my desk in my workspace. I initially found it a little tricky to lay out all of the parts in CAD with only reference dimensions to go off of. Luckily, Adafruit has STEP files of all of their products, so I was able to manipulate the sesnors in CAD fairly easily. I also took into consideration that all of the sensors need adequate access to the envirnment. I made slots in the side of the case to allow the PMSA003I to draw air in and exhaust it. I also created vent holes through the bottom of the case and lid to allow for passive airflow with the sensors mounted vertically.</p>
-
-									<p>Mounting both the BME680 and SGP30 vertically seemed like the most optimal configuration as the product data sheet warmed that dust and particles landing on these sensors could interfere with accurate sensor measurements. I installed a removable slotted wall in the middle of the case bisecting the PMSA003I and ESP32-S2 from the BME680 and SGP30. I wanted to isolate these two components as heat from the ESP32 could result in higher read temperatures from the BME680, and the SGP30 eCO2 and TVOC calculations are base doff the real-time temperature and humidity readings in the code. My forethought payed off, and the readings seem consistent outside of the case and inside.</p>
-								
-									<header class="major">
-										<h2 style="text-align: center;" id="grafana">Grafana</h2>
-									</header>
-									<p>Back when Generation 1 was the only monitor in the house, its dashboards lived in Grafana on the home server. I used to keep some public snapshots embedded here, but those are stale now, and the current analysis of the data lives in the <a href="#fielddata">field data section</a> below, where all three generations get compared head to head. I can also dig up data from when the original PMSA003I was still fully functioning and add it there as well.</p>
-
-								<!-- Generation 2 -->
-								<header class="major">
-									<h2 style="text-align: center;" id="gen2">Generation 2</h2>
-								</header>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen2-overview">Overview</h2>
-								</header>
-
-								<p>Generation 1 taught me a lot about what actually matters in an indoor air monitor. The SGP30's eCO2 estimate was neat, but at the end of the day it was still a guess. The PMSA003I had an 8000 hour duty cycle hanging over its head. And the whole Mosquitto, Node-RED, InfluxDB, Grafana pipeline on the Raspberry Pi was a lot of babysitting for one little sensor. So when I sat down to design the second generation, I went right back to the wishlist I had written at the end of the first write-up: a true CO2 sensor, a Sensirion SEN environmental node, and real C++ instead of CircuitPython. Generation 2 checks every box.</p>
-
-								<p>At the center of this build is the <a href="https://sensirion.com/products/catalog/SEN55" target="_blank">SEN55</a>, which handles particulate matter along with VOC and NOx indices, temperature, and humidity. Next to it sits an <a href="https://sensirion.com/products/catalog/SCD41" target="_blank">SCD41</a> for a genuine CO2 measurement. Both hang off of a Seeed Studio XIAO ESP32-C6 &mdash; a five dollar microcontroller &mdash; programmed with ESPHome and reporting straight into Home Assistant. No broker, no database server, no separate dashboard container. Just the sensor, the board, and Home Assistant.</p>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen2-components">Components</h2>
-								</header>
-								<header class="minor">
-									<h3 style="text-align: left;" id="sen55">SEN55</h3>
-								</header>
-								<p><span class="image right"><a href="https://sensirion.com/products/catalog/SEN55" target="_blank"><img src="images/AQM2/AQM2inside.jpg" alt="" /></a></span>I picked the SEN55 from Sensirion to be the heart of this build. In one package it measures particulate matter in four size bins (PM1.0, PM2.5, PM4, and PM10), a VOC index, a NOx index, temperature, and humidity, all over I2C. Per the datasheet it holds a &plusmn;10% accuracy on the particulate mass concentrations, &plusmn;0.45 &deg;C on temperature, &plusmn;4.5 %RH on humidity, and a rated lifetime of more than ten years &mdash; which is a whole lot more reassuring than the first generation's 8000 hour sensor. The integrated fan keeps room air moving across the laser optics, and the sensor runs automatic cleaning routines so the readings stay honest over the long haul.</p>
-
-									<p>Mounting matters with this sensor. I spent time with the <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank">SEN5x datasheet</a> and Sensirion's <a href="https://sensirion.com/resource/user_guide/sen5x/engineering_guidelines" target="_blank">engineering guidelines</a> to work out the optimal orientation and position so that the fan inlet and outlet both have an unobstructed path to room air, and the <a href="https://sensirion.com/resource/cad/sen5x" target="_blank">official STEP file</a> made it easy to build the case around the exact envelope of the module.</p>
-
-								<ul class="actions special">
-									<li><a href="https://sensirion.com/products/catalog/SEN55" target="_blank" class="button">Check it out on sensirion</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="scd41">SCD41</h3>
-								</header>
-								<p>The SCD41 is the true CO2 sensor I wished for in the first generation's write-up. It uses a photoacoustic NDIR principle to actually measure carbon dioxide instead of estimating it off of VOC readings, with an accuracy of &plusmn;(40 ppm + 5% of the reading) over a 400 to 5000 ppm range per the datasheet. It also has its own temperature and humidity sensors built right in, so I ended up with a second reference for those channels basically for free. I left automatic self-calibration enabled: the sensor assumes the lowest CO2 reading it sees over the course of about a week is fresh outdoor air and quietly re-zeroes itself to it, which keeps the whole thing honest without me ever touching it.</p>
-
-								<ul class="actions special">
-									<li><a href="https://sensirion.com/products/catalog/SCD41" target="_blank" class="button">Check it out on sensirion</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="xiao-c6">Seeed Studio XIAO ESP32-C6</h3>
-								</header>
-								<p><span class="image right"><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank"><img src="images/AQM/xiao-esp32-c6.jpg" alt="" /></a></span>For the brain of the operation, I went with the Seeed Studio XIAO ESP32-C6. For five dollars you get an ESP32-C6 with 2.4 GHz WiFi and a USB-C port &mdash; compare that to the eighteen dollar Feather in Generation 1 and the microcontroller became one of the cheapest parts of the whole build. There is plenty of headroom on it for a sensor loop, and it sips power compared to the old board.</p>
-
-								<p>Assembly took very limited soldering. A small <a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank">SEN55 adapter breakout</a> converts the sensor's tiny 1.0 mm JST connector to the STEMMA QT standard, and on the other end I soldered the small JST STEMMA connector to the XIAO to adapt it to the I2C bus. A couple of short STEMMA QT cables chain the SEN55, the SCD41, and the XIAO together. The whole monitor is powered from the XIAO's USB-C port.</p>
-
-								<ul class="actions special">
-									<li><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank" class="button">Check it out on seeed studio</a></li>
-								</ul>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen2-programming">Programming</h2>
-								</header>
-
-								<p>After the CircuitPython detour of the first generation, I wanted the firmware for this build to be boring. ESPHome delivers exactly that. The entire configuration lives in a single YAML file: the SEN5x and SCD4x sensor platforms are built into ESPHome, so I never wrote a line of sensor driver code. I simply declared the sensors, gave them names, and set the update interval to 300 seconds.</p>
-
-								<p>Moving to Home Assistant was about more than just this one sensor, though. I was adding a whole suite of sensors around the house, and I wanted everything reporting to one place. ESPHome lets me build my own sensors and have them show up in Home Assistant without having to manage an entire stack of brokers, databases, and dashboard containers the way Generation 1 did. It is just Home Assistant now, and every device I add after this one gets the same treatment for free. Over-the-air updates, a fallback captive portal, and the encrypted Home Assistant API all come with the framework too.</p>
-
-								<p>The VOC and NOx indices needed a little tuning to behave. The VOC algorithm has learning windows, a gating duration, and a gain factor that control how fast the index adapts to the environment, and I settled on values that keep the index stable in a quiet house while still responding to actual events like cooking or cleaning.</p>
-
-								<ul class="actions special">
-									<li><a href="code/AQM2/HAQ-SEN55-ESPHome.yaml.txt" target="_blank" class="button">Check out the code</a></li>
-								</ul>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen2-case">Case Design</h2>
-								</header>
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-6"><span class="image fit"><img src="images/AQM2/AQM2front45.jpg" alt="" /></span></div>
-										<div class="col-6"><span class="image fit"><img src="images/AQM2/AQM2back45.jpg" alt="" /></span></div>
-									</div>
-								</div>
-
-								<p>The Generation 2 case was designed in CAD around the STEP models of both sensors. The whole package measures 150 x 60 x 30 mm &mdash; a slim little box that keeps the fan inlet and exhaust of the SEN55 open to room air while the electronics stay tucked away inside. The case is printed in three pieces: a body, a top, and a bottom, held together with heat-set inserts and M3 hardware. The vents in the case give the temperature, humidity, and CO2 sensors plenty of passive airflow so they track the room instead of the inside of a box.</p>
-
-								<p>The full model is available to view interactively right in the browser, along with the files used to print it:</p>
-
-								<ul class="actions special">
-									<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Body.3mf" class="button">View the Gen 2 case in 3D</a></li>
-									<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Top-Body.3mf" class="button">Top body</a></li>
-									<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Bottom-Body.3mf" class="button">Bottom body</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="gen2-bom">Bill of Materials (BOM)</h3>
-								</header>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Name</th>
-												<th>Description</th>
-												<th>Quantity</th>
-												<th>Price</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><a href="https://sensirion.com/products/catalog/SEN55" target="_blank">SEN55-SDN-T</a></td>
-												<td>Air quality sensor with I2C output from Sensirion</td>
-												<td>1</td>
-												<td>$30.00</td>
-											</tr>
-											<tr>
-												<td><a href="https://sensirion.com/products/catalog/SCD41" target="_blank">SCD41</a></td>
-												<td>True CO2, temperature, and humidity sensor with I2C output</td>
-												<td>1</td>
-												<td>$50.00</td>
-											</tr>
-											<tr>
-												<td><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank">Seeed Studio XIAO ESP32-C6</a></td>
-												<td>Microcontroller</td>
-												<td>1</td>
-												<td>$5.00</td>
-											</tr>
-											<tr>
-												<td><a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank">SEN55 Adapter Breakout</a></td>
-												<td>Adapts the SEN55 connections to I2C via STEMMA QT / Qwiic</td>
-												<td>1</td>
-												<td>$4.50</td>
-											</tr>
-											<tr>
-												<td><a href="https://www.adafruit.com/product/4399" target="_blank">STEMMA QT / Qwiic JST SH 4-pin Cable</a></td>
-												<td>Connector cable</td>
-												<td>2</td>
-												<td>$1.00</td>
-											</tr>
-										</tbody>
-										<tfoot>
-											<tr>
-												<td colspan="3"></td>
-												<td>$91.50</td>
-											</tr>
-										</tfoot>
-									</table>
-								</div>
-
-								<!-- Generation 3 -->
-								<header class="major">
-									<h2 style="text-align: center;" id="gen3">Generation 3</h2>
-								</header>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen3-overview">Overview</h2>
-								</header>
-
-								<p>Generation 3 is what happens when a year of data tells you exactly which measurements you actually use. The <a href="https://sensirion.com/products/catalog/SEN66" target="_blank">SEN66</a> folds everything I needed two separate sensors for in Generation 2 into a single module: particulate matter, VOC and NOx indices, temperature, humidity, and now a true CO2 measurement built right in. The entire bill of materials collapsed down to two line items &mdash; one sensor and one microcontroller.</p>
-
-								<p>It did not just get simpler, it got faster. The update interval on this one is set to 15 seconds, so the readings come in quick enough to watch things happen in real time &mdash; open a window, cook dinner, or run the vacuum and the effect shows up in Home Assistant within seconds. I also skipped the adapter breakout this time around and soldered the SEN66's wires straight to the XIAO, which knocked another line item off the BOM and made the whole package that much smaller. This is the build that has been running day in and day out for well over a year now.</p>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen3-components">Components</h2>
-								</header>
-								<header class="minor">
-									<h3 style="text-align: left;" id="sen66">SEN66</h3>
-								</header>
-								<p><span class="image right"><a href="https://sensirion.com/products/catalog/SEN66" target="_blank"><img src="images/AQM3/AQM3inside.jpg" alt="" /></a></span>The SEN66 is the all-in-one evolution of the SEN5x line. Everything the SEN55 does &mdash; PM1.0, PM2.5, PM4, PM10, VOC, NOx, temperature, and humidity &mdash; plus an integrated CO2 sensor in the same package. The <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank">SEN6x datasheet</a> carries over the same claims as the SEN5x family: &plusmn;10% on the particulate mass concentrations, &plusmn;0.45 &deg;C on temperature, &plusmn;4.5 %RH on humidity, a ten year plus lifetime, and the added CO2 measurement is rated at &plusmn;(30 ppm + 3% of the reading). No breakout boards, no sensor daisy chaining, no second I2C address to keep track of. One sensor, four wires, done.</p>
-
-								<p>Just like with the SEN55, I leaned on the <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank">SEN6x datasheet</a> and the <a href="https://sensirion.com/media/documents/0005B7E5/68C12844/PS_CD_SEN6x_D1.STEP" target="_blank">official STEP file</a> to work out the mounting orientation and design the enclosure around the exact outline of the module.</p>
-
-								<ul class="actions special">
-									<li><a href="https://sensirion.com/products/catalog/SEN66" target="_blank" class="button">Check it out on sensirion</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;">Seeed Studio XIAO ESP32-C6</h3>
-								</header>
-								<p>The same five dollar <a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank">XIAO ESP32-C6</a> from Generation 2 carries over unchanged. It has more than enough horsepower for a 15 second sensor loop, and keeping the microcontroller identical between generations meant the firmware and the tooling carried over too.</p>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen3-programming">Programming</h2>
-								</header>
-
-								<p>The firmware is ESPHome again, and it is even shorter this time. The <code>sen6x</code> platform with the <code>SEN66</code> type declares every channel the sensor offers in one block &mdash; PM, NOx, CO2, temperature, humidity, and VOC &mdash; and the update interval is set to 15 seconds. The XIAO's i2c bus, the Home Assistant API, over-the-air updates, and the captive portal fallback are all straight from the same configuration pattern as Generation 2.</p>
-
-								<ul class="actions special">
-									<li><a href="code/AQM3/AQ-SEN66-ESPHome.yaml.txt" target="_blank" class="button">Check out the code</a></li>
-								</ul>
-
-								<header class="major">
-									<h2 style="text-align: center;" id="gen3-case">Case Design</h2>
-								</header>
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-6"><span class="image fit"><img src="images/AQM3/AQM3front45.jpg" alt="" /></span></div>
-										<div class="col-6"><span class="image fit"><img src="images/AQM3/AQM3back45.jpg" alt="" /></span></div>
-									</div>
-								</div>
-
-								<p>The Generation 3 case is the simplest of the three. With only one sensor and one board inside, the enclosure reduces to a body with a small retainer that pins the XIAO in place, held together with heat-set inserts and M3 hardware &mdash; and at roughly 75 x 46 x 61 mm, it is considerably more compact than the Generation 2 box, since a single integrated sensor leaves far less to house. The case does not need the vent holes the earlier generation relied on either, because everything is housed inside the SEN66 module itself. The model files are available below, viewable in 3D right in the browser:</p>
-
-								<ul class="actions special">
-									<li><a href="viewer.html?model=models/AQM3/AQM3-Body.3mf" class="button">View the Gen 3 case in 3D</a></li>
-									<li><a href="viewer.html?model=models/AQM3/AQM3-ESP32-Retainer.3mf" class="button">ESP32 retainer</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="gen3-data">Initial Data</h3>
-								</header>
-								<p>When the SEN66 first went online, I put together an initial data report with the first readings, 3D renders of the enclosure, and photos of the finished build. A few pages from that report are below, and the full document is available as a PDF:</p>
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page6.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page7.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page8.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page9.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page10.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page11.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page12.jpg" alt="" /></span></div>
-										<div class="col-4"><span class="image fit"><img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page13.jpg" alt="" /></span></div>
-									</div>
-								</div>
-								<ul class="actions special">
-									<li><a href="docs/AQM3-Initial-Data.pdf" target="_blank" class="button">Download the full report (PDF)</a></li>
-								</ul>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="gen3-bom">Bill of Materials (BOM)</h3>
-								</header>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Name</th>
-												<th>Description</th>
-												<th>Quantity</th>
-												<th>Price</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><a href="https://sensirion.com/products/catalog/SEN66" target="_blank">SEN66-SIN-T</a></td>
-												<td>All-in-one air quality sensor with I2C output from Sensirion</td>
-												<td>1</td>
-												<td>$59.00</td>
-											</tr>
-											<tr>
-												<td><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank">Seeed Studio XIAO ESP32-C6</a></td>
-												<td>Microcontroller</td>
-												<td>1</td>
-												<td>$5.00</td>
-											</tr>
-										</tbody>
-										<tfoot>
-											<tr>
-												<td colspan="3"></td>
-												<td>$64.00</td>
-											</tr>
-										</tfoot>
-									</table>
-								</div>
-
-								<!-- Generation comparison -->
-								<header class="major">
-									<h2 style="text-align: center;" id="comparison">Generation Comparison</h2>
-								</header>
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-6"><span class="image fit"><img src="images/AQM2/AQM123sidebyside.jpg" alt="" /></span></div>
-										<div class="col-6"><span class="image fit"><img src="images/AQM2/aqm123topdown.jpg" alt="" /></span></div>
-									</div>
-								</div>
-								<p>All three generations, side by side. Each iteration removed parts, added capability, and moved more of the complexity into software &mdash; which is exactly the direction a project like this should move.</p>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="pricing">Component Pricing</h3>
-								</header>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Component Role</th>
-												<th>Generation 1</th>
-												<th>Generation 2</th>
-												<th>Generation 3</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Microcontroller</td>
-												<td>ESP32-S2 Feather &mdash; $18.00</td>
-												<td>XIAO ESP32-C6 &mdash; $5.00</td>
-												<td>XIAO ESP32-C6 &mdash; $5.00</td>
-											</tr>
-											<tr>
-												<td>Particulate matter</td>
-												<td>PMSA003I &mdash; $45.00</td>
-												<td>SEN55 &mdash; $30.00</td>
-												<td>SEN66 &mdash; $59.00 (includes everything below)</td>
-											</tr>
-											<tr>
-												<td>CO2</td>
-												<td>SGP30 eCO2 estimate &mdash; $18.00</td>
-												<td>SCD41 true CO2 &mdash; $50.00</td>
-												<td>Integrated true CO2 &mdash; included</td>
-											</tr>
-											<tr>
-												<td>VOC / temp / humidity</td>
-												<td>BME680 &mdash; $19.00</td>
-												<td>Included in SEN55 + SCD41</td>
-												<td>Integrated &mdash; included</td>
-											</tr>
-											<tr>
-												<td>Connectors, case &amp; hardware</td>
-												<td>$3.00 cables, $24.00 filament, $10.00 M2 hardware</td>
-												<td>$4.50 adapter, $2.00 cables</td>
-												<td>&mdash;</td>
-											</tr>
-										</tbody>
-										<tfoot>
-											<tr>
-												<td>Total</td>
-												<td>$137.00</td>
-												<td>$91.50</td>
-												<td>$64.00</td>
-											</tr>
-										</tfoot>
-									</table>
-								</div>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="capability">Capability</h3>
-								</header>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Capability</th>
-												<th>Generation 1</th>
-												<th>Generation 2</th>
-												<th>Generation 3</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Particulate matter</td>
-												<td>PM1.0 / PM2.5 / PM10 (PMSA003I &mdash; now failed)</td>
-												<td>PM1.0 / PM2.5 / PM4 / PM10 (SEN55)</td>
-												<td>PM1.0 / PM2.5 / PM4 / PM10 (SEN66)</td>
-											</tr>
-											<tr>
-												<td>CO2</td>
-												<td>eCO2 estimate from VOC (SGP30)</td>
-												<td>True CO2 (SCD41)</td>
-												<td>True CO2 (integrated)</td>
-											</tr>
-											<tr>
-												<td>VOC</td>
-												<td>Raw MOX resistance + SGP30 TVOC</td>
-												<td>VOC index + NOx index</td>
-												<td>VOC index + NOx index</td>
-											</tr>
-											<tr>
-												<td>Temperature / humidity</td>
-												<td>BME680</td>
-												<td>SEN55 + SCD41 (two sources)</td>
-												<td>SEN66</td>
-											</tr>
-											<tr>
-												<td>Update rate</td>
-												<td>Continuous with sleep-mode issues</td>
-												<td>5 minutes</td>
-												<td>15 seconds</td>
-											</tr>
-											<tr>
-												<td>Platform</td>
-												<td>CircuitPython &rarr; MQTT &rarr; InfluxDB &rarr; Grafana</td>
-												<td>ESPHome &rarr; Home Assistant</td>
-												<td>ESPHome &rarr; Home Assistant</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="ease">Ease of Build</h3>
-								</header>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Aspect</th>
-												<th>Generation 1</th>
-												<th>Generation 2</th>
-												<th>Generation 3</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Soldering</td>
-												<td>None (all STEMMA QT)</td>
-												<td>Limited &mdash; soldered the JST STEMMA connector to the XIAO to adapt to I2C</td>
-												<td>Yes &mdash; SEN66 wired straight to the XIAO (drops the adapter board from the BOM)</td>
-											</tr>
-											<tr>
-												<td>Power</td>
-												<td>Battery experiments abandoned &mdash; the PM sensor draw made deep sleep impractical, so it ran from USB</td>
-												<td>USB-C port on the XIAO</td>
-												<td>USB-C port on the XIAO</td>
-											</tr>
-											<tr>
-												<td>Firmware</td>
-												<td>CircuitPython, custom drivers, calibration code</td>
-												<td>ESPHome YAML, no driver code</td>
-												<td>ESPHome YAML, even less of it</td>
-											</tr>
-											<tr>
-												<td>Server stack</td>
-												<td>Mosquitto + Node-RED + InfluxDB + Docker + Grafana on a Raspberry Pi</td>
-												<td>Home Assistant only</td>
-												<td>Home Assistant only</td>
-											</tr>
-											<tr>
-												<td>Case</td>
-												<td>Custom 3D print, multi-piece with hardware</td>
-												<td>Custom 3D print, three pieces</td>
-												<td>Custom 3D print, body + retainer</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<header class="minor">
-									<h3 style="text-align: left;" id="fielddata">Field Data: AQM2 vs AQM3</h3>
-								</header>
-								<p>With both newer generations reporting into Home Assistant, I can finally answer the question this whole project has been building toward: do the builds agree with each other? The charts below compare Generation 2 (SEN55 + SCD41) against Generation 3 (SEN66) over the same history exported from Home Assistant.</p>
-
-								<p>Two things to keep in mind when reading them. First, the monitors do not live in the same room, so they are not measuring identical air &mdash; some scatter is expected simply from placement. Second, you can actually see the air conditioning cycle in the temperature data, with a daily swing of roughly 3 to 4 &deg;F as the system turns on and off. Both devices have been running like this for well over a year without issue.</p>
-
-								<p>Even with those caveats, the agreement is excellent:</p>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Channel</th>
-												<th>Paired points</th>
-												<th>Mean difference</th>
-												<th>Typical spread (&plusmn;1 std)</th>
-												<th>RMSE</th>
-												<th>Correlation</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Temperature</td>
-												<td>257</td>
-												<td>0.00 &deg;F</td>
-												<td>&plusmn;1.05 &deg;F</td>
-												<td>1.04 &deg;F</td>
-												<td>0.75</td>
-											</tr>
-											<tr>
-												<td>CO2</td>
-												<td>257</td>
-												<td>&minus;22.3 ppm (SCD41 reads lower)</td>
-												<td>&plusmn;26.6 ppm</td>
-												<td>34.6 ppm</td>
-												<td>0.89</td>
-											</tr>
-											<tr>
-												<td>VOC index</td>
-												<td>257</td>
-												<td>&minus;2.0</td>
-												<td>&plusmn;27.2</td>
-												<td>27.2</td>
-												<td>0.92</td>
-											</tr>
-											<tr>
-												<td>Humidity</td>
-												<td>284</td>
-												<td>+3.5 %RH (SEN55 reads higher)</td>
-												<td>&plusmn;1.10 %RH</td>
-												<td>3.71 %RH</td>
-												<td>0.85</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<p>Temperature agrees to within 0.002 &deg;F on average across 257 hours of data &mdash; the two sensors are effectively measuring the same house. CO2 tracks beautifully with a correlation of 0.89, with the SCD41 reading a consistent 22 ppm lower than the SEN66. The VOC indices move together with a correlation of 0.92. Humidity carries a small offset of about 3.5 %RH but tracks the same ups and downs. For two different sensor families in two different rooms, that is a very strong endorsement of both.</p>
-
-								<p>It is also worth checking these numbers against what the manufacturers actually promise. The <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank">SEN5x</a> and <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank">SEN6x</a> datasheets and the SCD4x datasheet spell out the accuracy of every channel, and the observed differences between the two builds land well inside the combined tolerances:</p>
-								<div class="table-wrapper">
-									<table>
-										<thead>
-											<tr>
-												<th>Channel</th>
-												<th>Observed difference</th>
-												<th>Claimed accuracy per sensor</th>
-												<th>Combined worst case</th>
-												<th>Within spec?</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Temperature</td>
-												<td>0.00 &deg;F mean, &plusmn;1.05 &deg;F spread</td>
-												<td>&plusmn;0.45 &deg;C (&plusmn;0.81 &deg;F)</td>
-												<td>&plusmn;1.62 &deg;F</td>
-												<td>Yes</td>
-											</tr>
-											<tr>
-												<td>CO2</td>
-												<td>&minus;22.3 ppm mean, &plusmn;26.6 ppm spread</td>
-												<td>SCD41: &plusmn;(40 ppm + 5% of reading) &asymp; 68 ppm at 560 ppm<br />SEN66: &plusmn;(30 ppm + 3% of reading) &asymp; 47 ppm at 580 ppm</td>
-												<td>&asymp; &plusmn;115 ppm</td>
-												<td>Yes</td>
-											</tr>
-											<tr>
-												<td>Humidity</td>
-												<td>+3.5 %RH mean, &plusmn;1.10 %RH spread</td>
-												<td>&plusmn;4.5 %RH each</td>
-												<td>&plusmn;9 %RH</td>
-												<td>Yes</td>
-											</tr>
-											<tr>
-												<td>VOC index</td>
-												<td>r = 0.92</td>
-												<td>Relative index (1&ndash;500), no absolute accuracy claim</td>
-												<td>&mdash;</td>
-												<td>Strong tracking</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-12"><h4 style="text-align: center;">Temperature &mdash; hourly, Oct 1&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-temp"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">CO2 &mdash; hourly, Oct 1&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-co2"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">VOC index &mdash; hourly, Oct 1&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-voc"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">Humidity &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-humidity"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">PM1.0 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm1"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">PM2.5 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm25"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">PM4 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm4"></canvas></div></div>
-										<div class="col-12"><h4 style="text-align: center;">PM10 &mdash; 5 minute, Oct 10&ndash;11</h4><div style="position: relative; height: 320px;"><canvas id="chart-pm10"></canvas></div></div>
-									</div>
-								</div>
-
-								<p>The particulate charts above are the most telling of the bunch. They show every size bin the sensors report, all three generations in the same 25 hour window. Generation 1's PMSA003I &mdash; dead after years of service &mdash; sits pinned at roughly 208 &micro;g/m&sup3; on PM2.5 and PM10, high and mostly constant, exactly what a failed laser-scattering sensor looks like. Meanwhile the SEN55 and the SEN66 report clean indoor air in the same window, usually under a few &micro;g/m&sup3;. Note that Generation 1 never had a PM4 channel (the PMSA003I only measured three bins), so that chart shows just the two newer generations. It is a perfect illustration of why the newer builds moved to the SEN family in the first place, and it is the chart that officially retires Generation 1's particulate data.</p>
-
-							</section>
-					</div>
-					
-
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; 2025</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-			<script>
-				(function () {
-					if (!window.Chart) return;
-					var colors = {
-						aqm2: '#4e91cd',
-						aqm3: '#e2768e',
-						gen1: '#9a9a9a'
-					};
-					function lineOpts(yLabel) {
-						return {
-							responsive: true,
-							maintainAspectRatio: false,
-							interaction: { mode: 'index', intersect: false },
-							plugins: { legend: { labels: { color: '#cccccc' } } },
-							scales: {
-								x: { ticks: { color: '#888888', maxTicksLimit: 8, maxRotation: 0 } },
-								y: { title: { display: true, text: yLabel, color: '#888888' }, ticks: { color: '#888888' }, grid: { color: 'rgba(255,255,255,0.06)' } }
-							}
-						};
-					}
-					function mk(id, data, series, yLabel, dashGen1) {
-						var el = document.getElementById(id);
-						if (!el) return;
-						var cfg = {
-							type: 'line',
-							data: {
-								labels: data.labels,
-								datasets: series.map(function (s) {
-									var ds = {
-										label: s.label,
-										data: data.series ? data.series[s.key] : data[s.key],
-										borderColor: colors[s.key] || '#cccccc',
-										backgroundColor: colors[s.key] || '#cccccc',
-										borderWidth: s.key === 'gen1' ? 2 : 1.5,
-										pointRadius: 0,
-										tension: 0.3,
-										fill: false
-									};
-									if (dashGen1 && s.key === 'gen1') ds.borderDash = [6, 4];
-									return ds;
-								})
-							},
-							options: lineOpts(yLabel)
-						};
-						new Chart(el, cfg);
-					}
-					document.addEventListener('DOMContentLoaded', function () {
-						fetch('assets/data/aqm-charts.json')
-							.then(function (r) { return r.json(); })
-							.then(function (d) {
-								mk('chart-temp', d.temp_sen55, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b0F');
-								mk('chart-co2', d.co2, [{ key: 'aqm2', label: 'AQM2 - SCD41' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'CO2 (ppm)');
-								mk('chart-voc', d.voc, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'VOC index');
-								mk('chart-humidity', d.humidity, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '%RH');
-								mk('chart-pm1', d.pm1, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
-								mk('chart-pm25', d.pm25, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
-								mk('chart-pm4', d.pm4, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3');
-								mk('chart-pm10', d.pm10, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
-							})
-							.catch(function (err) {
-								var el = document.getElementById('chart-temp');
-								if (el && el.parentNode) {
-									var note = document.createElement('p');
-									note.style.textAlign = 'center';
-									note.textContent = 'The comparison charts could not be loaded in this browser.';
-									el.parentNode.appendChild(note);
-								}
-							});
-					});
-				})();
-			</script>
-
-	</body>
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Air Quality Monitor Comparison</title>
+  <meta name="description" content="All three generations of a custom indoor air quality monitor compared: pricing, capability, ease of build, and field data." />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
+
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>Air Quality Monitor Comparison</h1>
+      </header>
+
+      <p>All three generations, side by side. Each iteration removed parts, added capability, and moved more of the complexity into software &mdash; which is exactly the direction a project like this should move.</p>
+
+      <div class="photos">
+        <img src="images/AQM2/AQM123sidebyside.jpg" alt="All three air quality monitors side by side" />
+        <img src="images/AQM2/aqm123topdown.jpg" alt="Top down view of all three air quality monitors" />
+      </div>
+
+      <h2>The Generations</h2>
+      <ul>
+        <li><a href="aqm-v1.html">Air Quality Monitor V1</a> &mdash; the original: ESP32-S2, PMSA003I, SGP30, and BME680 over MQTT to Grafana.</li>
+        <li><a href="aqm-v2.html">Air Quality Monitor V2</a> &mdash; SEN55 + SCD41 on a XIAO ESP32-C6, running ESPHome in Home Assistant.</li>
+        <li><a href="aqm-v3.html">Air Quality Monitor V3</a> &mdash; the SEN66 all-in-one build with 15 second updates.</li>
+      </ul>
+
+      <h2>Component Pricing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Component Role</th>
+              <th>Generation 1</th>
+              <th>Generation 2</th>
+              <th>Generation 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Microcontroller</td>
+              <td>ESP32-S2 Feather &mdash; $18.00</td>
+              <td>XIAO ESP32-C6 &mdash; $5.00</td>
+              <td>XIAO ESP32-C6 &mdash; $5.00</td>
+            </tr>
+            <tr>
+              <td>Particulate matter</td>
+              <td>PMSA003I &mdash; $45.00</td>
+              <td>SEN55 &mdash; $30.00</td>
+              <td>SEN66 &mdash; $59.00 (includes everything below)</td>
+            </tr>
+            <tr>
+              <td>CO2</td>
+              <td>SGP30 eCO2 estimate &mdash; $18.00</td>
+              <td>SCD41 true CO2 &mdash; $50.00</td>
+              <td>Integrated true CO2 &mdash; included</td>
+            </tr>
+            <tr>
+              <td>VOC / temp / humidity</td>
+              <td>BME680 &mdash; $19.00</td>
+              <td>Included in SEN55 + SCD41</td>
+              <td>Integrated &mdash; included</td>
+            </tr>
+            <tr>
+              <td>Connectors, case &amp; hardware</td>
+              <td>$3.00 cables, $24.00 filament, $10.00 M2 hardware</td>
+              <td>$4.50 adapter, $2.00 cables</td>
+              <td>&mdash;</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <th>$137.00</th>
+              <th>$91.50</th>
+              <th>$64.00</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <h2>Capability</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Generation 1</th>
+              <th>Generation 2</th>
+              <th>Generation 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Particulate matter</td>
+              <td>PM1.0 / PM2.5 / PM10 (PMSA003I &mdash; now failed)</td>
+              <td>PM1.0 / PM2.5 / PM4 / PM10 (SEN55)</td>
+              <td>PM1.0 / PM2.5 / PM4 / PM10 (SEN66)</td>
+            </tr>
+            <tr>
+              <td>CO2</td>
+              <td>eCO2 estimate from VOC (SGP30)</td>
+              <td>True CO2 (SCD41)</td>
+              <td>True CO2 (integrated)</td>
+            </tr>
+            <tr>
+              <td>VOC</td>
+              <td>Raw MOX resistance + SGP30 TVOC</td>
+              <td>VOC index + NOx index</td>
+              <td>VOC index + NOx index</td>
+            </tr>
+            <tr>
+              <td>Temperature / humidity</td>
+              <td>BME680</td>
+              <td>SEN55 + SCD41 (two sources)</td>
+              <td>SEN66</td>
+            </tr>
+            <tr>
+              <td>Update rate</td>
+              <td>Continuous with sleep-mode issues</td>
+              <td>5 minutes</td>
+              <td>15 seconds</td>
+            </tr>
+            <tr>
+              <td>Platform</td>
+              <td>CircuitPython &rarr; MQTT &rarr; InfluxDB &rarr; Grafana</td>
+              <td>ESPHome &rarr; Home Assistant</td>
+              <td>ESPHome &rarr; Home Assistant</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Ease of Build</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>Generation 1</th>
+              <th>Generation 2</th>
+              <th>Generation 3</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Soldering</td>
+              <td>None (all STEMMA QT)</td>
+              <td>Limited &mdash; soldered the JST STEMMA connector to the XIAO to adapt to I2C</td>
+              <td>Yes &mdash; SEN66 wired straight to the XIAO (drops the adapter board from the BOM)</td>
+            </tr>
+            <tr>
+              <td>Power</td>
+              <td>Battery experiments abandoned &mdash; the PM sensor draw made deep sleep impractical, so it ran from USB</td>
+              <td>USB-C port on the XIAO</td>
+              <td>USB-C port on the XIAO</td>
+            </tr>
+            <tr>
+              <td>Firmware</td>
+              <td>CircuitPython, custom drivers, calibration code</td>
+              <td>ESPHome YAML, no driver code</td>
+              <td>ESPHome YAML, even less of it</td>
+            </tr>
+            <tr>
+              <td>Server stack</td>
+              <td>Mosquitto + Node-RED + InfluxDB + Docker + Grafana on a Raspberry Pi</td>
+              <td>Home Assistant only</td>
+              <td>Home Assistant only</td>
+            </tr>
+            <tr>
+              <td>Case</td>
+              <td>Custom 3D print, multi-piece with hardware</td>
+              <td>Custom 3D print, three pieces</td>
+              <td>Custom 3D print, body + retainer</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Field Data: AQM2 vs AQM3</h2>
+
+      <p>With both newer generations reporting into Home Assistant, I can finally answer the question this whole project has been building toward: do the builds agree with each other? The charts below compare Generation 2 (SEN55 + SCD41) against Generation 3 (SEN66) over the same history exported from Home Assistant.</p>
+
+      <p>Two things to keep in mind when reading them. First, the monitors do not live in the same room, so they are not measuring identical air &mdash; some scatter is expected simply from placement. Second, you can actually see the air conditioning cycle in the temperature data, with a daily swing of roughly 3 to 4 &deg;F as the system turns on and off. Both devices have been running like this for well over a year without issue.</p>
+
+      <p>Even with those caveats, the agreement is excellent:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th>Paired points</th>
+              <th>Mean difference</th>
+              <th>Typical spread (&plusmn;1 std)</th>
+              <th>RMSE</th>
+              <th>Correlation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Temperature</td>
+              <td>257</td>
+              <td>0.00 &deg;F</td>
+              <td>&plusmn;1.05 &deg;F</td>
+              <td>1.04 &deg;F</td>
+              <td>0.75</td>
+            </tr>
+            <tr>
+              <td>CO2</td>
+              <td>257</td>
+              <td>&minus;22.3 ppm (SCD41 reads lower)</td>
+              <td>&plusmn;26.6 ppm</td>
+              <td>34.6 ppm</td>
+              <td>0.89</td>
+            </tr>
+            <tr>
+              <td>VOC index</td>
+              <td>257</td>
+              <td>&minus;2.0</td>
+              <td>&plusmn;27.2</td>
+              <td>27.2</td>
+              <td>0.92</td>
+            </tr>
+            <tr>
+              <td>Humidity</td>
+              <td>284</td>
+              <td>+3.5 %RH (SEN55 reads higher)</td>
+              <td>&plusmn;1.10 %RH</td>
+              <td>3.71 %RH</td>
+              <td>0.85</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Temperature agrees to within 0.002 &deg;F on average across 257 hours of data &mdash; the two sensors are effectively measuring the same house. CO2 tracks beautifully with a correlation of 0.89, with the SCD41 reading a consistent 22 ppm lower than the SEN66. The VOC indices move together with a correlation of 0.92. Humidity carries a small offset of about 3.5 %RH but tracks the same ups and downs. For two different sensor families in two different rooms, that is a very strong endorsement of both.</p>
+
+      <p>It is also worth checking these numbers against what the manufacturers actually promise. The <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank" rel="noopener noreferrer">SEN5x</a> and <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank" rel="noopener noreferrer">SEN6x</a> datasheets and the SCD4x datasheet spell out the accuracy of every channel, and the observed differences between the two builds land well inside the combined tolerances:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th>Observed difference</th>
+              <th>Claimed accuracy per sensor</th>
+              <th>Combined worst case</th>
+              <th>Within spec?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Temperature</td>
+              <td>0.00 &deg;F mean, &plusmn;1.05 &deg;F spread</td>
+              <td>&plusmn;0.45 &deg;C (&plusmn;0.81 &deg;F)</td>
+              <td>&plusmn;1.62 &deg;F</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>CO2</td>
+              <td>&minus;22.3 ppm mean, &plusmn;26.6 ppm spread</td>
+              <td>SCD41: &plusmn;(40 ppm + 5% of reading) &asymp; 68 ppm at 560 ppm<br />SEN66: &plusmn;(30 ppm + 3% of reading) &asymp; 47 ppm at 580 ppm</td>
+              <td>&asymp; &plusmn;115 ppm</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>Humidity</td>
+              <td>+3.5 %RH mean, &plusmn;1.10 %RH spread</td>
+              <td>&plusmn;4.5 %RH each</td>
+              <td>&plusmn;9 %RH</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>VOC index</td>
+              <td>r = 0.92</td>
+              <td>Relative index (1&ndash;500), no absolute accuracy claim</td>
+              <td>&mdash;</td>
+              <td>Strong tracking</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Temperature &mdash; hourly, Oct 1&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-temp"></canvas></div>
+      <h3>CO2 &mdash; hourly, Oct 1&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-co2"></canvas></div>
+      <h3>VOC index &mdash; hourly, Oct 1&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-voc"></canvas></div>
+      <h3>Humidity &mdash; 5 minute, Oct 10&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-humidity"></canvas></div>
+      <h3>PM1.0 &mdash; 5 minute, Oct 10&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-pm1"></canvas></div>
+      <h3>PM2.5 &mdash; 5 minute, Oct 10&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-pm25"></canvas></div>
+      <h3>PM4 &mdash; 5 minute, Oct 10&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-pm4"></canvas></div>
+      <h3>PM10 &mdash; 5 minute, Oct 10&ndash;11</h3>
+      <div class="chart-box"><canvas id="chart-pm10"></canvas></div>
+
+      <p>The particulate charts above are the most telling of the bunch. They show every size bin the sensors report, all three generations in the same 25 hour window. Generation 1's PMSA003I &mdash; dead after years of service &mdash; sits pinned at roughly 208 &micro;g/m&sup3; on PM2.5 and PM10, high and mostly constant, exactly what a failed laser-scattering sensor looks like. Meanwhile the SEN55 and the SEN66 report clean indoor air in the same window, usually under a few &micro;g/m&sup3;. Note that Generation 1 never had a PM4 channel (the PMSA003I only measured three bins), so that chart shows just the two newer generations. It is a perfect illustration of why the newer builds moved to the SEN family in the first place, and it is the chart that officially retires Generation 1's particulate data.</p>
+
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
+
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script>
+    (function () {
+      if (!window.Chart) return;
+      var colors = {
+        aqm2: '#4e91cd',
+        aqm3: '#e2768e',
+        gen1: '#9a9a9a'
+      };
+      function lineOpts(yLabel) {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { labels: { color: '#767676' } } },
+          scales: {
+            x: { ticks: { color: '#767676', maxTicksLimit: 8, maxRotation: 0 }, grid: { color: 'rgba(128,128,128,0.12)' } },
+            y: { title: { display: true, text: yLabel, color: '#767676' }, ticks: { color: '#767676' }, grid: { color: 'rgba(128,128,128,0.12)' } }
+          }
+        };
+      }
+      function mk(id, data, series, yLabel, dashGen1) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var cfg = {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: series.map(function (s) {
+              var ds = {
+                label: s.label,
+                data: data.series ? data.series[s.key] : data[s.key],
+                borderColor: colors[s.key] || '#cccccc',
+                backgroundColor: colors[s.key] || '#cccccc',
+                borderWidth: s.key === 'gen1' ? 2 : 1.5,
+                pointRadius: 0,
+                tension: 0.3,
+                fill: false
+              };
+              if (dashGen1 && s.key === 'gen1') ds.borderDash = [6, 4];
+              return ds;
+            })
+          },
+          options: lineOpts(yLabel)
+        };
+        new Chart(el, cfg);
+      }
+      document.addEventListener('DOMContentLoaded', function () {
+        fetch('assets/data/aqm-charts.json')
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            mk('chart-temp', d.temp_sen55, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b0F');
+            mk('chart-co2', d.co2, [{ key: 'aqm2', label: 'AQM2 - SCD41' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'CO2 (ppm)');
+            mk('chart-voc', d.voc, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], 'VOC index');
+            mk('chart-humidity', d.humidity, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '%RH');
+            mk('chart-pm1', d.pm1, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
+            mk('chart-pm25', d.pm25, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
+            mk('chart-pm4', d.pm4, [{ key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3');
+            mk('chart-pm10', d.pm10, [{ key: 'gen1', label: 'Gen 1 - PMSA003I (failed)' }, { key: 'aqm2', label: 'AQM2 - SEN55' }, { key: 'aqm3', label: 'AQM3 - SEN66' }], '\u00b5g/m\u00b3', true);
+          })
+          .catch(function (err) {
+            var el = document.getElementById('chart-temp');
+            if (el && el.parentNode) {
+              var note = document.createElement('p');
+              note.style.textAlign = 'center';
+              note.textContent = 'The comparison charts could not be loaded in this browser.';
+              el.parentNode.appendChild(note);
+            }
+          });
+      });
+    })();
+  </script>
+</body>
 </html>

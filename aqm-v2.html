@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Air Quality Monitor V2</title>
+  <meta name="description" content="The second generation air quality monitor: Sensirion SEN55 and SCD41 sensors on a XIAO ESP32-C6, running ESPHome in Home Assistant." />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
+
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="aqm.html">comparison</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>Air Quality Monitor V2</h1>
+      </header>
+
+      <p><img src="images/AQM2/AQM2front.jpg" alt="Generation 2 air quality monitor" /></p>
+
+      <h2>Overview</h2>
+
+      <p>Generation 1 taught me a lot about what actually matters in an indoor air monitor. The SGP30's eCO2 estimate was neat, but at the end of the day it was still a guess. The PMSA003I had an 8000 hour duty cycle hanging over its head. And the whole Mosquitto, Node-RED, InfluxDB, Grafana pipeline on the Raspberry Pi was a lot of babysitting for one little sensor. So when I sat down to design the second generation, I went right back to the wishlist I had written at the end of the first write-up: a true CO2 sensor, a Sensirion SEN environmental node, and real C++ instead of CircuitPython. Generation 2 checks every box.</p>
+
+      <p>At the center of this build is the <a href="https://sensirion.com/products/catalog/SEN55" target="_blank" rel="noopener noreferrer">SEN55</a>, which handles particulate matter along with VOC and NOx indices, temperature, and humidity. Next to it sits an <a href="https://sensirion.com/products/catalog/SCD41" target="_blank" rel="noopener noreferrer">SCD41</a> for a genuine CO2 measurement. Both hang off of a Seeed Studio XIAO ESP32-C6 &mdash; a five dollar microcontroller &mdash; programmed with ESPHome and reporting straight into Home Assistant. No broker, no database server, no separate dashboard container. Just the sensor, the board, and Home Assistant.</p>
+
+      <h2>Components</h2>
+
+      <h3>SEN55</h3>
+      <p><img src="images/AQM2/AQM2inside.jpg" alt="Inside the Generation 2 monitor" /></p>
+      <p>I picked the SEN55 from Sensirion to be the heart of this build. In one package it measures particulate matter in four size bins (PM1.0, PM2.5, PM4, and PM10), a VOC index, a NOx index, temperature, and humidity, all over I2C. Per the datasheet it holds a &plusmn;10% accuracy on the particulate mass concentrations, &plusmn;0.45 &deg;C on temperature, &plusmn;4.5 %RH on humidity, and a rated lifetime of more than ten years &mdash; which is a whole lot more reassuring than the first generation's 8000 hour sensor. The integrated fan keeps room air moving across the laser optics, and the sensor runs automatic cleaning routines so the readings stay honest over the long haul.</p>
+
+      <p>Mounting matters with this sensor. I spent time with the <a href="https://sensirion.com/resource/datasheet/sen5x" target="_blank" rel="noopener noreferrer">SEN5x datasheet</a> and Sensirion's <a href="https://sensirion.com/resource/user_guide/sen5x/engineering_guidelines" target="_blank" rel="noopener noreferrer">engineering guidelines</a> to work out the optimal orientation and position so that the fan inlet and outlet both have an unobstructed path to room air, and the <a href="https://sensirion.com/resource/cad/sen5x" target="_blank" rel="noopener noreferrer">official STEP file</a> made it easy to build the case around the exact envelope of the module.</p>
+
+      <p><a class="button" href="https://sensirion.com/products/catalog/SEN55" target="_blank" rel="noopener noreferrer">Check it out on sensirion</a></p>
+
+      <h3>SCD41</h3>
+      <p>The SCD41 is the true CO2 sensor I wished for in the first generation's write-up. It uses a photoacoustic NDIR principle to actually measure carbon dioxide instead of estimating it off of VOC readings, with an accuracy of &plusmn;(40 ppm + 5% of the reading) over a 400 to 5000 ppm range per the datasheet. It also has its own temperature and humidity sensors built right in, so I ended up with a second reference for those channels basically for free. I left automatic self-calibration enabled: the sensor assumes the lowest CO2 reading it sees over the course of about a week is fresh outdoor air and quietly re-zeroes itself to it, which keeps the whole thing honest without me ever touching it.</p>
+
+      <p><a class="button" href="https://sensirion.com/products/catalog/SCD41" target="_blank" rel="noopener noreferrer">Check it out on sensirion</a></p>
+
+      <h3>Seeed Studio XIAO ESP32-C6</h3>
+      <p><img src="images/AQM/xiao-esp32-c6.jpg" alt="Seeed Studio XIAO ESP32-C6" /></p>
+      <p>For the brain of the operation, I went with the Seeed Studio XIAO ESP32-C6. For five dollars you get an ESP32-C6 with 2.4 GHz WiFi and a USB-C port &mdash; compare that to the eighteen dollar Feather in Generation 1 and the microcontroller became one of the cheapest parts of the whole build. There is plenty of headroom on it for a sensor loop, and it sips power compared to the old board.</p>
+
+      <p>Assembly took very limited soldering. A small <a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank" rel="noopener noreferrer">SEN55 adapter breakout</a> converts the sensor's tiny 1.0 mm JST connector to the STEMMA QT standard, and on the other end I soldered the small JST STEMMA connector to the XIAO to adapt it to the I2C bus. A couple of short STEMMA QT cables chain the SEN55, the SCD41, and the XIAO together. The whole monitor is powered from the XIAO's USB-C port.</p>
+
+      <p><a class="button" href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank" rel="noopener noreferrer">Check it out on seeed studio</a></p>
+
+      <h2>Programming</h2>
+
+      <p>After the CircuitPython detour of the first generation, I wanted the firmware for this build to be boring. ESPHome delivers exactly that. The entire configuration lives in a single YAML file: the SEN5x and SCD4x sensor platforms are built into ESPHome, so I never wrote a line of sensor driver code. I simply declared the sensors, gave them names, and set the update interval to 300 seconds.</p>
+
+      <p>Moving to Home Assistant was about more than just this one sensor, though. I was adding a whole suite of sensors around the house, and I wanted everything reporting to one place. ESPHome lets me build my own sensors and have them show up in Home Assistant without having to manage an entire stack of brokers, databases, and dashboard containers the way Generation 1 did. It is just Home Assistant now, and every device I add after this one gets the same treatment for free. Over-the-air updates, a fallback captive portal, and the encrypted Home Assistant API all come with the framework too.</p>
+
+      <p>The VOC and NOx indices needed a little tuning to behave. The VOC algorithm has learning windows, a gating duration, and a gain factor that control how fast the index adapts to the environment, and I settled on values that keep the index stable in a quiet house while still responding to actual events like cooking or cleaning.</p>
+
+      <p><a class="button" href="code/AQM2/HAQ-SEN55-ESPHome.yaml.txt" target="_blank">Check out the code</a></p>
+
+      <h2>Case Design</h2>
+
+      <div class="photos">
+        <img src="images/AQM2/AQM2front45.jpg" alt="Generation 2 case front" />
+        <img src="images/AQM2/AQM2back45.jpg" alt="Generation 2 case back" />
+      </div>
+
+      <p>The Generation 2 case was designed in CAD around the STEP models of both sensors. The whole package measures 150 x 60 x 30 mm &mdash; a slim little box that keeps the fan inlet and exhaust of the SEN55 open to room air while the electronics stay tucked away inside. The case is printed in three pieces: a body, a top, and a bottom, held together with heat-set inserts and M3 hardware. The vents in the case give the temperature, humidity, and CO2 sensors plenty of passive airflow so they track the room instead of the inside of a box.</p>
+
+      <p>The full model is available to view interactively right in the browser, along with the files used to print it:</p>
+
+      <ul class="actions">
+        <li><a class="button" href="viewer.html?model=models/AQM2/HAQ-Case-Final-Body.3mf">View the Gen 2 case in 3D</a></li>
+        <li><a class="button" href="viewer.html?model=models/AQM2/HAQ-Case-Final-Top-Body.3mf">Top body</a></li>
+        <li><a class="button" href="viewer.html?model=models/AQM2/HAQ-Case-Final-Bottom-Body.3mf">Bottom body</a></li>
+      </ul>
+
+      <h2>Bill of Materials</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://sensirion.com/products/catalog/SEN55" target="_blank" rel="noopener noreferrer">SEN55-SDN-T</a></td>
+              <td>Air quality sensor with I2C output from Sensirion</td>
+              <td>1</td>
+              <td>$30.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://sensirion.com/products/catalog/SCD41" target="_blank" rel="noopener noreferrer">SCD41</a></td>
+              <td>True CO2, temperature, and humidity sensor with I2C output</td>
+              <td>1</td>
+              <td>$50.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank" rel="noopener noreferrer">Seeed Studio XIAO ESP32-C6</a></td>
+              <td>Microcontroller</td>
+              <td>1</td>
+              <td>$5.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.adafruit.com/search?q=SEN55+adapter" target="_blank" rel="noopener noreferrer">SEN55 Adapter Breakout</a></td>
+              <td>Adapts the SEN55 connections to I2C via STEMMA QT / Qwiic</td>
+              <td>1</td>
+              <td>$4.50</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.adafruit.com/product/4399" target="_blank" rel="noopener noreferrer">STEMMA QT / Qwiic JST SH 4-pin Cable</a></td>
+              <td>Connector cable</td>
+              <td>2</td>
+              <td>$1.00</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"></td>
+              <th>$91.50</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="aqm.html">comparison</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
+
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

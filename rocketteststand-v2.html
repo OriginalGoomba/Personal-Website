@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rocket Test Stand V2</title>
+  <meta name="description" content="The Rocket Test Stand V2 rebuild: a bigger load cell, redundant live telemetry, and a blast shield." />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
+
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="rocketteststand-v1.html">V1</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>Rocket Test Stand V2</h1>
+      </header>
+
+      <p>This is the rebuild. The first stand did its job right up until it didn't &mdash; the data all lived on an SD card that turned into fragments strewn across the lawn along with the stand. Version two is about making sure that can never happen again.</p>
+
+      <p>The latest design features logging thrust data from a 10-kilogram strain gauge, where the data is read by a microcontroller. Most of the changes between the original design and the new one center around a bigger load cell to capture higher peak thrusts in rocket motors, as well as a redundant real time telemetry system streaming straight to a computer so that even if the motor catastrophically fails, all data collected up until failure is still logged.</p>
+
+      <p>Other changes include adding a key for a more secure launch circuit as well as a much longer cable. I also will move all the electronics below the test stand with a blast shield over it so that no electronics will hopefully be harmed this time around. The motor mounting plate and machined bushings from the first stand were robust enough to salvage, so those carry over into the new build.</p>
+
+      <p><em>Work in progress &mdash; photos and test data will be added as the build comes together.</em></p>
+
+      <p>See <a href="rocketteststand-v1.html">Rocket Test Stand V1</a> for the original design.</p>
+
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
+
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

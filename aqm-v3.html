@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Air Quality Monitor V3</title>
+  <meta name="description" content="The third generation air quality monitor: a Sensirion SEN66 all-in-one sensor on a XIAO ESP32-C6 with 15 second updates." />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
+
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="aqm.html">comparison</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>Air Quality Monitor V3</h1>
+      </header>
+
+      <p><img src="images/AQM3/AQM3front.jpg" alt="Generation 3 air quality monitor" /></p>
+
+      <h2>Overview</h2>
+
+      <p>Generation 3 is what happens when a year of data tells you exactly which measurements you actually use. The <a href="https://sensirion.com/products/catalog/SEN66" target="_blank" rel="noopener noreferrer">SEN66</a> folds everything I needed two separate sensors for in Generation 2 into a single module: particulate matter, VOC and NOx indices, temperature, humidity, and now a true CO2 measurement built right in. The entire bill of materials collapsed down to two line items &mdash; one sensor and one microcontroller.</p>
+
+      <p>It did not just get simpler, it got faster. The update interval on this one is set to 15 seconds, so the readings come in quick enough to watch things happen in real time &mdash; open a window, cook dinner, or run the vacuum and the effect shows up in Home Assistant within seconds. I also skipped the adapter breakout this time around and soldered the SEN66's wires straight to the XIAO, which knocked another line item off the BOM and made the whole package that much smaller. This is the build that has been running day in and day out for well over a year now.</p>
+
+      <h2>Components</h2>
+
+      <h3>SEN66</h3>
+      <p><img src="images/AQM3/AQM3inside.jpg" alt="Inside the Generation 3 monitor" /></p>
+      <p>The SEN66 is the all-in-one evolution of the SEN5x line. Everything the SEN55 does &mdash; PM1.0, PM2.5, PM4, PM10, VOC, NOx, temperature, and humidity &mdash; plus an integrated CO2 sensor in the same package. The <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank" rel="noopener noreferrer">SEN6x datasheet</a> carries over the same claims as the SEN5x family: &plusmn;10% on the particulate mass concentrations, &plusmn;0.45 &deg;C on temperature, &plusmn;4.5 %RH on humidity, a ten year plus lifetime, and the added CO2 measurement is rated at &plusmn;(30 ppm + 3% of the reading). No breakout boards, no sensor daisy chaining, no second I2C address to keep track of. One sensor, four wires, done.</p>
+
+      <p>Just like with the SEN55, I leaned on the <a href="https://sensirion.com/resource/datasheet/SEN6x" target="_blank" rel="noopener noreferrer">SEN6x datasheet</a> and the <a href="https://sensirion.com/media/documents/0005B7E5/68C12844/PS_CD_SEN6x_D1.STEP" target="_blank" rel="noopener noreferrer">official STEP file</a> to work out the mounting orientation and design the enclosure around the exact outline of the module.</p>
+
+      <p><a class="button" href="https://sensirion.com/products/catalog/SEN66" target="_blank" rel="noopener noreferrer">Check it out on sensirion</a></p>
+
+      <h3>Seeed Studio XIAO ESP32-C6</h3>
+      <p>The same five dollar <a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank" rel="noopener noreferrer">XIAO ESP32-C6</a> from Generation 2 carries over unchanged. It has more than enough horsepower for a 15 second sensor loop, and keeping the microcontroller identical between generations meant the firmware and the tooling carried over too.</p>
+
+      <h2>Programming</h2>
+
+      <p>The firmware is ESPHome again, and it is even shorter this time. The <code>sen6x</code> platform with the <code>SEN66</code> type declares every channel the sensor offers in one block &mdash; PM, NOx, CO2, temperature, humidity, and VOC &mdash; and the update interval is set to 15 seconds. The XIAO's i2c bus, the Home Assistant API, over-the-air updates, and the captive portal fallback are all straight from the same configuration pattern as Generation 2.</p>
+
+      <p><a class="button" href="code/AQM3/AQ-SEN66-ESPHome.yaml.txt" target="_blank">Check out the code</a></p>
+
+      <h2>Case Design</h2>
+
+      <div class="photos">
+        <img src="images/AQM3/AQM3front45.jpg" alt="Generation 3 case front" />
+        <img src="images/AQM3/AQM3back45.jpg" alt="Generation 3 case back" />
+      </div>
+
+      <p>The Generation 3 case is the simplest of the three. With only one sensor and one board inside, the enclosure reduces to a body with a small retainer that pins the XIAO in place, held together with heat-set inserts and M3 hardware &mdash; and at roughly 75 x 46 x 61 mm, it is considerably more compact than the Generation 2 box, since a single integrated sensor leaves far less to house. The case does not need the vent holes the earlier generation relied on either, because everything is housed inside the SEN66 module itself. The model files are available below, viewable in 3D right in the browser:</p>
+
+      <ul class="actions">
+        <li><a class="button" href="viewer.html?model=models/AQM3/AQM3-Body.3mf">View the Gen 3 case in 3D</a></li>
+        <li><a class="button" href="viewer.html?model=models/AQM3/AQM3-ESP32-Retainer.3mf">ESP32 retainer</a></li>
+      </ul>
+
+      <h2>Initial Data</h2>
+      <p>When the SEN66 first went online, I put together an initial data report with the first readings, 3D renders of the enclosure, and photos of the finished build. A few pages from that report are below, and the full document is available as a PDF:</p>
+
+      <div class="photos">
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page6.jpg" alt="Initial data report page 6" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page7.jpg" alt="Initial data report page 7" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page8.jpg" alt="Initial data report page 8" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page9.jpg" alt="Initial data report page 9" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page10.jpg" alt="Initial data report page 10" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page11.jpg" alt="Initial data report page 11" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page12.jpg" alt="Initial data report page 12" />
+        <img loading="lazy" src="images/AQM3/InitialData/AQM3-initial-data-page13.jpg" alt="Initial data report page 13" />
+      </div>
+
+      <p><a class="button" href="docs/AQM3-Initial-Data.pdf" target="_blank">Download the full report (PDF)</a></p>
+
+      <h2>Bill of Materials</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://sensirion.com/products/catalog/SEN66" target="_blank" rel="noopener noreferrer">SEN66-SIN-T</a></td>
+              <td>All-in-one air quality sensor with I2C output from Sensirion</td>
+              <td>1</td>
+              <td>$59.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/" target="_blank" rel="noopener noreferrer">Seeed Studio XIAO ESP32-C6</a></td>
+              <td>Microcontroller</td>
+              <td>1</td>
+              <td>$5.00</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"></td>
+              <th>$64.00</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="aqm.html">comparison</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
+
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

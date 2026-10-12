@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Air Quality Monitor V1</title>
+  <meta name="description" content="The original home air quality monitor: an ESP32-S2 with PMSA003I, SGP30, and BME680 sensors streaming over MQTT to Grafana." />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
+
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="aqm.html">comparison</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>Air Quality Monitor V1</h1>
+      </header>
+
+      <p><img src="images/AQM/aqmexplode1280.gif" alt="Exploded view of the first generation air quality monitor" /></p>
+
+      <h2>Overview</h2>
+
+      <p>In this project, I designed, coded, and 3D printed an air quality monitor using an ESP32 microcontroller, along with the BME680, SGP30, and PMSA003I sensors. The goal of this project was to study the indoor air quality of my home and track how it changes during various activities.</p>
+
+      <p>Understanding the air quality in our living spaces is crucial for our health and well-being. By monitoring air quality, we can gain valuable insights into the effects of everyday activities, such as cooking or cleaning, on the air we breathe. This project allowed me to track trends and identify factors that impact indoor air quality, such as weather conditions and occupancy levels.</p>
+
+      <p>The BME680 sensor played a central role in this project, as it measures temperature, pressure, humidity, and volatile organic compounds (VOCs). Additionally, the SGP30 sensor provided data on total volatile organic compounds (TVOC) and equivalent CO2 (eCO2) levels. The PMSA003I sensor focused on particulate matter, providing counts and concentrations for PM1.0, PM2.5, and PM10.0 particles.</p>
+
+      <p>To collect data from each sensor, I developed CircuitPython code to interface with the ESP32 microcontroller. The code facilitated communication with an MQTT broker over WiFi and stored the collected data in a database. To visualize and analyze the data, I used Grafana, a powerful data visualization tool. To house all the components, I designed a custom 3D-printed case using CAD software.</p>
+
+      <p>By designing, coding, and 3D printing my own air quality monitor, I was able to gain valuable insights into the indoor air quality of my home. This project allowed me to track trends, identify potential air quality issues, and make informed decisions to create a healthier living environment.</p>
+
+      <h2>Components</h2>
+
+      <h3>PMSA003I</h3>
+      <p><img src="images/AQM/PMSA003I.png" alt="PMSA003I particulate matter sensor" /></p>
+      <p>The PMSA003I particulate matter sensor, manufactured by Plantower, plays a crucial role in measuring air quality by detecting and quantifying the concentration of fine particles in the atmosphere. This sensor employs a laser-based scattering technique to measure particle size and provide real-time data on particulate matter levels, particularly focusing on PM1.0, PM2.5, and PM10.</p>
+
+      <p>By accurately measuring particle size, the PMSA003I enables the assessment of potential health risks associated with airborne particles - perfect for this project. Fine particles, such as PM2.5, can pose significant health hazards as they can penetrate deep into the respiratory system. Therefore, the sensor's ability to monitor these smaller particles helps in understanding the potential impact on human health in indoor environments.</p>
+
+      <p>Additionally, the particulate matter concentration data provided by the PMSA003I is invaluable for evaluating overall air quality. High concentrations of particulate matter can indicate the presence of indoor pollution sources, inadequate ventilation, or the infiltration of outdoor pollutants. By continuously monitoring particulate matter levels, the sensor enables timely detection of air quality issues, facilitating appropriate mitigation measures and interventions to improve indoor environments.</p>
+
+      <p>The PMSA003I particulate matter sensor is designed for integration into air quality monitoring systems, enabling easy data acquisition and analysis. This model by Adafruit features I2C via STEMMA QT, allowing seamless connectivity with microcontrollers or other devices. We will be using this connector to integrate all of the sensors in this build.</p>
+
+      <p><em>Note: after years of service, the PMSA003I on this first-generation monitor has finally failed. It now reports a high and mostly constant reading of roughly 208 &micro;g/m&sup3; &mdash; the classic signature of a dead laser-scattering sensor. You can see it pinned flat next to the newer generations in the <a href="aqm.html">comparison charts</a>. Everything else on Generation 1 still works, but its particulate data should be treated as retired.</em></p>
+
+      <p><a class="button" href="https://www.adafruit.com/product/4632" target="_blank" rel="noopener noreferrer">Check it out on adafruit</a></p>
+
+      <h3>SGP30/40</h3>
+      <p><img src="images/AQM/SGP40.png" alt="SGP30 air quality sensor" /></p>
+      <p>The Adafruit SGP30 is an air quality sensor that plays a crucial role in measuring and assessing indoor air quality. While it does not directly measure CO2 levels, it provides an estimation of equivalent carbon dioxide (eCO2) based on VOC (volatile organic compound) levels.</p>
+
+      <p>It is important to note that the Adafruit SGP30 does not directly measure carbon dioxide (CO2) levels. If accurate CO2 measurements are required, specialized sensors designed specifically for CO2 detection could replace this one, but those senors are quite expensive. However, for this application, the estimation of eCO2 provided by the SGP30 is sufficient for assessing general air quality and detecting changes in VOC levels.</p>
+
+      <p>In addition to eCO2, the Adafruit SGP30 also measures Total Volatile Organic Compounds (TVOCs). TVOCs encompass a wide range of organic compounds present in the air, including pollutants and odorous substances, which is vital information to determine the quality of the air.</p>
+
+      <p>The calibration for this sensor is crucial, as it needs at least 12 hours to acquire baseline measurements of eCO2 and TVOC before it can accurately read data from the environment.</p>
+
+      <p><a class="button" href="https://www.adafruit.com/product/3709" target="_blank" rel="noopener noreferrer">Check it out on adafruit</a></p>
+
+      <h3>BME680</h3>
+      <p><img src="images/AQM/BME680.png" alt="BME680 temperature, humidity, pressure, and gas sensor" /></p>
+      <p>The Adafruit BME680 is a highly valuable sensor for measuring air quality (IAQ) as it provides comprehensive data on multiple environmental parameters, including temperature, humidity, pressure, and volatile organic compounds (VOCs).</p>
+
+      <p>One of the key benefits of the BME680 is its ability to measure temperature and humidity accurately. These readings are crucial for understanding the impact of environmental conditions on air quality. Temperature and humidity can affect the behavior of pollutants, chemical reactions, and the overall comfort of indoor spaces. By monitoring these parameters, the BME680 helps identify potential issues such as high humidity levels that may promote mold growth or temperature fluctuations that affect occupant comfort.</p>
+
+      <p>In addition to temperature and humidity, the BME680 measures VOCs, which are emitted by various sources and can impact air quality. However, it's important to note that the BME680's VOC readings may not be as precise as those from specialized VOC sensors like the SGP30. Currently the Bosch BSEC2 library is not available in CircuitPython, which is required to calculate IAQ, so the VOC function is not very useful.</p>
+
+      <p>To obtain more accurate VOC measurements, the BME680's temperature and humidity readings can be used in combination with the Adafruit SGP30 air quality sensor. By feeding the temperature and humidity data from the BME680 into the SGP30, the VOC readings can be compensated and calibrated for improved accuracy. This allows for a more reliable assessment of air quality, taking into account the influence of environmental conditions.</p>
+
+      <p><a class="button" href="https://www.adafruit.com/product/3660" target="_blank" rel="noopener noreferrer">Check it out on adafruit</a></p>
+
+      <h3>ESP32-S2</h3>
+      <p><img src="images/AQM/ESP32-S2.png" alt="Adafruit ESP32-S2 Feather" /></p>
+      <p>The Adafruit ESP32-S2 Feather is a versatile microcontroller designed for IoT projects. It features a STEMMA QT connector for I2C devices, WiFi capabilities, and flexible battery options.</p>
+
+      <p>The STEMMA QT connector allows for easy integration of I2C sensors and devices, expanding the microcontroller's capabilities, perfect for connecting the sensors above. The ESP32-S2 Feather supports 2.4 GHz Wi-Fi connectivity, enabling seamless integration with networks and internet services, including MQTT. The microcontroller offers USB Type-C and Lipoly battery support, with built-in charging circuitry and active battery monitoring.</p>
+
+      <p><a class="button" href="https://www.adafruit.com/product/5000" target="_blank" rel="noopener noreferrer">Check it out on adafruit</a></p>
+
+      <h3>Miscellaneous</h3>
+      <p>I have compiled a list below with other required hardware to create this build. I purchased some of the STEMMA QT connectors from adafruit, some PC-PETG filament from overture, and M2 hardware to assemble the rest of the case and overall build.</p>
+
+      <p>If I were to start this project over, and perhaps for the next iteration, I would have used an <a href="https://sensirion.com/products/catalog/SCD40/" target="_blank" rel="noopener noreferrer">SCD40</a> true CO2 sensor as well as a <a href="https://sensirion.com/products/catalog/SEN55/" target="_blank" rel="noopener noreferrer">SEN55</a> to encompass the entire project written in C++. This setup simplifies the amount of sensors dramatically, as well as the cost. Due to stock availability at the time of producing this project as well as not having acces to a soldering iron, I was unable to persue this avenue. I might create an addendum in the future with this hardware arrangement, however.</p>
+
+      <h2>Bill of Materials</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://www.adafruit.com/product/5000" target="_blank" rel="noopener noreferrer">ESP32-S2 Feather</a></td>
+              <td>ESP32-S2 Feather with STEMMA QT / Qwiic - 8MB Flash No PSRAM</td>
+              <td>1</td>
+              <td>$18.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.adafruit.com/product/4632" target="_blank" rel="noopener noreferrer">PMSA003I</a></td>
+              <td>PM1.0, PM2.5 and PM10.0 concentration in both standard &amp; environmental units</td>
+              <td>1</td>
+              <td>$45.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.adafruit.com/product/3709" target="_blank" rel="noopener noreferrer">SGP30</a></td>
+              <td>SGP30 Multi-Pixel Gas Sensor, a fully integrated MOX gas sensor</td>
+              <td>1</td>
+              <td>$18.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.adafruit.com/product/3660" target="_blank" rel="noopener noreferrer">BME680</a></td>
+              <td>temperature, humidity, barometric pressure, and VOC gas sensor</td>
+              <td>1</td>
+              <td>$19.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.adafruit.com/product/4399" target="_blank" rel="noopener noreferrer">50mm Long STEMMA Cable</a></td>
+              <td>4-wire cable 50mm long and fitted with JST SH female 4-pin connectors on both ends</td>
+              <td>3</td>
+              <td>$1.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.amazon.com/dp/B075SY4YRD" target="_blank" rel="noopener noreferrer">PC-PETG Filament</a></td>
+              <td>PETG and Polycarbonate mix of 1.75mm 3D Printing filament</td>
+              <td>1</td>
+              <td>$24.00</td>
+            </tr>
+            <tr>
+              <td><a href="https://www.amazon.com/dp/B082XR52P1" target="_blank" rel="noopener noreferrer">Metric M2 Hardware Set</a></td>
+              <td>High Quality Stainless Steel 304 Phillips Pan Head Bolts Screws Nuts Flat Washers Kit</td>
+              <td>1</td>
+              <td>$10.00</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"></td>
+              <th>$137.00</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <h2>Programming</h2>
+
+      <p><img src="images/AQM/aqmnocase.jpg" alt="Air quality monitor running without its case" /></p>
+
+      <p>After obtaining all of the necessary parts, I was able to test the functionality of all the components. I originally wanted to use the Arduino IDE to program in C++ as it was what I was familiar with from my other projects. However, my testing with all of the microcontrollers I had purchased from Adafruit would not upload arduino sketches reliably for testing. I narrowed it down to the serial commands in the setup part of the sketch causing the microcontroller to hang, but after many hours of tinkering I decided to use CircuitPython. While I had worked with traditional Python, CircuitPython was familiar in some aspects, and I was able to get started relatively easily after some research. The only functionality I sacrificed using CircuitPython was the Bosch BSEC2 library for calculating the Indoor Air Quality (IAQ) Index. The source code is not open source, so I was unable to compile a version for CircuitPython, although I tried.</p>
+
+      <p>Regardless, I imported all of the necessary libraries and hooked up all of the sensors to the ESP32-S2 via the STEMMA ports. Perhaps in a future project I will attempt creating my own circuit board, but the STEMMA ports provided an easy route for quickly prototyping sensors over I2C. A simple Python script verified all of the sensors were working and I was getting logical readouts on the serial connection. I used the Mu editor to program the controller and debug through the serial port.</p>
+
+      <p>From there, I attempted to connect the microcontroller to the internet and connect to an MQTT broker on my home server. I used Mosquitto MQTT via Node-RED to send a JSON file with the sensor data, battery voltage, and other metrics for debugging. I had some initial trouble getting Node-RED to parse the data coming in as a JSON. My biggest hurdle to overcome regarding this was to ensure the variable names in the JSON aligned with the message payload for the Node-RED parser. After that, Node-RED sends the message payload to an influxDB database I set up on the same Raspberry Pi for safe-keeping.</p>
+
+      <p>For the final piece of the puzzle, I used grafana installed on a docker container to query the data from the InfluxDB database. I made a dashboard with multiple graphs to track each sensors data with relevant data grouped together for more convenient analysis.</p>
+
+      <h3>Additional Programming Information</h3>
+      <p><img src="images/AQM/serialdebug.png" alt="Serial debug output" /></p>
+
+      <p>As stated above, I wanted to utilize the Bosh BSEC2 library. I found some information about compiling the BSEC library for CircuitPython, but I was unable to get it working. The versions I could compile no longer existed. As for right now the MOX sensor on the BME680 reads the raw resistance of the sensor. It is still useful for showing the trends as a lower resistance infers more VOCs present and vice versa.</p>
+
+      <p>I also tried to lengthen the life of this project and keep it powered off of a battery with intermittent charging. In retrospect, that was never going to work. The PMSA003I pulls up to 100 mA while it is measuring (per its datasheet), on top of the rest of the system, and the SGP30 needs over a minute awake to warm up before it will give a reliable reading. Deep sleep simply was not worth it: every wakeup meant burning more than a minute of battery just to throw the first readings away. The PMSA003I also only has an 8000 hour duty cycle, or about a year's worth of 24/7 operation. Since the monitor sits in one place and never needed to be battery powered anyway, I gave up on the battery and ran the sensor continuously off of the USB connection to assess the stability of the system (microcontroller, code, MQTT broker, and InfluxDB database) instead of trying to optimize the sensor's life. Every sensor I have built since is wired straight to the USB-C port for power.</p>
+
+      <p>Also, by putting the microcontroller to sleep, the data displayed on Grafana was patchy and inconsistent due to needing to throw away minutes of data on each startup due to the sensors needing ample time to reach steady-state. I wanted clean graphs for my analysis, so I decided for the first iteration of this project to see how far this setup wpuld take me. The next iteration will use the two sensors i mentioned previously for a more optimized long term solution.</p>
+
+      <h2>Case Design</h2>
+      <p><img src="images/AQM/finishedcaseinside.png" alt="Finished case with internals installed" /></p>
+
+      <p>I wanted to keep the case design as minimal as possible. For me, the most practical solution to a problem is through simplicity. I wanted to keep the case as small as possible because it sits on my desk in my workspace. I initially found it a little tricky to lay out all of the parts in CAD with only reference dimensions to go off of. Luckily, Adafruit has STEP files of all of their products, so I was able to manipulate the sesnors in CAD fairly easily. I also took into consideration that all of the sensors need adequate access to the envirnment. I made slots in the side of the case to allow the PMSA003I to draw air in and exhaust it. I also created vent holes through the bottom of the case and lid to allow for passive airflow with the sensors mounted vertically.</p>
+
+      <p>Mounting both the BME680 and SGP30 vertically seemed like the most optimal configuration as the product data sheet warmed that dust and particles landing on these sensors could interfere with accurate sensor measurements. I installed a removable slotted wall in the middle of the case bisecting the PMSA003I and ESP32-S2 from the BME680 and SGP30. I wanted to isolate these two components as heat from the ESP32 could result in higher read temperatures from the BME680, and the SGP30 eCO2 and TVOC calculations are base doff the real-time temperature and humidity readings in the code. My forethought payed off, and the readings seem consistent outside of the case and inside.</p>
+
+      <h2>Grafana</h2>
+      <p>Back when Generation 1 was the only monitor in the house, its dashboards lived in Grafana on the home server. I used to keep some public snapshots embedded here, but those are stale now, and the current analysis of the data lives in the <a href="aqm.html">comparison page</a>, where all three generations get compared head to head. I can also dig up data from when the original PMSA003I was still fully functioning and add it there as well.</p>
+
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="aqm.html">comparison</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
+
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
+
+    </div>
+  </main>
+</body>
+</html>

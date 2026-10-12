@@ -1,118 +1,106 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Station</title>
+  <meta name="description" content="A personal weather station with ESP32 microcontrollers, an ESP-NOW wireless link, a 3D printed radiation shield, and a tipping bucket rain gauge." />
 
-		<title>Weather Station</title>
-		<meta name="description" content="A personal weather station with ESP32 microcontrollers, an ESP-NOW wireless link, a 3D printed radiation shield, and a tipping bucket rain gauge." />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Projects</a>
-					</header>
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>Weather Station</h1>
+      </header>
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li class="active"><a href="index.html">Projects</a></li>
-							<li><a href="gallery.html">Gallery</a></li>
-							<li><a href="contactme.html">Contact Me</a></li>
-						</ul>
-					</nav>
+      <div class="photos">
+        <img src="images/Weather_Station_2021/65309883880__305B9177-13EE-4771-8403-37240E65850E.jpg" alt="Weather station" />
+        <img src="images/Weather_Station_2021/IMG_6876.jpg" alt="Weather station components" />
+      </div>
 
-				<!-- Main -->
-					<div id="main">
+      <p>This weather station uses two ESP-32 microcontrollers to wirelessly communicte using the ESP-NOW communication protocol. Weather data from a DHT-11 humidity sensor and BMP180 temperature and pressure sensor collect data inside a radiation shield that I 3D modeled. This data is taken at a preprogrammed intervals from these sensors to the ESP-32 to be sent to the reciever inside for display on a small screen meant for a desk. The design also implements a rain sensor and tipping bucket rain gauge as a seperate module that I had lying around as spare parts from an old weather station. In the future, it would be nice to add more functionality with an anemometer to collect windspeed data. Another idea I would like to implement in the future is data logging on an MQTT server using a raspberry pi server that talks to all my electronics projects. This would be useful to track the climate over time at the residence, while comparing it to measurements from the local municipality. All the materials are purchased, but since the semester has started, finding free time to work on hobbies will be hard to come by.</p>
 
-						<!-- Post -->
-							<section class="post">
-								<header class="major">
-									<h1>Weather Station</h1>
-									<p>Personal weather station featuring 3d modeled components, wireless data transmission, and rechargable battery operation.</p>
-								</header>
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-6"><span class="image fit"><img src="images/Weather_Station_2021/65309883880__305B9177-13EE-4771-8403-37240E65850E.jpg" alt="" /></span></div>
-										<div class="col-6"><span class="image fit"><img src="images/Weather_Station_2021/IMG_6876.jpg" alt="" /></span></div>
-									</div>
-								</div>
-								<!-- <div class="image main"><img src="images/Apollo AV-1 Parts/Apollo AV-1 Trigger_1.stl.png" alt="" /></div> -->
-								<p>	This weather station uses two ESP-32 microcontrollers to wirelessly communicte using the ESP-NOW communication protocol. 
-									Weather data from a DHT-11 humidity sensor and BMP180 temperature and pressure sensor collect data inside a radiation shield that I 3D
-									modeled. This data is taken at a preprogrammed intervals from these sensors to the ESP-32 to be sent to the reciever inside for display on a small 
-									screen meant for a desk. The design also implements a rain sensor and tipping bucket rain gauge as a seperate module that I had lying around as spare 
-									parts from an old weather station. In the future, it would be nice to add more functionality with an anemometer to collect windspeed data. Another idea I would 
-									like to implement in the future is data logging on an MQTT server using a raspberry pi server that talks to all my electronics projects. This would be 
-									useful to track the climate over time at the residence, while comparing it to measurements from the local municipality. All the materials are purchased, 
-									but since the semester has started, finding free time to work on hobbies will be hard to come by.</p>
-								<header class="major">
-									<h2 style="text-align: left;" >Radiation Shield Assembly</h2>
-								</header>
-								<p><span class="image right"><img src="images/Weather_Station_2021/IMG_6610.HEIC.jpg" alt="" /></span>
-									Both iterations of the radiation shield were modeled using Creo Parametric 6.0. I originally designed a square box with louvers surrounding each side and a basic slanted roof. 
-									Although this design was simple to design and featured integrated circuit board mounting and an inlay for a solar panel, the design was not very element proof. After two days of weather testing, 
-									it was clear the design let too much rain inside the housing which could damage the more sensitive components of the weather station. After the failure 
-									of this design, I researched commercial weather station radiation shields and came across the "stevenson" radiation shield, which is a round cylindical structure 
-									with louvers wrapping all around. I also took note that they were all white as to not absorb excess solar radiation that could throw off measurements. 
-									<span class="image left"><img src="images/Weather_Station_2021/squareIMG_6881.jpg" alt="" /></span>I tried 
-									to find a 3D printable design online, but every design posted had its own set of problems that seemed to make them unattractive to print. Most of these preexisting models 
-									used large metal shafts or required intricate post print assembly. So, I just made my own fully 3D printable radiation shield, except for a few M3 and M4 nuts and bolts. 
-									It is designed to accomodate a 25 millimeter wide circuit board, with integrated cable passthrough inside the support shaft.</p>
-								<ul class="actions special">
-									<li><a href="#" class="button disabled">Check it out on thingiverse</a></li>
-								</ul>
+      <h2>Radiation Shield Assembly</h2>
+      <p><img src="images/Weather_Station_2021/IMG_6610.HEIC.jpg" alt="Radiation shield assembly" /></p>
 
-								<header class="major">
-									<h2 style="text-align: right;" >Tipping Rain Guage</h2>
-								</header>
-								<p><span class="image left"><img src="images/Weather_Station_2021/IMG_7027.jpg" alt="" /></span>
-									This is an off the shelf tipping bucket rain gauge that is about 20 years old. For this project, I have modified it for ease of 
-									data collection using an ESP-32 microcontroller. The original reed switch on the bottom right of the image has been replaced with a linear 
-									hall effect sensor in order to reduce electronic noise when capturing the physical tipping of the rain gauge bucket. The main issue regarding the original 
-									reed switch centered around the tiny moving contacts that would touch, completing the circuit, when a close enough magnetic field interacted with it. 
-									Since the microcontroller can process data extremely fast, whenever the magnet passed by the switch would bounce on and off in fractions of a second, 
-									causing each tip of the rain gauge bucket to correspond to tens of tips read by the microcontroller. After various attempts at debouncing the system, 
-									I decided to replace the reed switch entirely with a solid-state linear hall effect sensor. This creates a concise and accurate reading each time the bucket tips, 
-									allowing for easy parsing of rainfall data. After many months of testing in the rain, the gauge is a little dirty but has continued to work flawlessly.</p>
-								<ul class="actions special">
-									<li><a href="#" class="button disabled">Check it out on thingiverse</a></li>
-								</ul>
-							</section>
-					</div>
-					
+      <p>Both iterations of the radiation shield were modeled using Creo Parametric 6.0. I originally designed a square box with louvers surrounding each side and a basic slanted roof. Although this design was simple to design and featured integrated circuit board mounting and an inlay for a solar panel, the design was not very element proof. After two days of weather testing, it was clear the design let too much rain inside the housing which could damage the more sensitive components of the weather station. After the failure of this design, I researched commercial weather station radiation shields and came across the "stevenson" radiation shield, which is a round cylindical structure with louvers wrapping all around. I also took note that they were all white as to not absorb excess solar radiation that could throw off measurements.</p>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; 2025</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
+      <p><img src="images/Weather_Station_2021/squareIMG_6881.jpg" alt="3D printed radiation shield" /></p>
 
-			</div>
+      <p>I tried to find a 3D printable design online, but every design posted had its own set of problems that seemed to make them unattractive to print. Most of these preexisting models used large metal shafts or required intricate post print assembly. So, I just made my own fully 3D printable radiation shield, except for a few M3 and M4 nuts and bolts. It is designed to accomodate a 25 millimeter wide circuit board, with integrated cable passthrough inside the support shaft.</p>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+      <h2>Tipping Rain Guage</h2>
+      <p><img src="images/Weather_Station_2021/IMG_7027.jpg" alt="Tipping bucket rain gauge" /></p>
 
-	</body>
+      <p>This is an off the shelf tipping bucket rain gauge that is about 20 years old. For this project, I have modified it for ease of data collection using an ESP-32 microcontroller. The original reed switch on the bottom right of the image has been replaced with a linear hall effect sensor in order to reduce electronic noise when capturing the physical tipping of the rain gauge bucket. The main issue regarding the original reed switch centered around the tiny moving contacts that would touch, completing the circuit, when a close enough magnetic field interacted with it. Since the microcontroller can process data extremely fast, whenever the magnet passed by the switch would bounce on and off in fractions of a second, causing each tip of the rain gauge bucket to correspond to tens of tips read by the microcontroller. After various attempts at debouncing the system, I decided to replace the reed switch entirely with a solid-state linear hall effect sensor. This creates a concise and accurate reading each time the bucket tips, allowing for easy parsing of rainfall data. After many months of testing in the rain, the gauge is a little dirty but has continued to work flawlessly.</p>
+
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
+
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
+
+    </div>
+  </main>
+</body>
 </html>

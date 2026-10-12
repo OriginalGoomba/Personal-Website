@@ -1,143 +1,164 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Projects</title>
+  <meta name="description" content="A collection of personal projects: air quality monitors, rocket test stands, 3D printed parts, and more." />
 
-		<title>Projects</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<meta name="description" content="A collection of hardware and software projects: air quality monitors, rocket test stands, 3D printed parts, and more." />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="Projects" />
-		<meta property="og:description" content="A collection of hardware and software projects: air quality monitors, rocket test stands, 3D printed parts, and more." />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Projects</a>
-					</header>
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="viewer.html">3d viewer</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>My Projects</h1>
+        <p>This website documents the projects I design, build, and program in my free time &mdash; air quality monitors, rocket test stands, 3D printed parts, and whatever else is currently on the bench. Browse the collection below.</p>
+      </header>
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li class="active"><a href="index.html">Projects</a></li>
-							<li><a href="gallery.html">Gallery</a></li>
-							<li><a href="contactme.html">Contact Me</a></li>
-						</ul>
-					</nav>
+      <h2 class="section-label">Portfolio</h2>
+      <ul class="horizontal-list">
+        <li class="card">
+          <a href="aqm.html">
+            <span class="header">Air Quality Monitor Comparison</span>
+            <hr />
+            <p class="body">All three generations of the home air quality monitor compared head to head: pricing, capability, ease of build, and field data.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="aqm-v1.html">
+            <span class="header">Air Quality Monitor V1</span>
+            <hr />
+            <p class="body">The original build: ESP32-S2, PMSA003I, SGP30, and BME680 streaming over MQTT to Grafana.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="aqm-v2.html">
+            <span class="header">Air Quality Monitor V2</span>
+            <hr />
+            <p class="body">SEN55 and SCD41 on a XIAO ESP32-C6, running ESPHome inside Home Assistant.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="aqm-v3.html">
+            <span class="header">Air Quality Monitor V3</span>
+            <hr />
+            <p class="body">The SEN66 all-in-one build &mdash; one sensor, one board, and 15 second updates.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="rocketteststand-v1.html">
+            <span class="header">Rocket Test Stand V1</span>
+            <hr />
+            <p class="body">A load cell and HX711 based thrust stand for testing homemade rocket motors.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="rocketteststand-v2.html">
+            <span class="header">Rocket Test Stand V2 <mark>WIP</mark></span>
+            <hr />
+            <p class="body">The rebuild: a bigger load cell, live telemetry, and a blast shield.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="apolloav-1parts.html">
+            <span class="header">Apollo AV-1 Parts</span>
+            <hr />
+            <p class="body">3D printed trigger and shaft replacements for a discontinued underwater scooter.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="Weather_Station.html">
+            <span class="header">Weather Station</span>
+            <hr />
+            <p class="body">An ESP-NOW weather station with a 3D printed radiation shield and tipping bucket rain gauge.</p>
+          </a>
+        </li>
+      </ul>
 
-				<!-- Main -->
-					<div id="main">
+      <h2 class="section-label">Old Projects</h2>
+      <ul class="horizontal-list">
+        <li class="card">
+          <a href="plantwaterer.html">
+            <span class="header">Plant Waterer <mark>WIP</mark></span>
+            <hr />
+            <p class="body">A fully automatic plant watering system that will hopefully look nice when complete.</p>
+          </a>
+        </li>
+        <li class="card">
+          <a href="milltachometer.html">
+            <span class="header">Mill Tachometer</span>
+            <hr />
+            <p class="body">A DIY hall effect tachometer for a converted CNC mill in the home shop.</p>
+          </a>
+        </li>
+      </ul>
 
-						<!-- Intro -->
-						<header class="major">
-							<h2>My Projects</h2>
-							<p>This website documents the projects I design, build, and program in my free time &mdash; air quality monitors, rocket test stands, 3D printed parts, and whatever else is currently on the bench. Browse the collection below, or start with the featured project.</p>
-						</header>
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="viewer.html">3d viewer</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
 
-						<!-- Featured Post -->
-						<article class="post featured">
-							<header class="major">
-								<h2><a href="#">Featured Project:</a></h2>
-								<h3>Home Air Quality Monitor</h3>
-								<p>An indoor air quality monitoring system now in its third generation. What started with an ESP32, a particulate matter sensor, an eCO2 sensor, and a BME680 has grown into a family of monitors integrated with Home Assistant. Explore all three generations and how the design has evolved.</p>
-							</header>
-							<a href="aqm.html" class="image main"><img src="images/AQM/aqmexplode1280.gif" alt="" /></a>
-							<ul class="actions special">
-								<li><a href="aqm.html" class="button">Check it out</a></li>
-							</ul>
-						</article>
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
 
-						<!-- Posts -->
-							<section class="posts">
-								<article>
-									<header>
-										<!-- <span class="date">April 24, 2017</span> -->
-										<h2><a href="#">Rocket Test Stand</a></h2>
-									</header>
-									<a href="rocketteststand.html" class="image fit"><img src="images/arduinoprojectpictures/IMG_4463.jpg" alt="" /></a>
-									<p>This Arduino project is still being worked on. It was finished, until I tested a new rocket motor design that decided to destroy itself. This is a DIY model rocket motor test stand using a load cell and sd card logging to test the efficacy of my homemade model rocket motors. While, the functionality is finished, I want to harden it against rocket motor tests gone wrong.</p>
-									<ul class="actions special">
-										<li><a href="rocketteststand.html" class="button">Check out the progress</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										<!-- <span class="date">April 24, 2017</span> -->
-										<h2><a href="apolloav-1parts.html">Apollo AV-1 Parts</a></h2>
-									</header>
-									<a href="apolloav-1parts.html" class="image fit"><img src="images/arduinoprojectpictures/Apolloav-13dmodel.PNG" alt="" /></a>
-									<p>3D Models of the trigger and shaft for an Apollo AV-1 underwater scooter that can be conveniently 3D printed to replace a discontinued set of parts. This was used to repair a failing trigger assembly on a diving scooter that I use for scuba diving.</p>
-									<ul class="actions special">
-										<li><a href="apolloav-1parts.html" class="button">Check it out</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										<!-- <span class="date">April 24, 2017</span> -->
-										<h2><a href="Weather_Station.html">Weather Station</a></h2>
-									</header>
-									<a href="Weather_Station.html" class="image fit"><img src="images/Weather_Station_2021/IMG_6882.jpg" alt="" /></a>
-									<p>This upcoming project consists of a weather station that collects weather data outside and transmits the current weather to a display indoors.</p>
-									<ul class="actions special">
-										<li><a href="Weather_Station.html" class="button">Check it out</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										<!-- <span class="date">April 24, 2017</span> -->
-										<h2><a href="#">Plant Waterer</a></h2>
-									</header>
-									<a href="#" class="image fit"><img src="images/arduinoprojectpictures/IMG_4863.jpg" alt="" /></a>
-									<p>This Arduino project is still a work in progress. It is a fully automatic plant watering system that will also hopefully look nice when complete.</p>
-									<ul class="actions special">
-										<li><a href="#" class="button disabled">Check it out</a></li>
-									</ul>
-								</article>
-								<article>
-									<header>
-										<!-- <span class="date">April 24, 2017</span> -->
-										<h2><a href="#">Mill Tachometer</a></h2>
-									</header>
-									<a href="#" class="image fit"><img src="images/arduinoprojectpictures/IMG_4799.jpg" alt="" /></a>
-									<p>This Arduino project is still a work in progress. It is a DIY tachometer for a converted CNC mill in the home shop utilizing a hall effect sensor and 3D printing. The functionality is complete, although the mill is not.</p>
-									<ul class="actions special">
-										<li><a href="#" class="button disabled">Check it out</a></li>
-									</ul>
-								</article>
-							</section>
-					</div>
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; 2025</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
+    </div>
+  </main>
+</body>
 </html>

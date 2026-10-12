@@ -1,133 +1,144 @@
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html lang="en">
-	<head>
-		
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="/site.webmanifest">
+<!DOCTYPE html>
+<html lang="en" class="html" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D Model Viewer</title>
+  <meta name="description" content="Interactive in-browser 3D viewer for the 3D-printable case models." />
 
-		<title>3D Model Viewer</title>
-		<meta name="description" content="Interactive in-browser 3D viewer for the 3D-printable case models." />
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content="3D Model Viewer" />
-		<meta property="og:description" content="Interactive in-browser 3D viewer for the 3D-printable case models." />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<script type="importmap">
-			{
-				"imports": {
-					"three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-					"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-				}
-			}
-		</script>
-	</head>
-	<body class="is-preload">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="assets/images/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="assets/images/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/images/favicon/favicon.ico" />
+  <meta name="theme-color" content="#ffffff" />
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/extra.css" />
+  <script src="assets/js/theme.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="page-content" aria-label="Content">
+    <div class="w">
 
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">Projects</a>
-					</header>
+      <header>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+        <div class="dashed"></div>
+        <h1>3D Model Viewer</h1>
+      </header>
 
-				<!-- Nav -->
-					<nav id="nav">
-						<ul class="links">
-							<li><a href="index.html">Projects</a></li>
-							<li><a href="gallery.html">Gallery</a></li>
-							<li><a href="contactme.html">Contact Me</a></li>
-						</ul>
-					</nav>
+      <p>Interactive views of the Air Quality Monitor case models. Drag to rotate, scroll to zoom.</p>
 
-				<!-- Main -->
-					<div id="main">
+      <div class="photos">
+        <div>
+          <h3 style="margin-top: 0;">Generation 2</h3>
+          <ul class="actions">
+            <li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Body.3mf" class="button model-btn" data-model="models/AQM2/HAQ-Case-Final-Body.3mf">Body</a></li>
+            <li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Bottom-Body.3mf" class="button model-btn" data-model="models/AQM2/HAQ-Case-Final-Bottom-Body.3mf">Bottom Body</a></li>
+            <li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Top-Body.3mf" class="button model-btn" data-model="models/AQM2/HAQ-Case-Final-Top-Body.3mf">Top Body</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="margin-top: 0;">Generation 3</h3>
+          <ul class="actions">
+            <li><a href="viewer.html?model=models/AQM3/AQM3-Body.3mf" class="button model-btn" data-model="models/AQM3/AQM3-Body.3mf">Body</a></li>
+            <li><a href="viewer.html?model=models/AQM3/AQM3-ESP32-Retainer.3mf" class="button model-btn" data-model="models/AQM3/AQM3-ESP32-Retainer.3mf">ESP32 Retainer</a></li>
+          </ul>
+        </div>
+      </div>
 
-						<!-- Post -->
-							<section class="post">
-								<header class="major">
-									<h1>3D Model Viewer</h1>
-									<p>Interactive views of the Air Quality Monitor case models. Drag to rotate, scroll to zoom.</p>
-								</header>
+      <div id="viewer" class="viewer-box"></div>
+      <p id="viewer-status" style="text-align: center;">Loading&hellip;</p>
+      <noscript><p style="text-align: center;">JavaScript is required for the interactive viewer.</p></noscript>
 
-								<ul class="actions">
-									<li><a href="aqm.html" class="button primary">Back to the AQM project</a></li>
-								</ul>
+      <p><a class="button" href="aqm.html">Back to the AQM comparison</a></p>
 
-								<div class="box alt">
-									<div class="row gtr-50 gtr-uniform">
-										<div class="col-6">
-											<h3 style="text-align: center;">Generation 2</h3>
-											<ul class="actions stacked">
-												<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Body.3mf" class="button fit model-btn" data-model="models/AQM2/HAQ-Case-Final-Body.3mf">Body</a></li>
-												<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Bottom-Body.3mf" class="button fit model-btn" data-model="models/AQM2/HAQ-Case-Final-Bottom-Body.3mf">Bottom Body</a></li>
-												<li><a href="viewer.html?model=models/AQM2/HAQ-Case-Final-Top-Body.3mf" class="button fit model-btn" data-model="models/AQM2/HAQ-Case-Final-Top-Body.3mf">Top Body</a></li>
-											</ul>
-										</div>
-										<div class="col-6">
-											<h3 style="text-align: center;">Generation 3</h3>
-											<ul class="actions stacked">
-												<li><a href="viewer.html?model=models/AQM3/AQM3-Body.3mf" class="button fit model-btn" data-model="models/AQM3/AQM3-Body.3mf">Body</a></li>
-												<li><a href="viewer.html?model=models/AQM3/AQM3-ESP32-Retainer.3mf" class="button fit model-btn" data-model="models/AQM3/AQM3-ESP32-Retainer.3mf">ESP32 Retainer</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
+      <footer>
+        <div class="dashed"></div>
+        <ul class="horizontal-list">
+          <li>
+            <a href="index.html">home</a>
+            &nbsp;&nbsp;
+          </li>
+          <li>
+            <a href="contactme.html">contact</a>
+            &nbsp;&nbsp;
+          </li>
+        </ul>
+      </footer>
 
-								<div id="viewer" style="position: relative; width: 100%; height: 70vh; min-height: 420px; background: #1e252d; border-radius: 4px; cursor: grab;"></div>
-								<p id="viewer-status" style="text-align: center; margin-top: 0.5em;">Loading&hellip;</p>
-								<noscript><p style="text-align: center;">JavaScript is required for the interactive viewer.</p></noscript>
-							</section>
-					</div>
+      <button aria-label="Toggle dark mode" aria-pressed="false" class="theme-toggle">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
 
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; 2025</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
+      <div class="credits">
+        &copy;&nbsp;2025
+        &nbsp;
+        &bull;
+        &nbsp;
+        Theme&nbsp; <a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noopener noreferrer">Moonwalk</a>
+      </div>
 
-			</div>
+    </div>
+  </main>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script type="module" src="assets/js/modelviewer.js"></script>
-			<script>
-				// Swap models in place when a model button is clicked, so the page
-				// does not reload and the scroll position is preserved. The plain
-				// hrefs above still work for browsers without JavaScript.
-				(function () {
-					document.addEventListener('click', function (e) {
-						var btn = e.target.closest ? e.target.closest('.model-btn') : null;
-						if (!btn) return;
-						e.preventDefault();
-						var path = btn.getAttribute('data-model') || btn.getAttribute('href').split('?')[1];
-						if (!path) return;
-						var model = decodeURIComponent(path.replace(/^model=/, ''));
-						if (window.AQMViewer) {
-							window.AQMViewer.load(model);
-						} else {
-							window.location.href = btn.getAttribute('href');
-						}
-						if (window.history && window.history.replaceState) {
-							window.history.replaceState(null, '', 'viewer.html?model=' + encodeURIComponent(model));
-						}
-					});
-				})();
-			</script>
-
-	</body>
+  <script type="module" src="assets/js/modelviewer.js"></script>
+  <script>
+    // Swap models in place when a model button is clicked, so the page
+    // does not reload and the scroll position is preserved. The plain
+    // hrefs above still work for browsers without JavaScript.
+    (function () {
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest('.model-btn') : null;
+        if (!btn) return;
+        e.preventDefault();
+        var path = btn.getAttribute('data-model') || btn.getAttribute('href').split('?')[1];
+        if (!path) return;
+        var model = decodeURIComponent(path.replace(/^model=/, ''));
+        if (window.AQMViewer) {
+          window.AQMViewer.load(model);
+        } else {
+          window.location.href = btn.getAttribute('href');
+        }
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', 'viewer.html?model=' + encodeURIComponent(model));
+        }
+      });
+    })();
+  </script>
+</body>
 </html>
